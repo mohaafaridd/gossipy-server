@@ -5,9 +5,11 @@
   "main": "index.js",
   "scripts": {
     "start": "ts-node ./src/index.ts",
-    "dev": "env-cmd -f ./config/prod.env ts-node ./src/index.ts",
+    "dev": "env-cmd -f ./config/dev.env ts-node ./src/index.ts",
     "deploy:dev": "prisma deploy -e ./config/dev.env",
-    "deploy:prod": "prisma deploy -e ./config/prod.env"
+    "deploy:prod": "prisma deploy -e ./config/prod.env",
+    "token:dev": "prisma token -c -e ./config/dev.env",
+    "token:prod": "prisma token -c -e ./config/prod.env"
   },
   "author": "",
   "license": "ISC",
