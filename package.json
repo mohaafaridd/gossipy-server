@@ -4,8 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "heroku-postbuild": "prisma generate",
     "start": "ts-node ./src/index.ts",
     "dev": "env-cmd -f ./config/dev.env ts-node ./src/index.ts",
+    "gene:dev": "prisma generate -e ./config/dev.env",
     "deploy:dev": "prisma deploy -e ./config/dev.env",
     "deploy:prod": "prisma deploy -e ./config/prod.env",
     "token:dev": "prisma token -c -e ./config/dev.env",
@@ -14,13 +16,14 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "prisma": "^1.34.10",
     "ts-node-dev": "^1.0.0-pre.44"
   },
   "dependencies": {
     "env-cmd": "^10.0.1",
     "graphql": "^14.5.8",
     "graphql-yoga": "^1.18.3",
+    "prisma": "^1.34.10",
+    "prisma-binding": "^2.3.16",
     "prisma-client-lib": "^1.34.10",
     "ts-node": "^8.6.2",
     "typescript": "^3.7.5"
