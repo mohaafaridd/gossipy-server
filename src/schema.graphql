@@ -1,8 +1,37 @@
 type User {
   id: ID!
   name: String!
+  password: String!
+  email: String!
+  createdAt: String!
+  updatedAt: String!
+}
+
+type Station {
+  id: ID!
+  name: String!
+  description: String!
+  public: Boolean!
+  createdAt: String!
+  updatedAt: String!
+}
+
+type Topic {
+  id: ID!
+  title: String!
+  content: String!
+  createdAt: String!
+  updatedAt: String!
+}
+
+type Comment {
+  id: ID!
+  content: String!
 }
 
 type Query {
   users: [User!]!
+  stations: [Station!]!
+  topics: [Topic!]!
+  comments: [Comment!]!
 }
