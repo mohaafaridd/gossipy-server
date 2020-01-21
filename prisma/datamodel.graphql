@@ -1,0 +1,30 @@
+type User {
+  id: ID! @id
+  name: String!
+  password: String!
+  email: String! @unique
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+}
+
+type Station {
+  id: ID! @id
+  name: String!
+  description: String!
+  public: Boolean! @default(value: false)
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+}
+
+type Topic {
+  id: ID! @id
+  title: String!
+  content: String!
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+}
+
+type Comment {
+  id: ID! @id
+  content: String!
+}
