@@ -35,3 +35,18 @@ type Query {
   topics: [Topic!]!
   comments: [Comment!]!
 }
+
+type Mutation {
+  createUser(data: CreateUserInput!): AuthPayload!
+}
+
+type AuthPayload {
+  token: String!
+  user: User!
+}
+
+input CreateUserInput {
+  name: String!
+  email: String!
+  password: String!
+}
