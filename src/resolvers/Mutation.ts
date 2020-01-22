@@ -1,9 +1,10 @@
 import { Prisma, UserCreateInput } from '../generated/prisma-client'
+import * as bcrypt from 'bcryptjs'
 import hashPasswords from '../utils/hashPasswords'
 import generateToken from '../utils/generateToken'
 
 export default {
-  createUser: async (
+  signUp: async (
     parent,
     { data }: { data: UserCreateInput },
     { prisma }: { prisma: Prisma },
@@ -11,7 +12,27 @@ export default {
   ) => {
     const password = await hashPasswords(data.password)
     const user = await prisma.createUser({ ...data, password })
+    return {
+      user,
+      token: generateToken(user.id),
+    }
+  },
 
-    return { user, token: generateToken(user.id) }
+  signIn: async (
+    parent,
+    { data }: { data: { email: string; password: string } },
+    { prisma }: { prisma: Prisma },
+    info
+  ) => {
+    const user = await prisma.user({ email: data.email })
+    if (!user) throw new Error('Login failed')
+
+    const isMatch = await bcrypt.compare(data.password, user.password)
+    if (!isMatch) throw new Error('Login failed')
+
+    return {
+      user,
+      token: generateToken(user.id),
+    }
   },
 }
