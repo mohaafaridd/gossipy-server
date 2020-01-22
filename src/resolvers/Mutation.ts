@@ -1,7 +1,12 @@
-import { Prisma, UserCreateInput } from '../generated/prisma-client'
+import {
+  Prisma,
+  UserCreateInput,
+  UserUpdateInput,
+} from '../generated/prisma-client'
 import * as bcrypt from 'bcryptjs'
 import hashPasswords from '../utils/hashPasswords'
 import generateToken from '../utils/generateToken'
+import getUserId from '../utils/getUserId'
 
 export default {
   signUp: async (
@@ -34,5 +39,21 @@ export default {
       user,
       token: generateToken(user.id),
     }
+  },
+
+  updateUser: async (
+    parent,
+    { data }: { data: UserUpdateInput },
+    { prisma, request }: { prisma: Prisma; request: any },
+    info
+  ) => {
+    const userId = getUserId(request)
+    if (typeof data.password === 'string') {
+      data.password = await hashPasswords(data.password)
+    }
+    return prisma.updateUser({
+      where: { id: userId },
+      data,
+    })
   },
 }
