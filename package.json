@@ -6,12 +6,11 @@
   "scripts": {
     "heroku-postbuild": "prisma generate",
     "start": "ts-node ./src/index.ts",
-    "dev": "env-cmd -f ./config/dev.env ts-node ./src/index.ts",
-    "dev:gene": "prisma generate -e ./config/dev.env",
-    "dev:deploy": "prisma deploy -e ./config/dev.env",
-    "dev:token": "prisma token -c -e ./config/dev.env",
+    "dev": "env-cmd -f ./config/prod.env ts-node ./src/index.ts",
+    "prod:gene": "prisma generate -e ./config/prod.env",
     "prod:deploy": "prisma deploy -e ./config/prod.env",
-    "prod:token": "prisma token -c -e ./config/prod.env"
+    "prod:token": "prisma token -c -e ./config/prod.env",
+    "prod:reset": "prisma reset -e ./config/prod.env"
   },
   "author": "",
   "license": "ISC",

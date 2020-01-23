@@ -188,6 +188,7 @@ type Station {
   name: String!
   description: String!
   public: Boolean!
+  founder: User!
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -199,6 +200,19 @@ type StationConnection {
 }
 
 input StationCreateInput {
+  id: ID
+  name: String!
+  description: String!
+  public: Boolean
+  founder: UserCreateOneWithoutFoundedInput!
+}
+
+input StationCreateManyWithoutFounderInput {
+  create: [StationCreateWithoutFounderInput!]
+  connect: [StationWhereUniqueInput!]
+}
+
+input StationCreateWithoutFounderInput {
   id: ID
   name: String!
   description: String!
@@ -234,6 +248,72 @@ type StationPreviousValues {
   updatedAt: DateTime!
 }
 
+input StationScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  description: String
+  description_not: String
+  description_in: [String!]
+  description_not_in: [String!]
+  description_lt: String
+  description_lte: String
+  description_gt: String
+  description_gte: String
+  description_contains: String
+  description_not_contains: String
+  description_starts_with: String
+  description_not_starts_with: String
+  description_ends_with: String
+  description_not_ends_with: String
+  public: Boolean
+  public_not: Boolean
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  AND: [StationScalarWhereInput!]
+  OR: [StationScalarWhereInput!]
+  NOT: [StationScalarWhereInput!]
+}
+
 type StationSubscriptionPayload {
   mutation: MutationType!
   node: Station
@@ -256,12 +336,53 @@ input StationUpdateInput {
   name: String
   description: String
   public: Boolean
+  founder: UserUpdateOneRequiredWithoutFoundedInput
+}
+
+input StationUpdateManyDataInput {
+  name: String
+  description: String
+  public: Boolean
 }
 
 input StationUpdateManyMutationInput {
   name: String
   description: String
   public: Boolean
+}
+
+input StationUpdateManyWithoutFounderInput {
+  create: [StationCreateWithoutFounderInput!]
+  delete: [StationWhereUniqueInput!]
+  connect: [StationWhereUniqueInput!]
+  set: [StationWhereUniqueInput!]
+  disconnect: [StationWhereUniqueInput!]
+  update: [StationUpdateWithWhereUniqueWithoutFounderInput!]
+  upsert: [StationUpsertWithWhereUniqueWithoutFounderInput!]
+  deleteMany: [StationScalarWhereInput!]
+  updateMany: [StationUpdateManyWithWhereNestedInput!]
+}
+
+input StationUpdateManyWithWhereNestedInput {
+  where: StationScalarWhereInput!
+  data: StationUpdateManyDataInput!
+}
+
+input StationUpdateWithoutFounderDataInput {
+  name: String
+  description: String
+  public: Boolean
+}
+
+input StationUpdateWithWhereUniqueWithoutFounderInput {
+  where: StationWhereUniqueInput!
+  data: StationUpdateWithoutFounderDataInput!
+}
+
+input StationUpsertWithWhereUniqueWithoutFounderInput {
+  where: StationWhereUniqueInput!
+  update: StationUpdateWithoutFounderDataInput!
+  create: StationCreateWithoutFounderInput!
 }
 
 input StationWhereInput {
@@ -309,6 +430,7 @@ input StationWhereInput {
   description_not_ends_with: String
   public: Boolean
   public_not: Boolean
+  founder: UserWhereInput
   createdAt: DateTime
   createdAt_not: DateTime
   createdAt_in: [DateTime!]
@@ -488,6 +610,7 @@ type User {
   name: String!
   password: String!
   email: String!
+  founded(where: StationWhereInput, orderBy: StationOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Station!]
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -499,6 +622,19 @@ type UserConnection {
 }
 
 input UserCreateInput {
+  id: ID
+  name: String!
+  password: String!
+  email: String!
+  founded: StationCreateManyWithoutFounderInput
+}
+
+input UserCreateOneWithoutFoundedInput {
+  create: UserCreateWithoutFoundedInput
+  connect: UserWhereUniqueInput
+}
+
+input UserCreateWithoutFoundedInput {
   id: ID
   name: String!
   password: String!
@@ -556,12 +692,31 @@ input UserUpdateInput {
   name: String
   password: String
   email: String
+  founded: StationUpdateManyWithoutFounderInput
 }
 
 input UserUpdateManyMutationInput {
   name: String
   password: String
   email: String
+}
+
+input UserUpdateOneRequiredWithoutFoundedInput {
+  create: UserCreateWithoutFoundedInput
+  update: UserUpdateWithoutFoundedDataInput
+  upsert: UserUpsertWithoutFoundedInput
+  connect: UserWhereUniqueInput
+}
+
+input UserUpdateWithoutFoundedDataInput {
+  name: String
+  password: String
+  email: String
+}
+
+input UserUpsertWithoutFoundedInput {
+  update: UserUpdateWithoutFoundedDataInput!
+  create: UserCreateWithoutFoundedInput!
 }
 
 input UserWhereInput {
@@ -621,6 +776,9 @@ input UserWhereInput {
   email_not_starts_with: String
   email_ends_with: String
   email_not_ends_with: String
+  founded_every: StationWhereInput
+  founded_some: StationWhereInput
+  founded_none: StationWhereInput
   createdAt: DateTime
   createdAt_not: DateTime
   createdAt_in: [DateTime!]

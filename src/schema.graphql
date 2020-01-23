@@ -3,6 +3,7 @@ type User {
   name: String!
   password: String!
   email: String!
+  founded: [Station!]!
   createdAt: String!
   updatedAt: String!
 }
@@ -12,6 +13,7 @@ type Station {
   name: String!
   description: String!
   public: Boolean!
+  founder: User!
   createdAt: String!
   updatedAt: String!
 }
@@ -40,6 +42,7 @@ type Mutation {
   signUp(data: CreateUserInput!): AuthPayload!
   signIn(data: LoginUserInput!): AuthPayload!
   updateUser(data: UpdateUserInput!): User!
+  createStation(data: CreateStationInput!): Station!
 }
 
 type AuthPayload {
@@ -62,4 +65,10 @@ input UpdateUserInput {
   name: String
   email: String
   password: String
+}
+
+input CreateStationInput {
+  name: String!
+  description: String!
+  public: Boolean!
 }

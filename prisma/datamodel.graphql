@@ -3,6 +3,7 @@ type User {
   name: String!
   password: String!
   email: String! @unique
+  founded: [Station!]! @relation(name: "StationToOwner", onDelete: SET_NULL)
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
 }
@@ -12,6 +13,7 @@ type Station {
   name: String!
   description: String!
   public: Boolean! @default(value: false)
+  founder: User! @relation(name: "StationToOwner", onDelete: SET_NULL)
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
 }

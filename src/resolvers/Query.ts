@@ -1,17 +1,20 @@
+import { Prisma, User, Station } from '../generated/prisma-client'
 export default {
-  users: (parent, args, { prisma }, info) => {
-    return prisma.users(null, info)
+  users: async (parent, args, { prisma }: { prisma: Prisma }, info) => {
+    const users: User[] = await prisma.users()
+    return users
   },
 
-  stations: (parent, args, { prisma }, info) => {
-    return prisma.stations(null, info)
+  stations: async (parent, args, { prisma }: { prisma: Prisma }, info) => {
+    const stations: Station[] = await prisma.stations()
+    return stations
   },
 
-  topics: (parent, args, { prisma }, info) => {
-    return prisma.topics(null, info)
+  topics: (parent, args, { prisma }: { prisma: Prisma }, info) => {
+    return prisma.topics()
   },
 
-  comments: (parent, args, { prisma }, info) => {
-    return prisma.comments(null, info)
+  comments: (parent, args, { prisma }: { prisma: Prisma }, info) => {
+    return prisma.comments()
   },
 }
