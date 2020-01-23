@@ -1,6 +1,7 @@
 type User {
   id: ID! @id
   name: String!
+  identifier: String @unique
   password: String!
   email: String! @unique
   founded: [Station!]! @relation(name: "StationToOwner", onDelete: SET_NULL)
@@ -11,6 +12,7 @@ type User {
 type Station {
   id: ID! @id
   name: String!
+  identifier: String @unique
   description: String!
   public: Boolean! @default(value: false)
   founder: User! @relation(name: "StationToOwner", onDelete: SET_NULL)

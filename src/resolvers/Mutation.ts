@@ -10,7 +10,7 @@ import {
 import hashPasswords from '../utils/hashPasswords'
 import generateToken from '../utils/generateToken'
 import getUserId from '../utils/getUserId'
-import { stationNameSanitizer } from '../utils/sanitizer'
+import sanitizer from '../utils/sanitizer'
 
 export default {
   signUp: async (
@@ -20,7 +20,15 @@ export default {
     info
   ) => {
     const password = await hashPasswords(data.password)
-    const user: User = await prisma.createUser({ ...data, password })
+    const name = sanitizer.alphanumeric(data.name)
+    const identifier = name.toLowerCase()
+
+    const user: User = await prisma.createUser({
+      ...data,
+      password,
+      name,
+      identifier,
+    })
     return {
       user,
       token: generateToken(user.id),
@@ -56,6 +64,15 @@ export default {
       data.password = await hashPasswords(data.password)
     }
 
+    if (typeof data.identifier === 'string') {
+      delete data.identifier
+    }
+
+    if (typeof data.name === 'string') {
+      data.name = sanitizer.alphanumeric(data.name)
+      data.identifier = data.name.toLowerCase()
+    }
+
     return prisma.updateUser({
       where: { id: userId },
       data,
@@ -69,9 +86,14 @@ export default {
     info
   ) => {
     const userId = getUserId(request)
-    data.name = stationNameSanitizer(data.name)
+
+    const name = sanitizer.alphanumeric(data.name)
+    const identifier = name.toLowerCase()
+
     const station: Station = await prisma.createStation({
       ...data,
+      name,
+      identifier,
       founder: {
         connect: {
           id: userId,

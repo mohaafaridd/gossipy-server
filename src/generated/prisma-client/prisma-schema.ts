@@ -186,6 +186,7 @@ type Query {
 type Station {
   id: ID!
   name: String!
+  identifier: String
   description: String!
   public: Boolean!
   founder: User!
@@ -202,6 +203,7 @@ type StationConnection {
 input StationCreateInput {
   id: ID
   name: String!
+  identifier: String
   description: String!
   public: Boolean
   founder: UserCreateOneWithoutFoundedInput!
@@ -215,6 +217,7 @@ input StationCreateManyWithoutFounderInput {
 input StationCreateWithoutFounderInput {
   id: ID
   name: String!
+  identifier: String
   description: String!
   public: Boolean
 }
@@ -229,6 +232,8 @@ enum StationOrderByInput {
   id_DESC
   name_ASC
   name_DESC
+  identifier_ASC
+  identifier_DESC
   description_ASC
   description_DESC
   public_ASC
@@ -242,6 +247,7 @@ enum StationOrderByInput {
 type StationPreviousValues {
   id: ID!
   name: String!
+  identifier: String
   description: String!
   public: Boolean!
   createdAt: DateTime!
@@ -277,6 +283,20 @@ input StationScalarWhereInput {
   name_not_starts_with: String
   name_ends_with: String
   name_not_ends_with: String
+  identifier: String
+  identifier_not: String
+  identifier_in: [String!]
+  identifier_not_in: [String!]
+  identifier_lt: String
+  identifier_lte: String
+  identifier_gt: String
+  identifier_gte: String
+  identifier_contains: String
+  identifier_not_contains: String
+  identifier_starts_with: String
+  identifier_not_starts_with: String
+  identifier_ends_with: String
+  identifier_not_ends_with: String
   description: String
   description_not: String
   description_in: [String!]
@@ -334,6 +354,7 @@ input StationSubscriptionWhereInput {
 
 input StationUpdateInput {
   name: String
+  identifier: String
   description: String
   public: Boolean
   founder: UserUpdateOneRequiredWithoutFoundedInput
@@ -341,12 +362,14 @@ input StationUpdateInput {
 
 input StationUpdateManyDataInput {
   name: String
+  identifier: String
   description: String
   public: Boolean
 }
 
 input StationUpdateManyMutationInput {
   name: String
+  identifier: String
   description: String
   public: Boolean
 }
@@ -370,6 +393,7 @@ input StationUpdateManyWithWhereNestedInput {
 
 input StationUpdateWithoutFounderDataInput {
   name: String
+  identifier: String
   description: String
   public: Boolean
 }
@@ -414,6 +438,20 @@ input StationWhereInput {
   name_not_starts_with: String
   name_ends_with: String
   name_not_ends_with: String
+  identifier: String
+  identifier_not: String
+  identifier_in: [String!]
+  identifier_not_in: [String!]
+  identifier_lt: String
+  identifier_lte: String
+  identifier_gt: String
+  identifier_gte: String
+  identifier_contains: String
+  identifier_not_contains: String
+  identifier_starts_with: String
+  identifier_not_starts_with: String
+  identifier_ends_with: String
+  identifier_not_ends_with: String
   description: String
   description_not: String
   description_in: [String!]
@@ -454,6 +492,7 @@ input StationWhereInput {
 
 input StationWhereUniqueInput {
   id: ID
+  identifier: String
 }
 
 type Subscription {
@@ -608,6 +647,7 @@ input TopicWhereUniqueInput {
 type User {
   id: ID!
   name: String!
+  identifier: String
   password: String!
   email: String!
   founded(where: StationWhereInput, orderBy: StationOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Station!]
@@ -624,6 +664,7 @@ type UserConnection {
 input UserCreateInput {
   id: ID
   name: String!
+  identifier: String
   password: String!
   email: String!
   founded: StationCreateManyWithoutFounderInput
@@ -637,6 +678,7 @@ input UserCreateOneWithoutFoundedInput {
 input UserCreateWithoutFoundedInput {
   id: ID
   name: String!
+  identifier: String
   password: String!
   email: String!
 }
@@ -651,6 +693,8 @@ enum UserOrderByInput {
   id_DESC
   name_ASC
   name_DESC
+  identifier_ASC
+  identifier_DESC
   password_ASC
   password_DESC
   email_ASC
@@ -664,6 +708,7 @@ enum UserOrderByInput {
 type UserPreviousValues {
   id: ID!
   name: String!
+  identifier: String
   password: String!
   email: String!
   createdAt: DateTime!
@@ -690,6 +735,7 @@ input UserSubscriptionWhereInput {
 
 input UserUpdateInput {
   name: String
+  identifier: String
   password: String
   email: String
   founded: StationUpdateManyWithoutFounderInput
@@ -697,6 +743,7 @@ input UserUpdateInput {
 
 input UserUpdateManyMutationInput {
   name: String
+  identifier: String
   password: String
   email: String
 }
@@ -710,6 +757,7 @@ input UserUpdateOneRequiredWithoutFoundedInput {
 
 input UserUpdateWithoutFoundedDataInput {
   name: String
+  identifier: String
   password: String
   email: String
 }
@@ -748,6 +796,20 @@ input UserWhereInput {
   name_not_starts_with: String
   name_ends_with: String
   name_not_ends_with: String
+  identifier: String
+  identifier_not: String
+  identifier_in: [String!]
+  identifier_not_in: [String!]
+  identifier_lt: String
+  identifier_lte: String
+  identifier_gt: String
+  identifier_gte: String
+  identifier_contains: String
+  identifier_not_contains: String
+  identifier_starts_with: String
+  identifier_not_starts_with: String
+  identifier_ends_with: String
+  identifier_not_ends_with: String
   password: String
   password_not: String
   password_in: [String!]
@@ -802,6 +864,7 @@ input UserWhereInput {
 
 input UserWhereUniqueInput {
   id: ID
+  identifier: String
   email: String
 }
 `

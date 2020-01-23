@@ -229,6 +229,8 @@ export type StationOrderByInput =
   | "id_DESC"
   | "name_ASC"
   | "name_DESC"
+  | "identifier_ASC"
+  | "identifier_DESC"
   | "description_ASC"
   | "description_DESC"
   | "public_ASC"
@@ -255,6 +257,8 @@ export type UserOrderByInput =
   | "id_DESC"
   | "name_ASC"
   | "name_DESC"
+  | "identifier_ASC"
+  | "identifier_DESC"
   | "password_ASC"
   | "password_DESC"
   | "email_ASC"
@@ -306,6 +310,7 @@ export interface CommentWhereInput {
 
 export type StationWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
+  identifier?: Maybe<String>;
 }>;
 
 export interface StationWhereInput {
@@ -337,6 +342,20 @@ export interface StationWhereInput {
   name_not_starts_with?: Maybe<String>;
   name_ends_with?: Maybe<String>;
   name_not_ends_with?: Maybe<String>;
+  identifier?: Maybe<String>;
+  identifier_not?: Maybe<String>;
+  identifier_in?: Maybe<String[] | String>;
+  identifier_not_in?: Maybe<String[] | String>;
+  identifier_lt?: Maybe<String>;
+  identifier_lte?: Maybe<String>;
+  identifier_gt?: Maybe<String>;
+  identifier_gte?: Maybe<String>;
+  identifier_contains?: Maybe<String>;
+  identifier_not_contains?: Maybe<String>;
+  identifier_starts_with?: Maybe<String>;
+  identifier_not_starts_with?: Maybe<String>;
+  identifier_ends_with?: Maybe<String>;
+  identifier_not_ends_with?: Maybe<String>;
   description?: Maybe<String>;
   description_not?: Maybe<String>;
   description_in?: Maybe<String[] | String>;
@@ -404,6 +423,20 @@ export interface UserWhereInput {
   name_not_starts_with?: Maybe<String>;
   name_ends_with?: Maybe<String>;
   name_not_ends_with?: Maybe<String>;
+  identifier?: Maybe<String>;
+  identifier_not?: Maybe<String>;
+  identifier_in?: Maybe<String[] | String>;
+  identifier_not_in?: Maybe<String[] | String>;
+  identifier_lt?: Maybe<String>;
+  identifier_lte?: Maybe<String>;
+  identifier_gt?: Maybe<String>;
+  identifier_gte?: Maybe<String>;
+  identifier_contains?: Maybe<String>;
+  identifier_not_contains?: Maybe<String>;
+  identifier_starts_with?: Maybe<String>;
+  identifier_not_starts_with?: Maybe<String>;
+  identifier_ends_with?: Maybe<String>;
+  identifier_not_ends_with?: Maybe<String>;
   password?: Maybe<String>;
   password_not?: Maybe<String>;
   password_in?: Maybe<String[] | String>;
@@ -526,6 +559,7 @@ export interface TopicWhereInput {
 
 export type UserWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
+  identifier?: Maybe<String>;
   email?: Maybe<String>;
 }>;
 
@@ -545,6 +579,7 @@ export interface CommentUpdateManyMutationInput {
 export interface StationCreateInput {
   id?: Maybe<ID_Input>;
   name: String;
+  identifier?: Maybe<String>;
   description: String;
   public?: Maybe<Boolean>;
   founder: UserCreateOneWithoutFoundedInput;
@@ -558,12 +593,14 @@ export interface UserCreateOneWithoutFoundedInput {
 export interface UserCreateWithoutFoundedInput {
   id?: Maybe<ID_Input>;
   name: String;
+  identifier?: Maybe<String>;
   password: String;
   email: String;
 }
 
 export interface StationUpdateInput {
   name?: Maybe<String>;
+  identifier?: Maybe<String>;
   description?: Maybe<String>;
   public?: Maybe<Boolean>;
   founder?: Maybe<UserUpdateOneRequiredWithoutFoundedInput>;
@@ -578,6 +615,7 @@ export interface UserUpdateOneRequiredWithoutFoundedInput {
 
 export interface UserUpdateWithoutFoundedDataInput {
   name?: Maybe<String>;
+  identifier?: Maybe<String>;
   password?: Maybe<String>;
   email?: Maybe<String>;
 }
@@ -589,6 +627,7 @@ export interface UserUpsertWithoutFoundedInput {
 
 export interface StationUpdateManyMutationInput {
   name?: Maybe<String>;
+  identifier?: Maybe<String>;
   description?: Maybe<String>;
   public?: Maybe<Boolean>;
 }
@@ -612,6 +651,7 @@ export interface TopicUpdateManyMutationInput {
 export interface UserCreateInput {
   id?: Maybe<ID_Input>;
   name: String;
+  identifier?: Maybe<String>;
   password: String;
   email: String;
   founded?: Maybe<StationCreateManyWithoutFounderInput>;
@@ -627,12 +667,14 @@ export interface StationCreateManyWithoutFounderInput {
 export interface StationCreateWithoutFounderInput {
   id?: Maybe<ID_Input>;
   name: String;
+  identifier?: Maybe<String>;
   description: String;
   public?: Maybe<Boolean>;
 }
 
 export interface UserUpdateInput {
   name?: Maybe<String>;
+  identifier?: Maybe<String>;
   password?: Maybe<String>;
   email?: Maybe<String>;
   founded?: Maybe<StationUpdateManyWithoutFounderInput>;
@@ -668,6 +710,7 @@ export interface StationUpdateWithWhereUniqueWithoutFounderInput {
 
 export interface StationUpdateWithoutFounderDataInput {
   name?: Maybe<String>;
+  identifier?: Maybe<String>;
   description?: Maybe<String>;
   public?: Maybe<Boolean>;
 }
@@ -707,6 +750,20 @@ export interface StationScalarWhereInput {
   name_not_starts_with?: Maybe<String>;
   name_ends_with?: Maybe<String>;
   name_not_ends_with?: Maybe<String>;
+  identifier?: Maybe<String>;
+  identifier_not?: Maybe<String>;
+  identifier_in?: Maybe<String[] | String>;
+  identifier_not_in?: Maybe<String[] | String>;
+  identifier_lt?: Maybe<String>;
+  identifier_lte?: Maybe<String>;
+  identifier_gt?: Maybe<String>;
+  identifier_gte?: Maybe<String>;
+  identifier_contains?: Maybe<String>;
+  identifier_not_contains?: Maybe<String>;
+  identifier_starts_with?: Maybe<String>;
+  identifier_not_starts_with?: Maybe<String>;
+  identifier_ends_with?: Maybe<String>;
+  identifier_not_ends_with?: Maybe<String>;
   description?: Maybe<String>;
   description_not?: Maybe<String>;
   description_in?: Maybe<String[] | String>;
@@ -751,12 +808,14 @@ export interface StationUpdateManyWithWhereNestedInput {
 
 export interface StationUpdateManyDataInput {
   name?: Maybe<String>;
+  identifier?: Maybe<String>;
   description?: Maybe<String>;
   public?: Maybe<Boolean>;
 }
 
 export interface UserUpdateManyMutationInput {
   name?: Maybe<String>;
+  identifier?: Maybe<String>;
   password?: Maybe<String>;
   email?: Maybe<String>;
 }
@@ -913,6 +972,7 @@ export interface AggregateCommentSubscription
 export interface Station {
   id: ID_Output;
   name: String;
+  identifier?: String;
   description: String;
   public: Boolean;
   createdAt: DateTimeOutput;
@@ -922,6 +982,7 @@ export interface Station {
 export interface StationPromise extends Promise<Station>, Fragmentable {
   id: () => Promise<ID_Output>;
   name: () => Promise<String>;
+  identifier: () => Promise<String>;
   description: () => Promise<String>;
   public: () => Promise<Boolean>;
   founder: <T = UserPromise>() => T;
@@ -934,6 +995,7 @@ export interface StationSubscription
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   name: () => Promise<AsyncIterator<String>>;
+  identifier: () => Promise<AsyncIterator<String>>;
   description: () => Promise<AsyncIterator<String>>;
   public: () => Promise<AsyncIterator<Boolean>>;
   founder: <T = UserSubscription>() => T;
@@ -946,6 +1008,7 @@ export interface StationNullablePromise
     Fragmentable {
   id: () => Promise<ID_Output>;
   name: () => Promise<String>;
+  identifier: () => Promise<String>;
   description: () => Promise<String>;
   public: () => Promise<Boolean>;
   founder: <T = UserPromise>() => T;
@@ -956,6 +1019,7 @@ export interface StationNullablePromise
 export interface User {
   id: ID_Output;
   name: String;
+  identifier?: String;
   password: String;
   email: String;
   createdAt: DateTimeOutput;
@@ -965,6 +1029,7 @@ export interface User {
 export interface UserPromise extends Promise<User>, Fragmentable {
   id: () => Promise<ID_Output>;
   name: () => Promise<String>;
+  identifier: () => Promise<String>;
   password: () => Promise<String>;
   email: () => Promise<String>;
   founded: <T = FragmentableArray<Station>>(args?: {
@@ -985,6 +1050,7 @@ export interface UserSubscription
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   name: () => Promise<AsyncIterator<String>>;
+  identifier: () => Promise<AsyncIterator<String>>;
   password: () => Promise<AsyncIterator<String>>;
   email: () => Promise<AsyncIterator<String>>;
   founded: <T = Promise<AsyncIterator<StationSubscription>>>(args?: {
@@ -1005,6 +1071,7 @@ export interface UserNullablePromise
     Fragmentable {
   id: () => Promise<ID_Output>;
   name: () => Promise<String>;
+  identifier: () => Promise<String>;
   password: () => Promise<String>;
   email: () => Promise<String>;
   founded: <T = FragmentableArray<Station>>(args?: {
@@ -1306,6 +1373,7 @@ export interface StationSubscriptionPayloadSubscription
 export interface StationPreviousValues {
   id: ID_Output;
   name: String;
+  identifier?: String;
   description: String;
   public: Boolean;
   createdAt: DateTimeOutput;
@@ -1317,6 +1385,7 @@ export interface StationPreviousValuesPromise
     Fragmentable {
   id: () => Promise<ID_Output>;
   name: () => Promise<String>;
+  identifier: () => Promise<String>;
   description: () => Promise<String>;
   public: () => Promise<Boolean>;
   createdAt: () => Promise<DateTimeOutput>;
@@ -1328,6 +1397,7 @@ export interface StationPreviousValuesSubscription
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   name: () => Promise<AsyncIterator<String>>;
+  identifier: () => Promise<AsyncIterator<String>>;
   description: () => Promise<AsyncIterator<String>>;
   public: () => Promise<AsyncIterator<Boolean>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
@@ -1415,6 +1485,7 @@ export interface UserSubscriptionPayloadSubscription
 export interface UserPreviousValues {
   id: ID_Output;
   name: String;
+  identifier?: String;
   password: String;
   email: String;
   createdAt: DateTimeOutput;
@@ -1426,6 +1497,7 @@ export interface UserPreviousValuesPromise
     Fragmentable {
   id: () => Promise<ID_Output>;
   name: () => Promise<String>;
+  identifier: () => Promise<String>;
   password: () => Promise<String>;
   email: () => Promise<String>;
   createdAt: () => Promise<DateTimeOutput>;
@@ -1437,6 +1509,7 @@ export interface UserPreviousValuesSubscription
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   name: () => Promise<AsyncIterator<String>>;
+  identifier: () => Promise<AsyncIterator<String>>;
   password: () => Promise<AsyncIterator<String>>;
   email: () => Promise<AsyncIterator<String>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
