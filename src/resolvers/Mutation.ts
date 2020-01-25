@@ -15,6 +15,9 @@ import getUserId from '../utils/getUserId'
 import sanitizer from '../utils/sanitizer'
 
 export default {
+  /**
+   * This mutation is dedicated to sign a user up and return his information and an available token
+   */
   signUp: async (
     parent,
     { data }: { data: UserCreateInput },
@@ -37,6 +40,9 @@ export default {
     }
   },
 
+  /**
+   * This mutation is dedicated to sign user in and return his information and an available token
+   */
   signIn: async (
     parent,
     { data }: { data: { email: string; password: string } },
@@ -55,6 +61,9 @@ export default {
     }
   },
 
+  /**
+   * This mutation is dedicated to enable user to update his own data (other than identifier)
+   */
   updateUser: async (
     parent,
     { data }: { data: UserUpdateInput },
@@ -81,6 +90,9 @@ export default {
     })
   },
 
+  /**
+   * This mutation is dedicated to enable authenticated users to create their own stations
+   */
   createStation: async (
     parent,
     { data }: { data: StationCreateInput },
@@ -102,7 +114,7 @@ export default {
               id: userId,
             },
           },
-          role: 'ADMIN',
+          role: 'FOUNDER',
         },
       },
     })
@@ -110,6 +122,9 @@ export default {
     return station
   },
 
+  /**
+   * This mutation is dedicated to modify station's description and public flag
+   */
   updateStation: async (
     parent,
     { id, data }: { id: string; data: StationUpdateInput },
@@ -133,6 +148,31 @@ export default {
       data,
     })
 
+    return station
+  },
+
+  /**
+   * This mutation is dedicated to enable the station founder to delete it
+   */
+  deleteStation: async (
+    parent,
+    { id }: { id: string },
+    { prisma, request }: { prisma: Prisma; request: any }
+  ) => {
+    const userId = getUserId(request)
+
+    const isAuthorized = await prisma.$exists.membership({
+      AND: {
+        user: {
+          id: userId,
+        },
+        role_in: ['FOUNDER'],
+      },
+    })
+
+    if (!isAuthorized) throw new Error('Authorization Required')
+
+    const station = await prisma.deleteStation({ id })
     return station
   },
 }

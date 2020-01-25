@@ -43,6 +43,7 @@ type Comment {
 type Query {
   users: [User!]!
   stations: [Station!]!
+  memberships: [Membership!]!
   topics: [Topic!]!
   comments: [Comment!]!
 }
@@ -53,6 +54,7 @@ type Mutation {
   updateUser(data: UpdateUserInput!): User!
   createStation(data: CreateStationInput!): Station!
   updateStation(id: String!, data: UpdateStationInput!): Station!
+  deleteStation(id: String!): Station!
 }
 
 type AuthPayload {
