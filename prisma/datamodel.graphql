@@ -4,7 +4,8 @@ type User {
   identifier: String @unique
   password: String!
   email: String! @unique
-  founded: [Station!]! @relation(name: "StationToOwner", onDelete: SET_NULL)
+  memberships: [Membership!]!
+    @relation(name: "UserToMembership", onDelete: CASCADE)
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
 }
@@ -15,9 +16,17 @@ type Station {
   identifier: String @unique
   description: String!
   public: Boolean! @default(value: false)
-  founder: User! @relation(name: "StationToOwner", onDelete: SET_NULL)
+  members: [Membership!]!
+    @relation(name: "StationToMembership", onDelete: CASCADE)
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
+}
+
+type Membership {
+  id: ID! @id
+  user: User! @relation(name: "UserToMembership", onDelete: SET_NULL)
+  station: Station! @relation(name: "StationToMembership", onDelete: SET_NULL)
+  role: Role!
 }
 
 type Topic {
@@ -31,4 +40,11 @@ type Topic {
 type Comment {
   id: ID! @id
   content: String!
+}
+
+enum Role {
+  FOUNDER
+  ADMIN
+  MODERATOR
+  MEMBER
 }

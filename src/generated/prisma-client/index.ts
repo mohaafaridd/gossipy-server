@@ -17,6 +17,7 @@ export type Maybe<T> = T | undefined | null;
 
 export interface Exists {
   comment: (where?: CommentWhereInput) => Promise<boolean>;
+  membership: (where?: MembershipWhereInput) => Promise<boolean>;
   station: (where?: StationWhereInput) => Promise<boolean>;
   topic: (where?: TopicWhereInput) => Promise<boolean>;
   user: (where?: UserWhereInput) => Promise<boolean>;
@@ -60,6 +61,25 @@ export interface Prisma {
     first?: Int;
     last?: Int;
   }) => CommentConnectionPromise;
+  membership: (where: MembershipWhereUniqueInput) => MembershipNullablePromise;
+  memberships: (args?: {
+    where?: MembershipWhereInput;
+    orderBy?: MembershipOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => FragmentableArray<Membership>;
+  membershipsConnection: (args?: {
+    where?: MembershipWhereInput;
+    orderBy?: MembershipOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => MembershipConnectionPromise;
   station: (where: StationWhereUniqueInput) => StationNullablePromise;
   stations: (args?: {
     where?: StationWhereInput;
@@ -139,6 +159,22 @@ export interface Prisma {
   }) => CommentPromise;
   deleteComment: (where: CommentWhereUniqueInput) => CommentPromise;
   deleteManyComments: (where?: CommentWhereInput) => BatchPayloadPromise;
+  createMembership: (data: MembershipCreateInput) => MembershipPromise;
+  updateMembership: (args: {
+    data: MembershipUpdateInput;
+    where: MembershipWhereUniqueInput;
+  }) => MembershipPromise;
+  updateManyMemberships: (args: {
+    data: MembershipUpdateManyMutationInput;
+    where?: MembershipWhereInput;
+  }) => BatchPayloadPromise;
+  upsertMembership: (args: {
+    where: MembershipWhereUniqueInput;
+    create: MembershipCreateInput;
+    update: MembershipUpdateInput;
+  }) => MembershipPromise;
+  deleteMembership: (where: MembershipWhereUniqueInput) => MembershipPromise;
+  deleteManyMemberships: (where?: MembershipWhereInput) => BatchPayloadPromise;
   createStation: (data: StationCreateInput) => StationPromise;
   updateStation: (args: {
     data: StationUpdateInput;
@@ -199,6 +235,9 @@ export interface Subscription {
   comment: (
     where?: CommentSubscriptionWhereInput
   ) => CommentSubscriptionPayloadSubscription;
+  membership: (
+    where?: MembershipSubscriptionWhereInput
+  ) => MembershipSubscriptionPayloadSubscription;
   station: (
     where?: StationSubscriptionWhereInput
   ) => StationSubscriptionPayloadSubscription;
@@ -223,6 +262,14 @@ export type CommentOrderByInput =
   | "id_DESC"
   | "content_ASC"
   | "content_DESC";
+
+export type Role = "FOUNDER" | "ADMIN" | "MODERATOR" | "MEMBER";
+
+export type MembershipOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "role_ASC"
+  | "role_DESC";
 
 export type StationOrderByInput =
   | "id_ASC"
@@ -308,12 +355,11 @@ export interface CommentWhereInput {
   NOT?: Maybe<CommentWhereInput[] | CommentWhereInput>;
 }
 
-export type StationWhereUniqueInput = AtLeastOne<{
+export type MembershipWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
-  identifier?: Maybe<String>;
 }>;
 
-export interface StationWhereInput {
+export interface MembershipWhereInput {
   id?: Maybe<ID_Input>;
   id_not?: Maybe<ID_Input>;
   id_in?: Maybe<ID_Input[] | ID_Input>;
@@ -328,70 +374,15 @@ export interface StationWhereInput {
   id_not_starts_with?: Maybe<ID_Input>;
   id_ends_with?: Maybe<ID_Input>;
   id_not_ends_with?: Maybe<ID_Input>;
-  name?: Maybe<String>;
-  name_not?: Maybe<String>;
-  name_in?: Maybe<String[] | String>;
-  name_not_in?: Maybe<String[] | String>;
-  name_lt?: Maybe<String>;
-  name_lte?: Maybe<String>;
-  name_gt?: Maybe<String>;
-  name_gte?: Maybe<String>;
-  name_contains?: Maybe<String>;
-  name_not_contains?: Maybe<String>;
-  name_starts_with?: Maybe<String>;
-  name_not_starts_with?: Maybe<String>;
-  name_ends_with?: Maybe<String>;
-  name_not_ends_with?: Maybe<String>;
-  identifier?: Maybe<String>;
-  identifier_not?: Maybe<String>;
-  identifier_in?: Maybe<String[] | String>;
-  identifier_not_in?: Maybe<String[] | String>;
-  identifier_lt?: Maybe<String>;
-  identifier_lte?: Maybe<String>;
-  identifier_gt?: Maybe<String>;
-  identifier_gte?: Maybe<String>;
-  identifier_contains?: Maybe<String>;
-  identifier_not_contains?: Maybe<String>;
-  identifier_starts_with?: Maybe<String>;
-  identifier_not_starts_with?: Maybe<String>;
-  identifier_ends_with?: Maybe<String>;
-  identifier_not_ends_with?: Maybe<String>;
-  description?: Maybe<String>;
-  description_not?: Maybe<String>;
-  description_in?: Maybe<String[] | String>;
-  description_not_in?: Maybe<String[] | String>;
-  description_lt?: Maybe<String>;
-  description_lte?: Maybe<String>;
-  description_gt?: Maybe<String>;
-  description_gte?: Maybe<String>;
-  description_contains?: Maybe<String>;
-  description_not_contains?: Maybe<String>;
-  description_starts_with?: Maybe<String>;
-  description_not_starts_with?: Maybe<String>;
-  description_ends_with?: Maybe<String>;
-  description_not_ends_with?: Maybe<String>;
-  public?: Maybe<Boolean>;
-  public_not?: Maybe<Boolean>;
-  founder?: Maybe<UserWhereInput>;
-  createdAt?: Maybe<DateTimeInput>;
-  createdAt_not?: Maybe<DateTimeInput>;
-  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_lt?: Maybe<DateTimeInput>;
-  createdAt_lte?: Maybe<DateTimeInput>;
-  createdAt_gt?: Maybe<DateTimeInput>;
-  createdAt_gte?: Maybe<DateTimeInput>;
-  updatedAt?: Maybe<DateTimeInput>;
-  updatedAt_not?: Maybe<DateTimeInput>;
-  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  updatedAt_lt?: Maybe<DateTimeInput>;
-  updatedAt_lte?: Maybe<DateTimeInput>;
-  updatedAt_gt?: Maybe<DateTimeInput>;
-  updatedAt_gte?: Maybe<DateTimeInput>;
-  AND?: Maybe<StationWhereInput[] | StationWhereInput>;
-  OR?: Maybe<StationWhereInput[] | StationWhereInput>;
-  NOT?: Maybe<StationWhereInput[] | StationWhereInput>;
+  user?: Maybe<UserWhereInput>;
+  station?: Maybe<StationWhereInput>;
+  role?: Maybe<Role>;
+  role_not?: Maybe<Role>;
+  role_in?: Maybe<Role[] | Role>;
+  role_not_in?: Maybe<Role[] | Role>;
+  AND?: Maybe<MembershipWhereInput[] | MembershipWhereInput>;
+  OR?: Maybe<MembershipWhereInput[] | MembershipWhereInput>;
+  NOT?: Maybe<MembershipWhereInput[] | MembershipWhereInput>;
 }
 
 export interface UserWhereInput {
@@ -465,9 +456,9 @@ export interface UserWhereInput {
   email_not_starts_with?: Maybe<String>;
   email_ends_with?: Maybe<String>;
   email_not_ends_with?: Maybe<String>;
-  founded_every?: Maybe<StationWhereInput>;
-  founded_some?: Maybe<StationWhereInput>;
-  founded_none?: Maybe<StationWhereInput>;
+  memberships_every?: Maybe<MembershipWhereInput>;
+  memberships_some?: Maybe<MembershipWhereInput>;
+  memberships_none?: Maybe<MembershipWhereInput>;
   createdAt?: Maybe<DateTimeInput>;
   createdAt_not?: Maybe<DateTimeInput>;
   createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
@@ -488,6 +479,94 @@ export interface UserWhereInput {
   OR?: Maybe<UserWhereInput[] | UserWhereInput>;
   NOT?: Maybe<UserWhereInput[] | UserWhereInput>;
 }
+
+export interface StationWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  name?: Maybe<String>;
+  name_not?: Maybe<String>;
+  name_in?: Maybe<String[] | String>;
+  name_not_in?: Maybe<String[] | String>;
+  name_lt?: Maybe<String>;
+  name_lte?: Maybe<String>;
+  name_gt?: Maybe<String>;
+  name_gte?: Maybe<String>;
+  name_contains?: Maybe<String>;
+  name_not_contains?: Maybe<String>;
+  name_starts_with?: Maybe<String>;
+  name_not_starts_with?: Maybe<String>;
+  name_ends_with?: Maybe<String>;
+  name_not_ends_with?: Maybe<String>;
+  identifier?: Maybe<String>;
+  identifier_not?: Maybe<String>;
+  identifier_in?: Maybe<String[] | String>;
+  identifier_not_in?: Maybe<String[] | String>;
+  identifier_lt?: Maybe<String>;
+  identifier_lte?: Maybe<String>;
+  identifier_gt?: Maybe<String>;
+  identifier_gte?: Maybe<String>;
+  identifier_contains?: Maybe<String>;
+  identifier_not_contains?: Maybe<String>;
+  identifier_starts_with?: Maybe<String>;
+  identifier_not_starts_with?: Maybe<String>;
+  identifier_ends_with?: Maybe<String>;
+  identifier_not_ends_with?: Maybe<String>;
+  description?: Maybe<String>;
+  description_not?: Maybe<String>;
+  description_in?: Maybe<String[] | String>;
+  description_not_in?: Maybe<String[] | String>;
+  description_lt?: Maybe<String>;
+  description_lte?: Maybe<String>;
+  description_gt?: Maybe<String>;
+  description_gte?: Maybe<String>;
+  description_contains?: Maybe<String>;
+  description_not_contains?: Maybe<String>;
+  description_starts_with?: Maybe<String>;
+  description_not_starts_with?: Maybe<String>;
+  description_ends_with?: Maybe<String>;
+  description_not_ends_with?: Maybe<String>;
+  public?: Maybe<Boolean>;
+  public_not?: Maybe<Boolean>;
+  members_every?: Maybe<MembershipWhereInput>;
+  members_some?: Maybe<MembershipWhereInput>;
+  members_none?: Maybe<MembershipWhereInput>;
+  createdAt?: Maybe<DateTimeInput>;
+  createdAt_not?: Maybe<DateTimeInput>;
+  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_lt?: Maybe<DateTimeInput>;
+  createdAt_lte?: Maybe<DateTimeInput>;
+  createdAt_gt?: Maybe<DateTimeInput>;
+  createdAt_gte?: Maybe<DateTimeInput>;
+  updatedAt?: Maybe<DateTimeInput>;
+  updatedAt_not?: Maybe<DateTimeInput>;
+  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_lt?: Maybe<DateTimeInput>;
+  updatedAt_lte?: Maybe<DateTimeInput>;
+  updatedAt_gt?: Maybe<DateTimeInput>;
+  updatedAt_gte?: Maybe<DateTimeInput>;
+  AND?: Maybe<StationWhereInput[] | StationWhereInput>;
+  OR?: Maybe<StationWhereInput[] | StationWhereInput>;
+  NOT?: Maybe<StationWhereInput[] | StationWhereInput>;
+}
+
+export type StationWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+  identifier?: Maybe<String>;
+}>;
 
 export type TopicWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
@@ -576,21 +655,19 @@ export interface CommentUpdateManyMutationInput {
   content?: Maybe<String>;
 }
 
-export interface StationCreateInput {
+export interface MembershipCreateInput {
   id?: Maybe<ID_Input>;
-  name: String;
-  identifier?: Maybe<String>;
-  description: String;
-  public?: Maybe<Boolean>;
-  founder: UserCreateOneWithoutFoundedInput;
+  user: UserCreateOneWithoutMembershipsInput;
+  station: StationCreateOneWithoutMembersInput;
+  role: Role;
 }
 
-export interface UserCreateOneWithoutFoundedInput {
-  create?: Maybe<UserCreateWithoutFoundedInput>;
+export interface UserCreateOneWithoutMembershipsInput {
+  create?: Maybe<UserCreateWithoutMembershipsInput>;
   connect?: Maybe<UserWhereUniqueInput>;
 }
 
-export interface UserCreateWithoutFoundedInput {
+export interface UserCreateWithoutMembershipsInput {
   id?: Maybe<ID_Input>;
   name: String;
   identifier?: Maybe<String>;
@@ -598,31 +675,167 @@ export interface UserCreateWithoutFoundedInput {
   email: String;
 }
 
-export interface StationUpdateInput {
-  name?: Maybe<String>;
-  identifier?: Maybe<String>;
-  description?: Maybe<String>;
-  public?: Maybe<Boolean>;
-  founder?: Maybe<UserUpdateOneRequiredWithoutFoundedInput>;
+export interface StationCreateOneWithoutMembersInput {
+  create?: Maybe<StationCreateWithoutMembersInput>;
+  connect?: Maybe<StationWhereUniqueInput>;
 }
 
-export interface UserUpdateOneRequiredWithoutFoundedInput {
-  create?: Maybe<UserCreateWithoutFoundedInput>;
-  update?: Maybe<UserUpdateWithoutFoundedDataInput>;
-  upsert?: Maybe<UserUpsertWithoutFoundedInput>;
+export interface StationCreateWithoutMembersInput {
+  id?: Maybe<ID_Input>;
+  name: String;
+  identifier?: Maybe<String>;
+  description: String;
+  public?: Maybe<Boolean>;
+}
+
+export interface MembershipUpdateInput {
+  user?: Maybe<UserUpdateOneRequiredWithoutMembershipsInput>;
+  station?: Maybe<StationUpdateOneRequiredWithoutMembersInput>;
+  role?: Maybe<Role>;
+}
+
+export interface UserUpdateOneRequiredWithoutMembershipsInput {
+  create?: Maybe<UserCreateWithoutMembershipsInput>;
+  update?: Maybe<UserUpdateWithoutMembershipsDataInput>;
+  upsert?: Maybe<UserUpsertWithoutMembershipsInput>;
   connect?: Maybe<UserWhereUniqueInput>;
 }
 
-export interface UserUpdateWithoutFoundedDataInput {
+export interface UserUpdateWithoutMembershipsDataInput {
   name?: Maybe<String>;
   identifier?: Maybe<String>;
   password?: Maybe<String>;
   email?: Maybe<String>;
 }
 
-export interface UserUpsertWithoutFoundedInput {
-  update: UserUpdateWithoutFoundedDataInput;
-  create: UserCreateWithoutFoundedInput;
+export interface UserUpsertWithoutMembershipsInput {
+  update: UserUpdateWithoutMembershipsDataInput;
+  create: UserCreateWithoutMembershipsInput;
+}
+
+export interface StationUpdateOneRequiredWithoutMembersInput {
+  create?: Maybe<StationCreateWithoutMembersInput>;
+  update?: Maybe<StationUpdateWithoutMembersDataInput>;
+  upsert?: Maybe<StationUpsertWithoutMembersInput>;
+  connect?: Maybe<StationWhereUniqueInput>;
+}
+
+export interface StationUpdateWithoutMembersDataInput {
+  name?: Maybe<String>;
+  identifier?: Maybe<String>;
+  description?: Maybe<String>;
+  public?: Maybe<Boolean>;
+}
+
+export interface StationUpsertWithoutMembersInput {
+  update: StationUpdateWithoutMembersDataInput;
+  create: StationCreateWithoutMembersInput;
+}
+
+export interface MembershipUpdateManyMutationInput {
+  role?: Maybe<Role>;
+}
+
+export interface StationCreateInput {
+  id?: Maybe<ID_Input>;
+  name: String;
+  identifier?: Maybe<String>;
+  description: String;
+  public?: Maybe<Boolean>;
+  members?: Maybe<MembershipCreateManyWithoutStationInput>;
+}
+
+export interface MembershipCreateManyWithoutStationInput {
+  create?: Maybe<
+    MembershipCreateWithoutStationInput[] | MembershipCreateWithoutStationInput
+  >;
+  connect?: Maybe<MembershipWhereUniqueInput[] | MembershipWhereUniqueInput>;
+}
+
+export interface MembershipCreateWithoutStationInput {
+  id?: Maybe<ID_Input>;
+  user: UserCreateOneWithoutMembershipsInput;
+  role: Role;
+}
+
+export interface StationUpdateInput {
+  name?: Maybe<String>;
+  identifier?: Maybe<String>;
+  description?: Maybe<String>;
+  public?: Maybe<Boolean>;
+  members?: Maybe<MembershipUpdateManyWithoutStationInput>;
+}
+
+export interface MembershipUpdateManyWithoutStationInput {
+  create?: Maybe<
+    MembershipCreateWithoutStationInput[] | MembershipCreateWithoutStationInput
+  >;
+  delete?: Maybe<MembershipWhereUniqueInput[] | MembershipWhereUniqueInput>;
+  connect?: Maybe<MembershipWhereUniqueInput[] | MembershipWhereUniqueInput>;
+  set?: Maybe<MembershipWhereUniqueInput[] | MembershipWhereUniqueInput>;
+  disconnect?: Maybe<MembershipWhereUniqueInput[] | MembershipWhereUniqueInput>;
+  update?: Maybe<
+    | MembershipUpdateWithWhereUniqueWithoutStationInput[]
+    | MembershipUpdateWithWhereUniqueWithoutStationInput
+  >;
+  upsert?: Maybe<
+    | MembershipUpsertWithWhereUniqueWithoutStationInput[]
+    | MembershipUpsertWithWhereUniqueWithoutStationInput
+  >;
+  deleteMany?: Maybe<MembershipScalarWhereInput[] | MembershipScalarWhereInput>;
+  updateMany?: Maybe<
+    | MembershipUpdateManyWithWhereNestedInput[]
+    | MembershipUpdateManyWithWhereNestedInput
+  >;
+}
+
+export interface MembershipUpdateWithWhereUniqueWithoutStationInput {
+  where: MembershipWhereUniqueInput;
+  data: MembershipUpdateWithoutStationDataInput;
+}
+
+export interface MembershipUpdateWithoutStationDataInput {
+  user?: Maybe<UserUpdateOneRequiredWithoutMembershipsInput>;
+  role?: Maybe<Role>;
+}
+
+export interface MembershipUpsertWithWhereUniqueWithoutStationInput {
+  where: MembershipWhereUniqueInput;
+  update: MembershipUpdateWithoutStationDataInput;
+  create: MembershipCreateWithoutStationInput;
+}
+
+export interface MembershipScalarWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  role?: Maybe<Role>;
+  role_not?: Maybe<Role>;
+  role_in?: Maybe<Role[] | Role>;
+  role_not_in?: Maybe<Role[] | Role>;
+  AND?: Maybe<MembershipScalarWhereInput[] | MembershipScalarWhereInput>;
+  OR?: Maybe<MembershipScalarWhereInput[] | MembershipScalarWhereInput>;
+  NOT?: Maybe<MembershipScalarWhereInput[] | MembershipScalarWhereInput>;
+}
+
+export interface MembershipUpdateManyWithWhereNestedInput {
+  where: MembershipScalarWhereInput;
+  data: MembershipUpdateManyDataInput;
+}
+
+export interface MembershipUpdateManyDataInput {
+  role?: Maybe<Role>;
 }
 
 export interface StationUpdateManyMutationInput {
@@ -654,22 +867,20 @@ export interface UserCreateInput {
   identifier?: Maybe<String>;
   password: String;
   email: String;
-  founded?: Maybe<StationCreateManyWithoutFounderInput>;
+  memberships?: Maybe<MembershipCreateManyWithoutUserInput>;
 }
 
-export interface StationCreateManyWithoutFounderInput {
+export interface MembershipCreateManyWithoutUserInput {
   create?: Maybe<
-    StationCreateWithoutFounderInput[] | StationCreateWithoutFounderInput
+    MembershipCreateWithoutUserInput[] | MembershipCreateWithoutUserInput
   >;
-  connect?: Maybe<StationWhereUniqueInput[] | StationWhereUniqueInput>;
+  connect?: Maybe<MembershipWhereUniqueInput[] | MembershipWhereUniqueInput>;
 }
 
-export interface StationCreateWithoutFounderInput {
+export interface MembershipCreateWithoutUserInput {
   id?: Maybe<ID_Input>;
-  name: String;
-  identifier?: Maybe<String>;
-  description: String;
-  public?: Maybe<Boolean>;
+  station: StationCreateOneWithoutMembersInput;
+  role: Role;
 }
 
 export interface UserUpdateInput {
@@ -677,140 +888,46 @@ export interface UserUpdateInput {
   identifier?: Maybe<String>;
   password?: Maybe<String>;
   email?: Maybe<String>;
-  founded?: Maybe<StationUpdateManyWithoutFounderInput>;
+  memberships?: Maybe<MembershipUpdateManyWithoutUserInput>;
 }
 
-export interface StationUpdateManyWithoutFounderInput {
+export interface MembershipUpdateManyWithoutUserInput {
   create?: Maybe<
-    StationCreateWithoutFounderInput[] | StationCreateWithoutFounderInput
+    MembershipCreateWithoutUserInput[] | MembershipCreateWithoutUserInput
   >;
-  delete?: Maybe<StationWhereUniqueInput[] | StationWhereUniqueInput>;
-  connect?: Maybe<StationWhereUniqueInput[] | StationWhereUniqueInput>;
-  set?: Maybe<StationWhereUniqueInput[] | StationWhereUniqueInput>;
-  disconnect?: Maybe<StationWhereUniqueInput[] | StationWhereUniqueInput>;
+  delete?: Maybe<MembershipWhereUniqueInput[] | MembershipWhereUniqueInput>;
+  connect?: Maybe<MembershipWhereUniqueInput[] | MembershipWhereUniqueInput>;
+  set?: Maybe<MembershipWhereUniqueInput[] | MembershipWhereUniqueInput>;
+  disconnect?: Maybe<MembershipWhereUniqueInput[] | MembershipWhereUniqueInput>;
   update?: Maybe<
-    | StationUpdateWithWhereUniqueWithoutFounderInput[]
-    | StationUpdateWithWhereUniqueWithoutFounderInput
+    | MembershipUpdateWithWhereUniqueWithoutUserInput[]
+    | MembershipUpdateWithWhereUniqueWithoutUserInput
   >;
   upsert?: Maybe<
-    | StationUpsertWithWhereUniqueWithoutFounderInput[]
-    | StationUpsertWithWhereUniqueWithoutFounderInput
+    | MembershipUpsertWithWhereUniqueWithoutUserInput[]
+    | MembershipUpsertWithWhereUniqueWithoutUserInput
   >;
-  deleteMany?: Maybe<StationScalarWhereInput[] | StationScalarWhereInput>;
+  deleteMany?: Maybe<MembershipScalarWhereInput[] | MembershipScalarWhereInput>;
   updateMany?: Maybe<
-    | StationUpdateManyWithWhereNestedInput[]
-    | StationUpdateManyWithWhereNestedInput
+    | MembershipUpdateManyWithWhereNestedInput[]
+    | MembershipUpdateManyWithWhereNestedInput
   >;
 }
 
-export interface StationUpdateWithWhereUniqueWithoutFounderInput {
-  where: StationWhereUniqueInput;
-  data: StationUpdateWithoutFounderDataInput;
+export interface MembershipUpdateWithWhereUniqueWithoutUserInput {
+  where: MembershipWhereUniqueInput;
+  data: MembershipUpdateWithoutUserDataInput;
 }
 
-export interface StationUpdateWithoutFounderDataInput {
-  name?: Maybe<String>;
-  identifier?: Maybe<String>;
-  description?: Maybe<String>;
-  public?: Maybe<Boolean>;
+export interface MembershipUpdateWithoutUserDataInput {
+  station?: Maybe<StationUpdateOneRequiredWithoutMembersInput>;
+  role?: Maybe<Role>;
 }
 
-export interface StationUpsertWithWhereUniqueWithoutFounderInput {
-  where: StationWhereUniqueInput;
-  update: StationUpdateWithoutFounderDataInput;
-  create: StationCreateWithoutFounderInput;
-}
-
-export interface StationScalarWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  name?: Maybe<String>;
-  name_not?: Maybe<String>;
-  name_in?: Maybe<String[] | String>;
-  name_not_in?: Maybe<String[] | String>;
-  name_lt?: Maybe<String>;
-  name_lte?: Maybe<String>;
-  name_gt?: Maybe<String>;
-  name_gte?: Maybe<String>;
-  name_contains?: Maybe<String>;
-  name_not_contains?: Maybe<String>;
-  name_starts_with?: Maybe<String>;
-  name_not_starts_with?: Maybe<String>;
-  name_ends_with?: Maybe<String>;
-  name_not_ends_with?: Maybe<String>;
-  identifier?: Maybe<String>;
-  identifier_not?: Maybe<String>;
-  identifier_in?: Maybe<String[] | String>;
-  identifier_not_in?: Maybe<String[] | String>;
-  identifier_lt?: Maybe<String>;
-  identifier_lte?: Maybe<String>;
-  identifier_gt?: Maybe<String>;
-  identifier_gte?: Maybe<String>;
-  identifier_contains?: Maybe<String>;
-  identifier_not_contains?: Maybe<String>;
-  identifier_starts_with?: Maybe<String>;
-  identifier_not_starts_with?: Maybe<String>;
-  identifier_ends_with?: Maybe<String>;
-  identifier_not_ends_with?: Maybe<String>;
-  description?: Maybe<String>;
-  description_not?: Maybe<String>;
-  description_in?: Maybe<String[] | String>;
-  description_not_in?: Maybe<String[] | String>;
-  description_lt?: Maybe<String>;
-  description_lte?: Maybe<String>;
-  description_gt?: Maybe<String>;
-  description_gte?: Maybe<String>;
-  description_contains?: Maybe<String>;
-  description_not_contains?: Maybe<String>;
-  description_starts_with?: Maybe<String>;
-  description_not_starts_with?: Maybe<String>;
-  description_ends_with?: Maybe<String>;
-  description_not_ends_with?: Maybe<String>;
-  public?: Maybe<Boolean>;
-  public_not?: Maybe<Boolean>;
-  createdAt?: Maybe<DateTimeInput>;
-  createdAt_not?: Maybe<DateTimeInput>;
-  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_lt?: Maybe<DateTimeInput>;
-  createdAt_lte?: Maybe<DateTimeInput>;
-  createdAt_gt?: Maybe<DateTimeInput>;
-  createdAt_gte?: Maybe<DateTimeInput>;
-  updatedAt?: Maybe<DateTimeInput>;
-  updatedAt_not?: Maybe<DateTimeInput>;
-  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  updatedAt_lt?: Maybe<DateTimeInput>;
-  updatedAt_lte?: Maybe<DateTimeInput>;
-  updatedAt_gt?: Maybe<DateTimeInput>;
-  updatedAt_gte?: Maybe<DateTimeInput>;
-  AND?: Maybe<StationScalarWhereInput[] | StationScalarWhereInput>;
-  OR?: Maybe<StationScalarWhereInput[] | StationScalarWhereInput>;
-  NOT?: Maybe<StationScalarWhereInput[] | StationScalarWhereInput>;
-}
-
-export interface StationUpdateManyWithWhereNestedInput {
-  where: StationScalarWhereInput;
-  data: StationUpdateManyDataInput;
-}
-
-export interface StationUpdateManyDataInput {
-  name?: Maybe<String>;
-  identifier?: Maybe<String>;
-  description?: Maybe<String>;
-  public?: Maybe<Boolean>;
+export interface MembershipUpsertWithWhereUniqueWithoutUserInput {
+  where: MembershipWhereUniqueInput;
+  update: MembershipUpdateWithoutUserDataInput;
+  create: MembershipCreateWithoutUserInput;
 }
 
 export interface UserUpdateManyMutationInput {
@@ -829,6 +946,23 @@ export interface CommentSubscriptionWhereInput {
   AND?: Maybe<CommentSubscriptionWhereInput[] | CommentSubscriptionWhereInput>;
   OR?: Maybe<CommentSubscriptionWhereInput[] | CommentSubscriptionWhereInput>;
   NOT?: Maybe<CommentSubscriptionWhereInput[] | CommentSubscriptionWhereInput>;
+}
+
+export interface MembershipSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<MembershipWhereInput>;
+  AND?: Maybe<
+    MembershipSubscriptionWhereInput[] | MembershipSubscriptionWhereInput
+  >;
+  OR?: Maybe<
+    MembershipSubscriptionWhereInput[] | MembershipSubscriptionWhereInput
+  >;
+  NOT?: Maybe<
+    MembershipSubscriptionWhereInput[] | MembershipSubscriptionWhereInput
+  >;
 }
 
 export interface StationSubscriptionWhereInput {
@@ -969,51 +1103,34 @@ export interface AggregateCommentSubscription
   count: () => Promise<AsyncIterator<Int>>;
 }
 
-export interface Station {
+export interface Membership {
   id: ID_Output;
-  name: String;
-  identifier?: String;
-  description: String;
-  public: Boolean;
-  createdAt: DateTimeOutput;
-  updatedAt: DateTimeOutput;
+  role: Role;
 }
 
-export interface StationPromise extends Promise<Station>, Fragmentable {
+export interface MembershipPromise extends Promise<Membership>, Fragmentable {
   id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
-  identifier: () => Promise<String>;
-  description: () => Promise<String>;
-  public: () => Promise<Boolean>;
-  founder: <T = UserPromise>() => T;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedAt: () => Promise<DateTimeOutput>;
+  user: <T = UserPromise>() => T;
+  station: <T = StationPromise>() => T;
+  role: () => Promise<Role>;
 }
 
-export interface StationSubscription
-  extends Promise<AsyncIterator<Station>>,
+export interface MembershipSubscription
+  extends Promise<AsyncIterator<Membership>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
-  name: () => Promise<AsyncIterator<String>>;
-  identifier: () => Promise<AsyncIterator<String>>;
-  description: () => Promise<AsyncIterator<String>>;
-  public: () => Promise<AsyncIterator<Boolean>>;
-  founder: <T = UserSubscription>() => T;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  user: <T = UserSubscription>() => T;
+  station: <T = StationSubscription>() => T;
+  role: () => Promise<AsyncIterator<Role>>;
 }
 
-export interface StationNullablePromise
-  extends Promise<Station | null>,
+export interface MembershipNullablePromise
+  extends Promise<Membership | null>,
     Fragmentable {
   id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
-  identifier: () => Promise<String>;
-  description: () => Promise<String>;
-  public: () => Promise<Boolean>;
-  founder: <T = UserPromise>() => T;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedAt: () => Promise<DateTimeOutput>;
+  user: <T = UserPromise>() => T;
+  station: <T = StationPromise>() => T;
+  role: () => Promise<Role>;
 }
 
 export interface User {
@@ -1032,9 +1149,9 @@ export interface UserPromise extends Promise<User>, Fragmentable {
   identifier: () => Promise<String>;
   password: () => Promise<String>;
   email: () => Promise<String>;
-  founded: <T = FragmentableArray<Station>>(args?: {
-    where?: StationWhereInput;
-    orderBy?: StationOrderByInput;
+  memberships: <T = FragmentableArray<Membership>>(args?: {
+    where?: MembershipWhereInput;
+    orderBy?: MembershipOrderByInput;
     skip?: Int;
     after?: String;
     before?: String;
@@ -1053,9 +1170,9 @@ export interface UserSubscription
   identifier: () => Promise<AsyncIterator<String>>;
   password: () => Promise<AsyncIterator<String>>;
   email: () => Promise<AsyncIterator<String>>;
-  founded: <T = Promise<AsyncIterator<StationSubscription>>>(args?: {
-    where?: StationWhereInput;
-    orderBy?: StationOrderByInput;
+  memberships: <T = Promise<AsyncIterator<MembershipSubscription>>>(args?: {
+    where?: MembershipWhereInput;
+    orderBy?: MembershipOrderByInput;
     skip?: Int;
     after?: String;
     before?: String;
@@ -1074,9 +1191,9 @@ export interface UserNullablePromise
   identifier: () => Promise<String>;
   password: () => Promise<String>;
   email: () => Promise<String>;
-  founded: <T = FragmentableArray<Station>>(args?: {
-    where?: StationWhereInput;
-    orderBy?: StationOrderByInput;
+  memberships: <T = FragmentableArray<Membership>>(args?: {
+    where?: MembershipWhereInput;
+    orderBy?: MembershipOrderByInput;
     skip?: Int;
     after?: String;
     before?: String;
@@ -1085,6 +1202,133 @@ export interface UserNullablePromise
   }) => T;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
+}
+
+export interface Station {
+  id: ID_Output;
+  name: String;
+  identifier?: String;
+  description: String;
+  public: Boolean;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+}
+
+export interface StationPromise extends Promise<Station>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  identifier: () => Promise<String>;
+  description: () => Promise<String>;
+  public: () => Promise<Boolean>;
+  members: <T = FragmentableArray<Membership>>(args?: {
+    where?: MembershipWhereInput;
+    orderBy?: MembershipOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+}
+
+export interface StationSubscription
+  extends Promise<AsyncIterator<Station>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
+  identifier: () => Promise<AsyncIterator<String>>;
+  description: () => Promise<AsyncIterator<String>>;
+  public: () => Promise<AsyncIterator<Boolean>>;
+  members: <T = Promise<AsyncIterator<MembershipSubscription>>>(args?: {
+    where?: MembershipWhereInput;
+    orderBy?: MembershipOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+}
+
+export interface StationNullablePromise
+  extends Promise<Station | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  identifier: () => Promise<String>;
+  description: () => Promise<String>;
+  public: () => Promise<Boolean>;
+  members: <T = FragmentableArray<Membership>>(args?: {
+    where?: MembershipWhereInput;
+    orderBy?: MembershipOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+}
+
+export interface MembershipConnection {
+  pageInfo: PageInfo;
+  edges: MembershipEdge[];
+}
+
+export interface MembershipConnectionPromise
+  extends Promise<MembershipConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<MembershipEdge>>() => T;
+  aggregate: <T = AggregateMembershipPromise>() => T;
+}
+
+export interface MembershipConnectionSubscription
+  extends Promise<AsyncIterator<MembershipConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<MembershipEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateMembershipSubscription>() => T;
+}
+
+export interface MembershipEdge {
+  node: Membership;
+  cursor: String;
+}
+
+export interface MembershipEdgePromise
+  extends Promise<MembershipEdge>,
+    Fragmentable {
+  node: <T = MembershipPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface MembershipEdgeSubscription
+  extends Promise<AsyncIterator<MembershipEdge>>,
+    Fragmentable {
+  node: <T = MembershipSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateMembership {
+  count: Int;
+}
+
+export interface AggregateMembershipPromise
+  extends Promise<AggregateMembership>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateMembershipSubscription
+  extends Promise<AsyncIterator<AggregateMembership>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
 }
 
 export interface StationConnection {
@@ -1345,6 +1589,50 @@ export interface CommentPreviousValuesSubscription
   content: () => Promise<AsyncIterator<String>>;
 }
 
+export interface MembershipSubscriptionPayload {
+  mutation: MutationType;
+  node: Membership;
+  updatedFields: String[];
+  previousValues: MembershipPreviousValues;
+}
+
+export interface MembershipSubscriptionPayloadPromise
+  extends Promise<MembershipSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = MembershipPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = MembershipPreviousValuesPromise>() => T;
+}
+
+export interface MembershipSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<MembershipSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = MembershipSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = MembershipPreviousValuesSubscription>() => T;
+}
+
+export interface MembershipPreviousValues {
+  id: ID_Output;
+  role: Role;
+}
+
+export interface MembershipPreviousValuesPromise
+  extends Promise<MembershipPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  role: () => Promise<Role>;
+}
+
+export interface MembershipPreviousValuesSubscription
+  extends Promise<AsyncIterator<MembershipPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  role: () => Promise<AsyncIterator<Role>>;
+}
+
 export interface StationSubscriptionPayload {
   mutation: MutationType;
   node: Station;
@@ -1563,11 +1851,19 @@ export const models: Model[] = [
     embedded: false
   },
   {
+    name: "Membership",
+    embedded: false
+  },
+  {
     name: "Topic",
     embedded: false
   },
   {
     name: "Comment",
+    embedded: false
+  },
+  {
+    name: "Role",
     embedded: false
   }
 ];

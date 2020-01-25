@@ -1,8 +1,8 @@
-import { Prisma, Station } from '../generated/prisma-client'
+import { Prisma, Membership } from '../generated/prisma-client'
 
 export default {
-  founded: async ({ id }, args, { prisma }: { prisma: Prisma }) => {
-    const stations: Station[] = await prisma.user({ id }).founded()
-    return stations
+  memberships: async ({ id }, args, { prisma }: { prisma: Prisma }) => {
+    const memberships: Membership[] = await prisma.user({ id }).memberships()
+    return memberships
   },
 }

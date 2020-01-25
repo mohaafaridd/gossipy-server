@@ -6,6 +6,7 @@ import {
   StationCreateInput,
   User,
   Station,
+  Membership,
 } from '../generated/prisma-client'
 import hashPasswords from '../utils/hashPasswords'
 import generateToken from '../utils/generateToken'
@@ -94,12 +95,18 @@ export default {
       ...data,
       name,
       identifier,
-      founder: {
-        connect: {
-          id: userId,
+      members: {
+        create: {
+          user: {
+            connect: {
+              id: userId,
+            },
+          },
+          role: 'ADMIN',
         },
       },
     })
+
     return station
   },
 }

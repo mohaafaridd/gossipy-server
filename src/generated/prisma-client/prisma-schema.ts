@@ -6,6 +6,10 @@ export const typeDefs = /* GraphQL */ `type AggregateComment {
   count: Int!
 }
 
+type AggregateMembership {
+  count: Int!
+}
+
 type AggregateStation {
   count: Int!
 }
@@ -123,6 +127,212 @@ scalar DateTime
 
 scalar Long
 
+type Membership {
+  id: ID!
+  user: User!
+  station: Station!
+  role: Role!
+}
+
+type MembershipConnection {
+  pageInfo: PageInfo!
+  edges: [MembershipEdge]!
+  aggregate: AggregateMembership!
+}
+
+input MembershipCreateInput {
+  id: ID
+  user: UserCreateOneWithoutMembershipsInput!
+  station: StationCreateOneWithoutMembersInput!
+  role: Role!
+}
+
+input MembershipCreateManyWithoutStationInput {
+  create: [MembershipCreateWithoutStationInput!]
+  connect: [MembershipWhereUniqueInput!]
+}
+
+input MembershipCreateManyWithoutUserInput {
+  create: [MembershipCreateWithoutUserInput!]
+  connect: [MembershipWhereUniqueInput!]
+}
+
+input MembershipCreateWithoutStationInput {
+  id: ID
+  user: UserCreateOneWithoutMembershipsInput!
+  role: Role!
+}
+
+input MembershipCreateWithoutUserInput {
+  id: ID
+  station: StationCreateOneWithoutMembersInput!
+  role: Role!
+}
+
+type MembershipEdge {
+  node: Membership!
+  cursor: String!
+}
+
+enum MembershipOrderByInput {
+  id_ASC
+  id_DESC
+  role_ASC
+  role_DESC
+}
+
+type MembershipPreviousValues {
+  id: ID!
+  role: Role!
+}
+
+input MembershipScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  role: Role
+  role_not: Role
+  role_in: [Role!]
+  role_not_in: [Role!]
+  AND: [MembershipScalarWhereInput!]
+  OR: [MembershipScalarWhereInput!]
+  NOT: [MembershipScalarWhereInput!]
+}
+
+type MembershipSubscriptionPayload {
+  mutation: MutationType!
+  node: Membership
+  updatedFields: [String!]
+  previousValues: MembershipPreviousValues
+}
+
+input MembershipSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: MembershipWhereInput
+  AND: [MembershipSubscriptionWhereInput!]
+  OR: [MembershipSubscriptionWhereInput!]
+  NOT: [MembershipSubscriptionWhereInput!]
+}
+
+input MembershipUpdateInput {
+  user: UserUpdateOneRequiredWithoutMembershipsInput
+  station: StationUpdateOneRequiredWithoutMembersInput
+  role: Role
+}
+
+input MembershipUpdateManyDataInput {
+  role: Role
+}
+
+input MembershipUpdateManyMutationInput {
+  role: Role
+}
+
+input MembershipUpdateManyWithoutStationInput {
+  create: [MembershipCreateWithoutStationInput!]
+  delete: [MembershipWhereUniqueInput!]
+  connect: [MembershipWhereUniqueInput!]
+  set: [MembershipWhereUniqueInput!]
+  disconnect: [MembershipWhereUniqueInput!]
+  update: [MembershipUpdateWithWhereUniqueWithoutStationInput!]
+  upsert: [MembershipUpsertWithWhereUniqueWithoutStationInput!]
+  deleteMany: [MembershipScalarWhereInput!]
+  updateMany: [MembershipUpdateManyWithWhereNestedInput!]
+}
+
+input MembershipUpdateManyWithoutUserInput {
+  create: [MembershipCreateWithoutUserInput!]
+  delete: [MembershipWhereUniqueInput!]
+  connect: [MembershipWhereUniqueInput!]
+  set: [MembershipWhereUniqueInput!]
+  disconnect: [MembershipWhereUniqueInput!]
+  update: [MembershipUpdateWithWhereUniqueWithoutUserInput!]
+  upsert: [MembershipUpsertWithWhereUniqueWithoutUserInput!]
+  deleteMany: [MembershipScalarWhereInput!]
+  updateMany: [MembershipUpdateManyWithWhereNestedInput!]
+}
+
+input MembershipUpdateManyWithWhereNestedInput {
+  where: MembershipScalarWhereInput!
+  data: MembershipUpdateManyDataInput!
+}
+
+input MembershipUpdateWithoutStationDataInput {
+  user: UserUpdateOneRequiredWithoutMembershipsInput
+  role: Role
+}
+
+input MembershipUpdateWithoutUserDataInput {
+  station: StationUpdateOneRequiredWithoutMembersInput
+  role: Role
+}
+
+input MembershipUpdateWithWhereUniqueWithoutStationInput {
+  where: MembershipWhereUniqueInput!
+  data: MembershipUpdateWithoutStationDataInput!
+}
+
+input MembershipUpdateWithWhereUniqueWithoutUserInput {
+  where: MembershipWhereUniqueInput!
+  data: MembershipUpdateWithoutUserDataInput!
+}
+
+input MembershipUpsertWithWhereUniqueWithoutStationInput {
+  where: MembershipWhereUniqueInput!
+  update: MembershipUpdateWithoutStationDataInput!
+  create: MembershipCreateWithoutStationInput!
+}
+
+input MembershipUpsertWithWhereUniqueWithoutUserInput {
+  where: MembershipWhereUniqueInput!
+  update: MembershipUpdateWithoutUserDataInput!
+  create: MembershipCreateWithoutUserInput!
+}
+
+input MembershipWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  user: UserWhereInput
+  station: StationWhereInput
+  role: Role
+  role_not: Role
+  role_in: [Role!]
+  role_not_in: [Role!]
+  AND: [MembershipWhereInput!]
+  OR: [MembershipWhereInput!]
+  NOT: [MembershipWhereInput!]
+}
+
+input MembershipWhereUniqueInput {
+  id: ID
+}
+
 type Mutation {
   createComment(data: CommentCreateInput!): Comment!
   updateComment(data: CommentUpdateInput!, where: CommentWhereUniqueInput!): Comment
@@ -130,6 +340,12 @@ type Mutation {
   upsertComment(where: CommentWhereUniqueInput!, create: CommentCreateInput!, update: CommentUpdateInput!): Comment!
   deleteComment(where: CommentWhereUniqueInput!): Comment
   deleteManyComments(where: CommentWhereInput): BatchPayload!
+  createMembership(data: MembershipCreateInput!): Membership!
+  updateMembership(data: MembershipUpdateInput!, where: MembershipWhereUniqueInput!): Membership
+  updateManyMemberships(data: MembershipUpdateManyMutationInput!, where: MembershipWhereInput): BatchPayload!
+  upsertMembership(where: MembershipWhereUniqueInput!, create: MembershipCreateInput!, update: MembershipUpdateInput!): Membership!
+  deleteMembership(where: MembershipWhereUniqueInput!): Membership
+  deleteManyMemberships(where: MembershipWhereInput): BatchPayload!
   createStation(data: StationCreateInput!): Station!
   updateStation(data: StationUpdateInput!, where: StationWhereUniqueInput!): Station
   updateManyStations(data: StationUpdateManyMutationInput!, where: StationWhereInput): BatchPayload!
@@ -171,6 +387,9 @@ type Query {
   comment(where: CommentWhereUniqueInput!): Comment
   comments(where: CommentWhereInput, orderBy: CommentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Comment]!
   commentsConnection(where: CommentWhereInput, orderBy: CommentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CommentConnection!
+  membership(where: MembershipWhereUniqueInput!): Membership
+  memberships(where: MembershipWhereInput, orderBy: MembershipOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Membership]!
+  membershipsConnection(where: MembershipWhereInput, orderBy: MembershipOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): MembershipConnection!
   station(where: StationWhereUniqueInput!): Station
   stations(where: StationWhereInput, orderBy: StationOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Station]!
   stationsConnection(where: StationWhereInput, orderBy: StationOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): StationConnection!
@@ -183,13 +402,20 @@ type Query {
   node(id: ID!): Node
 }
 
+enum Role {
+  FOUNDER
+  ADMIN
+  MODERATOR
+  MEMBER
+}
+
 type Station {
   id: ID!
   name: String!
   identifier: String
   description: String!
   public: Boolean!
-  founder: User!
+  members(where: MembershipWhereInput, orderBy: MembershipOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Membership!]
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -206,15 +432,15 @@ input StationCreateInput {
   identifier: String
   description: String!
   public: Boolean
-  founder: UserCreateOneWithoutFoundedInput!
+  members: MembershipCreateManyWithoutStationInput
 }
 
-input StationCreateManyWithoutFounderInput {
-  create: [StationCreateWithoutFounderInput!]
-  connect: [StationWhereUniqueInput!]
+input StationCreateOneWithoutMembersInput {
+  create: StationCreateWithoutMembersInput
+  connect: StationWhereUniqueInput
 }
 
-input StationCreateWithoutFounderInput {
+input StationCreateWithoutMembersInput {
   id: ID
   name: String!
   identifier: String
@@ -254,86 +480,6 @@ type StationPreviousValues {
   updatedAt: DateTime!
 }
 
-input StationScalarWhereInput {
-  id: ID
-  id_not: ID
-  id_in: [ID!]
-  id_not_in: [ID!]
-  id_lt: ID
-  id_lte: ID
-  id_gt: ID
-  id_gte: ID
-  id_contains: ID
-  id_not_contains: ID
-  id_starts_with: ID
-  id_not_starts_with: ID
-  id_ends_with: ID
-  id_not_ends_with: ID
-  name: String
-  name_not: String
-  name_in: [String!]
-  name_not_in: [String!]
-  name_lt: String
-  name_lte: String
-  name_gt: String
-  name_gte: String
-  name_contains: String
-  name_not_contains: String
-  name_starts_with: String
-  name_not_starts_with: String
-  name_ends_with: String
-  name_not_ends_with: String
-  identifier: String
-  identifier_not: String
-  identifier_in: [String!]
-  identifier_not_in: [String!]
-  identifier_lt: String
-  identifier_lte: String
-  identifier_gt: String
-  identifier_gte: String
-  identifier_contains: String
-  identifier_not_contains: String
-  identifier_starts_with: String
-  identifier_not_starts_with: String
-  identifier_ends_with: String
-  identifier_not_ends_with: String
-  description: String
-  description_not: String
-  description_in: [String!]
-  description_not_in: [String!]
-  description_lt: String
-  description_lte: String
-  description_gt: String
-  description_gte: String
-  description_contains: String
-  description_not_contains: String
-  description_starts_with: String
-  description_not_starts_with: String
-  description_ends_with: String
-  description_not_ends_with: String
-  public: Boolean
-  public_not: Boolean
-  createdAt: DateTime
-  createdAt_not: DateTime
-  createdAt_in: [DateTime!]
-  createdAt_not_in: [DateTime!]
-  createdAt_lt: DateTime
-  createdAt_lte: DateTime
-  createdAt_gt: DateTime
-  createdAt_gte: DateTime
-  updatedAt: DateTime
-  updatedAt_not: DateTime
-  updatedAt_in: [DateTime!]
-  updatedAt_not_in: [DateTime!]
-  updatedAt_lt: DateTime
-  updatedAt_lte: DateTime
-  updatedAt_gt: DateTime
-  updatedAt_gte: DateTime
-  AND: [StationScalarWhereInput!]
-  OR: [StationScalarWhereInput!]
-  NOT: [StationScalarWhereInput!]
-}
-
 type StationSubscriptionPayload {
   mutation: MutationType!
   node: Station
@@ -357,14 +503,7 @@ input StationUpdateInput {
   identifier: String
   description: String
   public: Boolean
-  founder: UserUpdateOneRequiredWithoutFoundedInput
-}
-
-input StationUpdateManyDataInput {
-  name: String
-  identifier: String
-  description: String
-  public: Boolean
+  members: MembershipUpdateManyWithoutStationInput
 }
 
 input StationUpdateManyMutationInput {
@@ -374,39 +513,23 @@ input StationUpdateManyMutationInput {
   public: Boolean
 }
 
-input StationUpdateManyWithoutFounderInput {
-  create: [StationCreateWithoutFounderInput!]
-  delete: [StationWhereUniqueInput!]
-  connect: [StationWhereUniqueInput!]
-  set: [StationWhereUniqueInput!]
-  disconnect: [StationWhereUniqueInput!]
-  update: [StationUpdateWithWhereUniqueWithoutFounderInput!]
-  upsert: [StationUpsertWithWhereUniqueWithoutFounderInput!]
-  deleteMany: [StationScalarWhereInput!]
-  updateMany: [StationUpdateManyWithWhereNestedInput!]
+input StationUpdateOneRequiredWithoutMembersInput {
+  create: StationCreateWithoutMembersInput
+  update: StationUpdateWithoutMembersDataInput
+  upsert: StationUpsertWithoutMembersInput
+  connect: StationWhereUniqueInput
 }
 
-input StationUpdateManyWithWhereNestedInput {
-  where: StationScalarWhereInput!
-  data: StationUpdateManyDataInput!
-}
-
-input StationUpdateWithoutFounderDataInput {
+input StationUpdateWithoutMembersDataInput {
   name: String
   identifier: String
   description: String
   public: Boolean
 }
 
-input StationUpdateWithWhereUniqueWithoutFounderInput {
-  where: StationWhereUniqueInput!
-  data: StationUpdateWithoutFounderDataInput!
-}
-
-input StationUpsertWithWhereUniqueWithoutFounderInput {
-  where: StationWhereUniqueInput!
-  update: StationUpdateWithoutFounderDataInput!
-  create: StationCreateWithoutFounderInput!
+input StationUpsertWithoutMembersInput {
+  update: StationUpdateWithoutMembersDataInput!
+  create: StationCreateWithoutMembersInput!
 }
 
 input StationWhereInput {
@@ -468,7 +591,9 @@ input StationWhereInput {
   description_not_ends_with: String
   public: Boolean
   public_not: Boolean
-  founder: UserWhereInput
+  members_every: MembershipWhereInput
+  members_some: MembershipWhereInput
+  members_none: MembershipWhereInput
   createdAt: DateTime
   createdAt_not: DateTime
   createdAt_in: [DateTime!]
@@ -497,6 +622,7 @@ input StationWhereUniqueInput {
 
 type Subscription {
   comment(where: CommentSubscriptionWhereInput): CommentSubscriptionPayload
+  membership(where: MembershipSubscriptionWhereInput): MembershipSubscriptionPayload
   station(where: StationSubscriptionWhereInput): StationSubscriptionPayload
   topic(where: TopicSubscriptionWhereInput): TopicSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
@@ -650,7 +776,7 @@ type User {
   identifier: String
   password: String!
   email: String!
-  founded(where: StationWhereInput, orderBy: StationOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Station!]
+  memberships(where: MembershipWhereInput, orderBy: MembershipOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Membership!]
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -667,15 +793,15 @@ input UserCreateInput {
   identifier: String
   password: String!
   email: String!
-  founded: StationCreateManyWithoutFounderInput
+  memberships: MembershipCreateManyWithoutUserInput
 }
 
-input UserCreateOneWithoutFoundedInput {
-  create: UserCreateWithoutFoundedInput
+input UserCreateOneWithoutMembershipsInput {
+  create: UserCreateWithoutMembershipsInput
   connect: UserWhereUniqueInput
 }
 
-input UserCreateWithoutFoundedInput {
+input UserCreateWithoutMembershipsInput {
   id: ID
   name: String!
   identifier: String
@@ -738,7 +864,7 @@ input UserUpdateInput {
   identifier: String
   password: String
   email: String
-  founded: StationUpdateManyWithoutFounderInput
+  memberships: MembershipUpdateManyWithoutUserInput
 }
 
 input UserUpdateManyMutationInput {
@@ -748,23 +874,23 @@ input UserUpdateManyMutationInput {
   email: String
 }
 
-input UserUpdateOneRequiredWithoutFoundedInput {
-  create: UserCreateWithoutFoundedInput
-  update: UserUpdateWithoutFoundedDataInput
-  upsert: UserUpsertWithoutFoundedInput
+input UserUpdateOneRequiredWithoutMembershipsInput {
+  create: UserCreateWithoutMembershipsInput
+  update: UserUpdateWithoutMembershipsDataInput
+  upsert: UserUpsertWithoutMembershipsInput
   connect: UserWhereUniqueInput
 }
 
-input UserUpdateWithoutFoundedDataInput {
+input UserUpdateWithoutMembershipsDataInput {
   name: String
   identifier: String
   password: String
   email: String
 }
 
-input UserUpsertWithoutFoundedInput {
-  update: UserUpdateWithoutFoundedDataInput!
-  create: UserCreateWithoutFoundedInput!
+input UserUpsertWithoutMembershipsInput {
+  update: UserUpdateWithoutMembershipsDataInput!
+  create: UserCreateWithoutMembershipsInput!
 }
 
 input UserWhereInput {
@@ -838,9 +964,9 @@ input UserWhereInput {
   email_not_starts_with: String
   email_ends_with: String
   email_not_ends_with: String
-  founded_every: StationWhereInput
-  founded_some: StationWhereInput
-  founded_none: StationWhereInput
+  memberships_every: MembershipWhereInput
+  memberships_some: MembershipWhereInput
+  memberships_none: MembershipWhereInput
   createdAt: DateTime
   createdAt_not: DateTime
   createdAt_in: [DateTime!]

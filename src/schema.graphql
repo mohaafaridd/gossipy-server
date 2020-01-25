@@ -4,7 +4,7 @@ type User {
   identifier: String
   password: String!
   email: String!
-  founded: [Station!]!
+  memberships: [Membership!]!
   createdAt: String!
   updatedAt: String!
 }
@@ -15,9 +15,16 @@ type Station {
   identifier: String
   description: String!
   public: Boolean!
-  founder: User!
+  members: [Membership!]!
   createdAt: String!
   updatedAt: String!
+}
+
+type Membership {
+  id: ID!
+  user: User!
+  station: Station!
+  role: Role!
 }
 
 type Topic {
@@ -73,4 +80,11 @@ input CreateStationInput {
   name: String!
   description: String!
   public: Boolean!
+}
+
+enum Role {
+  FOUNDER
+  ADMIN
+  MODERATOR
+  MEMBER
 }
