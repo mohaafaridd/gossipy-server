@@ -26,7 +26,7 @@ type Membership {
   id: ID! @id
   user: User! @relation(name: "UserToMembership", onDelete: SET_NULL)
   station: Station! @relation(name: "StationToMembership", onDelete: SET_NULL)
-  role: Role!
+  role: Role! @default(value: MEMBER)
 }
 
 type Topic {

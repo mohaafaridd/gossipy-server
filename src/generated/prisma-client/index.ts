@@ -659,7 +659,7 @@ export interface MembershipCreateInput {
   id?: Maybe<ID_Input>;
   user: UserCreateOneWithoutMembershipsInput;
   station: StationCreateOneWithoutMembersInput;
-  role: Role;
+  role?: Maybe<Role>;
 }
 
 export interface UserCreateOneWithoutMembershipsInput {
@@ -755,7 +755,7 @@ export interface MembershipCreateManyWithoutStationInput {
 export interface MembershipCreateWithoutStationInput {
   id?: Maybe<ID_Input>;
   user: UserCreateOneWithoutMembershipsInput;
-  role: Role;
+  role?: Maybe<Role>;
 }
 
 export interface StationUpdateInput {
@@ -880,7 +880,7 @@ export interface MembershipCreateManyWithoutUserInput {
 export interface MembershipCreateWithoutUserInput {
   id?: Maybe<ID_Input>;
   station: StationCreateOneWithoutMembersInput;
-  role: Role;
+  role?: Maybe<Role>;
 }
 
 export interface UserUpdateInput {

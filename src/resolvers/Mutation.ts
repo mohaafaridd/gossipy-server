@@ -8,6 +8,7 @@ import {
   User,
   Station,
   Membership,
+  MembershipCreateInput,
 } from '../generated/prisma-client'
 import hashPasswords from '../utils/hashPasswords'
 import generateToken from '../utils/generateToken'
@@ -174,5 +175,45 @@ export default {
 
     const station = await prisma.deleteStation({ id })
     return station
+  },
+
+  /**
+   * This mutation is dedicated to enable users to join to a station
+   */
+  createMembership: async (
+    parent,
+    { stationId, data }: { stationId: string; data: MembershipCreateInput },
+    { prisma, request }: { prisma: Prisma; request: any }
+  ) => {
+    const userId = getUserId(request)
+
+    const hasMembership = await prisma.$exists.membership({
+      AND: {
+        user: {
+          id: userId,
+        },
+
+        station: {
+          id: stationId,
+        },
+      },
+    })
+
+    if (hasMembership) throw new Error('Already a member')
+
+    const membership = await prisma.createMembership({
+      user: {
+        connect: {
+          id: userId,
+        },
+      },
+      station: {
+        connect: {
+          id: stationId,
+        },
+      },
+    })
+
+    return membership
   },
 }

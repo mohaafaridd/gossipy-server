@@ -144,7 +144,7 @@ input MembershipCreateInput {
   id: ID
   user: UserCreateOneWithoutMembershipsInput!
   station: StationCreateOneWithoutMembersInput!
-  role: Role!
+  role: Role
 }
 
 input MembershipCreateManyWithoutStationInput {
@@ -160,13 +160,13 @@ input MembershipCreateManyWithoutUserInput {
 input MembershipCreateWithoutStationInput {
   id: ID
   user: UserCreateOneWithoutMembershipsInput!
-  role: Role!
+  role: Role
 }
 
 input MembershipCreateWithoutUserInput {
   id: ID
   station: StationCreateOneWithoutMembersInput!
-  role: Role!
+  role: Role
 }
 
 type MembershipEdge {

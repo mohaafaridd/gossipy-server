@@ -55,6 +55,7 @@ type Mutation {
   createStation(data: CreateStationInput!): Station!
   updateStation(id: String!, data: UpdateStationInput!): Station!
   deleteStation(id: String!): Station!
+  createMembership(stationId: String!): Membership!
 }
 
 type AuthPayload {
