@@ -52,6 +52,7 @@ type Mutation {
   signIn(data: LoginUserInput!): AuthPayload!
   updateUser(data: UpdateUserInput!): User!
   createStation(data: CreateStationInput!): Station!
+  updateStation(id: String!, data: UpdateStationInput!): Station!
 }
 
 type AuthPayload {
@@ -80,6 +81,11 @@ input CreateStationInput {
   name: String!
   description: String!
   public: Boolean!
+}
+
+input UpdateStationInput {
+  description: String
+  public: Boolean
 }
 
 enum Role {

@@ -4,6 +4,7 @@ import {
   UserCreateInput,
   UserUpdateInput,
   StationCreateInput,
+  StationUpdateInput,
   User,
   Station,
   Membership,
@@ -83,8 +84,7 @@ export default {
   createStation: async (
     parent,
     { data }: { data: StationCreateInput },
-    { prisma, request }: { prisma: Prisma; request: any },
-    info
+    { prisma, request }: { prisma: Prisma; request: any }
   ) => {
     const userId = getUserId(request)
 
@@ -105,6 +105,32 @@ export default {
           role: 'ADMIN',
         },
       },
+    })
+
+    return station
+  },
+
+  updateStation: async (
+    parent,
+    { id, data }: { id: string; data: StationUpdateInput },
+    { prisma, request }: { prisma: Prisma; request: any }
+  ) => {
+    const userId = getUserId(request)
+
+    const isAuthorized = await prisma.$exists.membership({
+      AND: {
+        user: {
+          id: userId,
+        },
+        role_in: ['FOUNDER', 'ADMIN'],
+      },
+    })
+
+    if (!isAuthorized) throw new Error('Authorization Required')
+
+    const station = await prisma.updateStation({
+      where: { id },
+      data,
     })
 
     return station
