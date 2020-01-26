@@ -132,6 +132,7 @@ type Membership {
   user: User!
   station: Station!
   role: Role!
+  state: MembershipState!
 }
 
 type MembershipConnection {
@@ -145,6 +146,7 @@ input MembershipCreateInput {
   user: UserCreateOneWithoutMembershipsInput!
   station: StationCreateOneWithoutMembersInput!
   role: Role
+  state: MembershipState
 }
 
 input MembershipCreateManyWithoutStationInput {
@@ -161,12 +163,14 @@ input MembershipCreateWithoutStationInput {
   id: ID
   user: UserCreateOneWithoutMembershipsInput!
   role: Role
+  state: MembershipState
 }
 
 input MembershipCreateWithoutUserInput {
   id: ID
   station: StationCreateOneWithoutMembersInput!
   role: Role
+  state: MembershipState
 }
 
 type MembershipEdge {
@@ -179,11 +183,14 @@ enum MembershipOrderByInput {
   id_DESC
   role_ASC
   role_DESC
+  state_ASC
+  state_DESC
 }
 
 type MembershipPreviousValues {
   id: ID!
   role: Role!
+  state: MembershipState!
 }
 
 input MembershipScalarWhereInput {
@@ -205,9 +212,19 @@ input MembershipScalarWhereInput {
   role_not: Role
   role_in: [Role!]
   role_not_in: [Role!]
+  state: MembershipState
+  state_not: MembershipState
+  state_in: [MembershipState!]
+  state_not_in: [MembershipState!]
   AND: [MembershipScalarWhereInput!]
   OR: [MembershipScalarWhereInput!]
   NOT: [MembershipScalarWhereInput!]
+}
+
+enum MembershipState {
+  PENDING
+  ACTIVE
+  BANNED
 }
 
 type MembershipSubscriptionPayload {
@@ -232,14 +249,17 @@ input MembershipUpdateInput {
   user: UserUpdateOneRequiredWithoutMembershipsInput
   station: StationUpdateOneRequiredWithoutMembersInput
   role: Role
+  state: MembershipState
 }
 
 input MembershipUpdateManyDataInput {
   role: Role
+  state: MembershipState
 }
 
 input MembershipUpdateManyMutationInput {
   role: Role
+  state: MembershipState
 }
 
 input MembershipUpdateManyWithoutStationInput {
@@ -274,11 +294,13 @@ input MembershipUpdateManyWithWhereNestedInput {
 input MembershipUpdateWithoutStationDataInput {
   user: UserUpdateOneRequiredWithoutMembershipsInput
   role: Role
+  state: MembershipState
 }
 
 input MembershipUpdateWithoutUserDataInput {
   station: StationUpdateOneRequiredWithoutMembersInput
   role: Role
+  state: MembershipState
 }
 
 input MembershipUpdateWithWhereUniqueWithoutStationInput {
@@ -324,6 +346,10 @@ input MembershipWhereInput {
   role_not: Role
   role_in: [Role!]
   role_not_in: [Role!]
+  state: MembershipState
+  state_not: MembershipState
+  state_in: [MembershipState!]
+  state_not_in: [MembershipState!]
   AND: [MembershipWhereInput!]
   OR: [MembershipWhereInput!]
   NOT: [MembershipWhereInput!]

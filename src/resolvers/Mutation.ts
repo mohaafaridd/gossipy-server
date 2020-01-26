@@ -1,14 +1,15 @@
 import * as bcrypt from 'bcryptjs'
 import {
   Prisma,
+  User,
   UserCreateInput,
   UserUpdateInput,
+  Station,
   StationCreateInput,
   StationUpdateInput,
-  User,
-  Station,
   Membership,
   MembershipCreateInput,
+  MembershipUpdateInput,
 } from '../generated/prisma-client'
 import hashPasswords from '../utils/hashPasswords'
 import generateToken from '../utils/generateToken'
@@ -116,6 +117,7 @@ export default {
             },
           },
           role: 'FOUNDER',
+          state: 'ACTIVE',
         },
       },
     })
@@ -135,6 +137,9 @@ export default {
 
     const isAuthorized = await prisma.$exists.membership({
       AND: {
+        station: {
+          id,
+        },
         user: {
           id: userId,
         },
@@ -164,6 +169,9 @@ export default {
 
     const isAuthorized = await prisma.$exists.membership({
       AND: {
+        station: {
+          id,
+        },
         user: {
           id: userId,
         },
@@ -212,6 +220,47 @@ export default {
           id: stationId,
         },
       },
+    })
+
+    return membership
+  },
+
+  updateMembership: async (
+    parent,
+    { id, data }: { id: string; data: MembershipUpdateInput },
+    { prisma, request }: { prisma: Prisma; request: any }
+  ) => {
+    const userId = getUserId(request)
+
+    if (data.role === 'FOUNDER')
+      throw new Error('You cannot pick another founder')
+
+    // Immune founder membership
+    const target = await prisma.membership({ id })
+    if (target.role === 'FOUNDER') throw new Error('Founder cannot be updated')
+
+    // Ensure authorization level (only admins and founder) able to update membership role/state
+    const station: Station = await prisma.membership({ id }).station()
+    const isAuthorized: Boolean = await prisma.$exists.membership({
+      AND: {
+        station: {
+          id: station.id,
+        },
+        user: {
+          id: userId,
+        },
+        role_in: ['FOUNDER', 'ADMIN'],
+      },
+    })
+
+    if (!isAuthorized) throw new Error('Authorization Required')
+
+    // Changes banned user role to a member
+    if (data.state === 'BANNED') data.role = 'MEMBER'
+
+    const membership: Membership = await prisma.updateMembership({
+      where: { id },
+      data,
     })
 
     return membership

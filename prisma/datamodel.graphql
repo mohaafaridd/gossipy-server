@@ -27,6 +27,7 @@ type Membership {
   user: User! @relation(name: "UserToMembership", onDelete: SET_NULL)
   station: Station! @relation(name: "StationToMembership", onDelete: SET_NULL)
   role: Role! @default(value: MEMBER)
+  state: MembershipState! @default(value: PENDING)
 }
 
 type Topic {
@@ -47,4 +48,10 @@ enum Role {
   ADMIN
   MODERATOR
   MEMBER
+}
+
+enum MembershipState {
+  PENDING
+  ACTIVE
+  BANNED
 }

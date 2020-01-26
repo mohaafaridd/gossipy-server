@@ -265,11 +265,15 @@ export type CommentOrderByInput =
 
 export type Role = "FOUNDER" | "ADMIN" | "MODERATOR" | "MEMBER";
 
+export type MembershipState = "PENDING" | "ACTIVE" | "BANNED";
+
 export type MembershipOrderByInput =
   | "id_ASC"
   | "id_DESC"
   | "role_ASC"
-  | "role_DESC";
+  | "role_DESC"
+  | "state_ASC"
+  | "state_DESC";
 
 export type StationOrderByInput =
   | "id_ASC"
@@ -380,6 +384,10 @@ export interface MembershipWhereInput {
   role_not?: Maybe<Role>;
   role_in?: Maybe<Role[] | Role>;
   role_not_in?: Maybe<Role[] | Role>;
+  state?: Maybe<MembershipState>;
+  state_not?: Maybe<MembershipState>;
+  state_in?: Maybe<MembershipState[] | MembershipState>;
+  state_not_in?: Maybe<MembershipState[] | MembershipState>;
   AND?: Maybe<MembershipWhereInput[] | MembershipWhereInput>;
   OR?: Maybe<MembershipWhereInput[] | MembershipWhereInput>;
   NOT?: Maybe<MembershipWhereInput[] | MembershipWhereInput>;
@@ -660,6 +668,7 @@ export interface MembershipCreateInput {
   user: UserCreateOneWithoutMembershipsInput;
   station: StationCreateOneWithoutMembersInput;
   role?: Maybe<Role>;
+  state?: Maybe<MembershipState>;
 }
 
 export interface UserCreateOneWithoutMembershipsInput {
@@ -692,6 +701,7 @@ export interface MembershipUpdateInput {
   user?: Maybe<UserUpdateOneRequiredWithoutMembershipsInput>;
   station?: Maybe<StationUpdateOneRequiredWithoutMembersInput>;
   role?: Maybe<Role>;
+  state?: Maybe<MembershipState>;
 }
 
 export interface UserUpdateOneRequiredWithoutMembershipsInput {
@@ -734,6 +744,7 @@ export interface StationUpsertWithoutMembersInput {
 
 export interface MembershipUpdateManyMutationInput {
   role?: Maybe<Role>;
+  state?: Maybe<MembershipState>;
 }
 
 export interface StationCreateInput {
@@ -756,6 +767,7 @@ export interface MembershipCreateWithoutStationInput {
   id?: Maybe<ID_Input>;
   user: UserCreateOneWithoutMembershipsInput;
   role?: Maybe<Role>;
+  state?: Maybe<MembershipState>;
 }
 
 export interface StationUpdateInput {
@@ -797,6 +809,7 @@ export interface MembershipUpdateWithWhereUniqueWithoutStationInput {
 export interface MembershipUpdateWithoutStationDataInput {
   user?: Maybe<UserUpdateOneRequiredWithoutMembershipsInput>;
   role?: Maybe<Role>;
+  state?: Maybe<MembershipState>;
 }
 
 export interface MembershipUpsertWithWhereUniqueWithoutStationInput {
@@ -824,6 +837,10 @@ export interface MembershipScalarWhereInput {
   role_not?: Maybe<Role>;
   role_in?: Maybe<Role[] | Role>;
   role_not_in?: Maybe<Role[] | Role>;
+  state?: Maybe<MembershipState>;
+  state_not?: Maybe<MembershipState>;
+  state_in?: Maybe<MembershipState[] | MembershipState>;
+  state_not_in?: Maybe<MembershipState[] | MembershipState>;
   AND?: Maybe<MembershipScalarWhereInput[] | MembershipScalarWhereInput>;
   OR?: Maybe<MembershipScalarWhereInput[] | MembershipScalarWhereInput>;
   NOT?: Maybe<MembershipScalarWhereInput[] | MembershipScalarWhereInput>;
@@ -836,6 +853,7 @@ export interface MembershipUpdateManyWithWhereNestedInput {
 
 export interface MembershipUpdateManyDataInput {
   role?: Maybe<Role>;
+  state?: Maybe<MembershipState>;
 }
 
 export interface StationUpdateManyMutationInput {
@@ -881,6 +899,7 @@ export interface MembershipCreateWithoutUserInput {
   id?: Maybe<ID_Input>;
   station: StationCreateOneWithoutMembersInput;
   role?: Maybe<Role>;
+  state?: Maybe<MembershipState>;
 }
 
 export interface UserUpdateInput {
@@ -922,6 +941,7 @@ export interface MembershipUpdateWithWhereUniqueWithoutUserInput {
 export interface MembershipUpdateWithoutUserDataInput {
   station?: Maybe<StationUpdateOneRequiredWithoutMembersInput>;
   role?: Maybe<Role>;
+  state?: Maybe<MembershipState>;
 }
 
 export interface MembershipUpsertWithWhereUniqueWithoutUserInput {
@@ -1106,6 +1126,7 @@ export interface AggregateCommentSubscription
 export interface Membership {
   id: ID_Output;
   role: Role;
+  state: MembershipState;
 }
 
 export interface MembershipPromise extends Promise<Membership>, Fragmentable {
@@ -1113,6 +1134,7 @@ export interface MembershipPromise extends Promise<Membership>, Fragmentable {
   user: <T = UserPromise>() => T;
   station: <T = StationPromise>() => T;
   role: () => Promise<Role>;
+  state: () => Promise<MembershipState>;
 }
 
 export interface MembershipSubscription
@@ -1122,6 +1144,7 @@ export interface MembershipSubscription
   user: <T = UserSubscription>() => T;
   station: <T = StationSubscription>() => T;
   role: () => Promise<AsyncIterator<Role>>;
+  state: () => Promise<AsyncIterator<MembershipState>>;
 }
 
 export interface MembershipNullablePromise
@@ -1131,6 +1154,7 @@ export interface MembershipNullablePromise
   user: <T = UserPromise>() => T;
   station: <T = StationPromise>() => T;
   role: () => Promise<Role>;
+  state: () => Promise<MembershipState>;
 }
 
 export interface User {
@@ -1617,6 +1641,7 @@ export interface MembershipSubscriptionPayloadSubscription
 export interface MembershipPreviousValues {
   id: ID_Output;
   role: Role;
+  state: MembershipState;
 }
 
 export interface MembershipPreviousValuesPromise
@@ -1624,6 +1649,7 @@ export interface MembershipPreviousValuesPromise
     Fragmentable {
   id: () => Promise<ID_Output>;
   role: () => Promise<Role>;
+  state: () => Promise<MembershipState>;
 }
 
 export interface MembershipPreviousValuesSubscription
@@ -1631,6 +1657,7 @@ export interface MembershipPreviousValuesSubscription
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   role: () => Promise<AsyncIterator<Role>>;
+  state: () => Promise<AsyncIterator<MembershipState>>;
 }
 
 export interface StationSubscriptionPayload {
@@ -1864,6 +1891,10 @@ export const models: Model[] = [
   },
   {
     name: "Role",
+    embedded: false
+  },
+  {
+    name: "MembershipState",
     embedded: false
   }
 ];

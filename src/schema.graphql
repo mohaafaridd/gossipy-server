@@ -25,6 +25,7 @@ type Membership {
   user: User!
   station: Station!
   role: Role!
+  state: MembershipState!
 }
 
 type Topic {
@@ -56,6 +57,7 @@ type Mutation {
   updateStation(id: String!, data: UpdateStationInput!): Station!
   deleteStation(id: String!): Station!
   createMembership(stationId: String!): Membership!
+  updateMembership(id: String!, data: MembershipUpdateInput): Membership!
 }
 
 type AuthPayload {
@@ -91,9 +93,20 @@ input UpdateStationInput {
   public: Boolean
 }
 
+input MembershipUpdateInput {
+  role: Role
+  state: MembershipState
+}
+
 enum Role {
   FOUNDER
   ADMIN
   MODERATOR
   MEMBER
+}
+
+enum MembershipState {
+  PENDING
+  ACTIVE
+  BANNED
 }
