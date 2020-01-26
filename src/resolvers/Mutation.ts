@@ -77,15 +77,6 @@ export default {
       data.password = await hashPasswords(data.password)
     }
 
-    if (typeof data.identifier === 'string') {
-      delete data.identifier
-    }
-
-    if (typeof data.name === 'string') {
-      data.name = sanitizer.alphanumeric(data.name)
-      data.identifier = data.name.toLowerCase()
-    }
-
     return prisma.updateUser({
       where: { id: userId },
       data,
@@ -225,6 +216,9 @@ export default {
     return membership
   },
 
+  /**
+   * This mutation is dedicated to enable admins and founder to change members state/role
+   */
   updateMembership: async (
     parent,
     { id, data }: { id: string; data: MembershipUpdateInput },
@@ -264,5 +258,40 @@ export default {
     })
 
     return membership
+  },
+
+  deleteMembership: async (
+    parent,
+    { id }: { id: string },
+    { prisma, request }: { prisma: Prisma; request: any }
+  ) => {
+    const userId = getUserId(request)
+
+    const membership = await prisma.membership({ id })
+    const station = await prisma.membership({ id }).station()
+    const user = await prisma.membership({ id }).user()
+
+    const isUser = user.id === userId
+    const isAuthorized: Boolean = await prisma.$exists.membership({
+      AND: {
+        station: {
+          id: station.id,
+        },
+        user: {
+          id: userId,
+        },
+        role_in: ['FOUNDER', 'ADMIN', 'MODERATOR'],
+      },
+    })
+
+    if (!isUser && !isAuthorized) throw new Error('Authorization Required')
+
+    if (membership.role === 'FOUNDER')
+      throw new Error('This membership is the founder')
+
+    if (membership.state === 'BANNED')
+      throw new Error('This membership is banned')
+
+    return prisma.deleteMembership({ id })
   },
 }

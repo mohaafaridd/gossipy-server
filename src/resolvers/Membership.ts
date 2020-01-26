@@ -2,12 +2,10 @@ import { Prisma, User, Station } from '../generated/prisma-client'
 
 export default {
   user: async ({ id }, args, { prisma }: { prisma: Prisma }) => {
-    const user: User[] = await prisma.membership({ id }).user()
-    return user
+    return prisma.membership({ id }).user()
   },
 
   station: async ({ id }, args, { prisma }: { prisma: Prisma }) => {
-    const station: Station[] = await prisma.membership({ id }).station()
-    return station
+    return prisma.membership({ id }).station()
   },
 }
