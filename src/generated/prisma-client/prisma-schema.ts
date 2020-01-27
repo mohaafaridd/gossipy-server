@@ -131,6 +131,7 @@ type Membership {
   id: ID!
   user: User!
   station: Station!
+  topics(where: TopicWhereInput, orderBy: TopicOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Topic!]
   role: Role!
   state: MembershipState!
 }
@@ -145,6 +146,7 @@ input MembershipCreateInput {
   id: ID
   user: UserCreateOneWithoutMembershipsInput!
   station: StationCreateOneWithoutMembersInput!
+  topics: TopicCreateManyWithoutMembershipInput
   role: Role
   state: MembershipState
 }
@@ -159,9 +161,23 @@ input MembershipCreateManyWithoutUserInput {
   connect: [MembershipWhereUniqueInput!]
 }
 
+input MembershipCreateOneWithoutTopicsInput {
+  create: MembershipCreateWithoutTopicsInput
+  connect: MembershipWhereUniqueInput
+}
+
 input MembershipCreateWithoutStationInput {
   id: ID
   user: UserCreateOneWithoutMembershipsInput!
+  topics: TopicCreateManyWithoutMembershipInput
+  role: Role
+  state: MembershipState
+}
+
+input MembershipCreateWithoutTopicsInput {
+  id: ID
+  user: UserCreateOneWithoutMembershipsInput!
+  station: StationCreateOneWithoutMembersInput!
   role: Role
   state: MembershipState
 }
@@ -169,6 +185,7 @@ input MembershipCreateWithoutStationInput {
 input MembershipCreateWithoutUserInput {
   id: ID
   station: StationCreateOneWithoutMembersInput!
+  topics: TopicCreateManyWithoutMembershipInput
   role: Role
   state: MembershipState
 }
@@ -248,6 +265,7 @@ input MembershipSubscriptionWhereInput {
 input MembershipUpdateInput {
   user: UserUpdateOneRequiredWithoutMembershipsInput
   station: StationUpdateOneRequiredWithoutMembersInput
+  topics: TopicUpdateManyWithoutMembershipInput
   role: Role
   state: MembershipState
 }
@@ -291,14 +309,30 @@ input MembershipUpdateManyWithWhereNestedInput {
   data: MembershipUpdateManyDataInput!
 }
 
+input MembershipUpdateOneRequiredWithoutTopicsInput {
+  create: MembershipCreateWithoutTopicsInput
+  update: MembershipUpdateWithoutTopicsDataInput
+  upsert: MembershipUpsertWithoutTopicsInput
+  connect: MembershipWhereUniqueInput
+}
+
 input MembershipUpdateWithoutStationDataInput {
   user: UserUpdateOneRequiredWithoutMembershipsInput
+  topics: TopicUpdateManyWithoutMembershipInput
+  role: Role
+  state: MembershipState
+}
+
+input MembershipUpdateWithoutTopicsDataInput {
+  user: UserUpdateOneRequiredWithoutMembershipsInput
+  station: StationUpdateOneRequiredWithoutMembersInput
   role: Role
   state: MembershipState
 }
 
 input MembershipUpdateWithoutUserDataInput {
   station: StationUpdateOneRequiredWithoutMembersInput
+  topics: TopicUpdateManyWithoutMembershipInput
   role: Role
   state: MembershipState
 }
@@ -311,6 +345,11 @@ input MembershipUpdateWithWhereUniqueWithoutStationInput {
 input MembershipUpdateWithWhereUniqueWithoutUserInput {
   where: MembershipWhereUniqueInput!
   data: MembershipUpdateWithoutUserDataInput!
+}
+
+input MembershipUpsertWithoutTopicsInput {
+  update: MembershipUpdateWithoutTopicsDataInput!
+  create: MembershipCreateWithoutTopicsInput!
 }
 
 input MembershipUpsertWithWhereUniqueWithoutStationInput {
@@ -342,6 +381,9 @@ input MembershipWhereInput {
   id_not_ends_with: ID
   user: UserWhereInput
   station: StationWhereInput
+  topics_every: TopicWhereInput
+  topics_some: TopicWhereInput
+  topics_none: TopicWhereInput
   role: Role
   role_not: Role
   role_in: [Role!]
@@ -461,6 +503,11 @@ input StationCreateInput {
   members: MembershipCreateManyWithoutStationInput
 }
 
+input StationCreateOneInput {
+  create: StationCreateInput
+  connect: StationWhereUniqueInput
+}
+
 input StationCreateOneWithoutMembersInput {
   create: StationCreateWithoutMembersInput
   connect: StationWhereUniqueInput
@@ -524,6 +571,14 @@ input StationSubscriptionWhereInput {
   NOT: [StationSubscriptionWhereInput!]
 }
 
+input StationUpdateDataInput {
+  name: String
+  identifier: String
+  description: String
+  public: Boolean
+  members: MembershipUpdateManyWithoutStationInput
+}
+
 input StationUpdateInput {
   name: String
   identifier: String
@@ -539,6 +594,13 @@ input StationUpdateManyMutationInput {
   public: Boolean
 }
 
+input StationUpdateOneRequiredInput {
+  create: StationCreateInput
+  update: StationUpdateDataInput
+  upsert: StationUpsertNestedInput
+  connect: StationWhereUniqueInput
+}
+
 input StationUpdateOneRequiredWithoutMembersInput {
   create: StationCreateWithoutMembersInput
   update: StationUpdateWithoutMembersDataInput
@@ -551,6 +613,11 @@ input StationUpdateWithoutMembersDataInput {
   identifier: String
   description: String
   public: Boolean
+}
+
+input StationUpsertNestedInput {
+  update: StationUpdateDataInput!
+  create: StationCreateInput!
 }
 
 input StationUpsertWithoutMembersInput {
@@ -658,6 +725,8 @@ type Topic {
   id: ID!
   title: String!
   content: String!
+  station: Station!
+  membership: Membership!
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -672,6 +741,20 @@ input TopicCreateInput {
   id: ID
   title: String!
   content: String!
+  station: StationCreateOneInput!
+  membership: MembershipCreateOneWithoutTopicsInput!
+}
+
+input TopicCreateManyWithoutMembershipInput {
+  create: [TopicCreateWithoutMembershipInput!]
+  connect: [TopicWhereUniqueInput!]
+}
+
+input TopicCreateWithoutMembershipInput {
+  id: ID
+  title: String!
+  content: String!
+  station: StationCreateOneInput!
 }
 
 type TopicEdge {
@@ -700,6 +783,70 @@ type TopicPreviousValues {
   updatedAt: DateTime!
 }
 
+input TopicScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  title: String
+  title_not: String
+  title_in: [String!]
+  title_not_in: [String!]
+  title_lt: String
+  title_lte: String
+  title_gt: String
+  title_gte: String
+  title_contains: String
+  title_not_contains: String
+  title_starts_with: String
+  title_not_starts_with: String
+  title_ends_with: String
+  title_not_ends_with: String
+  content: String
+  content_not: String
+  content_in: [String!]
+  content_not_in: [String!]
+  content_lt: String
+  content_lte: String
+  content_gt: String
+  content_gte: String
+  content_contains: String
+  content_not_contains: String
+  content_starts_with: String
+  content_not_starts_with: String
+  content_ends_with: String
+  content_not_ends_with: String
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  AND: [TopicScalarWhereInput!]
+  OR: [TopicScalarWhereInput!]
+  NOT: [TopicScalarWhereInput!]
+}
+
 type TopicSubscriptionPayload {
   mutation: MutationType!
   node: Topic
@@ -721,11 +868,52 @@ input TopicSubscriptionWhereInput {
 input TopicUpdateInput {
   title: String
   content: String
+  station: StationUpdateOneRequiredInput
+  membership: MembershipUpdateOneRequiredWithoutTopicsInput
+}
+
+input TopicUpdateManyDataInput {
+  title: String
+  content: String
 }
 
 input TopicUpdateManyMutationInput {
   title: String
   content: String
+}
+
+input TopicUpdateManyWithoutMembershipInput {
+  create: [TopicCreateWithoutMembershipInput!]
+  delete: [TopicWhereUniqueInput!]
+  connect: [TopicWhereUniqueInput!]
+  set: [TopicWhereUniqueInput!]
+  disconnect: [TopicWhereUniqueInput!]
+  update: [TopicUpdateWithWhereUniqueWithoutMembershipInput!]
+  upsert: [TopicUpsertWithWhereUniqueWithoutMembershipInput!]
+  deleteMany: [TopicScalarWhereInput!]
+  updateMany: [TopicUpdateManyWithWhereNestedInput!]
+}
+
+input TopicUpdateManyWithWhereNestedInput {
+  where: TopicScalarWhereInput!
+  data: TopicUpdateManyDataInput!
+}
+
+input TopicUpdateWithoutMembershipDataInput {
+  title: String
+  content: String
+  station: StationUpdateOneRequiredInput
+}
+
+input TopicUpdateWithWhereUniqueWithoutMembershipInput {
+  where: TopicWhereUniqueInput!
+  data: TopicUpdateWithoutMembershipDataInput!
+}
+
+input TopicUpsertWithWhereUniqueWithoutMembershipInput {
+  where: TopicWhereUniqueInput!
+  update: TopicUpdateWithoutMembershipDataInput!
+  create: TopicCreateWithoutMembershipInput!
 }
 
 input TopicWhereInput {
@@ -771,6 +959,8 @@ input TopicWhereInput {
   content_not_starts_with: String
   content_ends_with: String
   content_not_ends_with: String
+  station: StationWhereInput
+  membership: MembershipWhereInput
   createdAt: DateTime
   createdAt_not: DateTime
   createdAt_in: [DateTime!]

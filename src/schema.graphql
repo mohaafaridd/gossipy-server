@@ -25,6 +25,7 @@ type Membership {
   user: User!
   station: Station!
   role: Role!
+  topics: [Topic!]!
   state: MembershipState!
 }
 
@@ -32,6 +33,8 @@ type Topic {
   id: ID!
   title: String!
   content: String!
+  station: Station!
+  membership: Membership!
   createdAt: String!
   updatedAt: String!
 }

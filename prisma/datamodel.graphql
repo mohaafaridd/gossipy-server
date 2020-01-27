@@ -26,6 +26,7 @@ type Membership {
   id: ID! @id
   user: User! @relation(name: "UserToMembership", onDelete: SET_NULL)
   station: Station! @relation(name: "StationToMembership", onDelete: SET_NULL)
+  topics: [Topic!]! @relation(name: "TopicToMembership", onDelete: CASCADE)
   role: Role! @default(value: MEMBER)
   state: MembershipState! @default(value: PENDING)
 }
@@ -34,6 +35,9 @@ type Topic {
   id: ID! @id
   title: String!
   content: String!
+  station: Station!
+  membership: Membership!
+    @relation(name: "TopicToMembership", onDelete: SET_NULL)
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
 }
