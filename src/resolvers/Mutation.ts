@@ -260,6 +260,9 @@ export default {
     return membership
   },
 
+  /**
+   * This mutation is dedicated to enable admins and founder to remove a membership
+   */
   deleteMembership: async (
     parent,
     { id }: { id: string },
@@ -292,6 +295,12 @@ export default {
     if (membership.state === 'BANNED')
       throw new Error('This membership is banned')
 
-    return prisma.deleteMembership({ id })
+    const deleted = await prisma.deleteMembership({ id })
+
+    return {
+      membership: deleted,
+      user,
+      station,
+    }
   },
 }

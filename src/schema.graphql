@@ -49,6 +49,12 @@ type Query {
   comments: [Comment!]!
 }
 
+type DeleteMembership {
+  membership: Membership!
+  user: User!
+  station: Station!
+}
+
 type Mutation {
   signUp(data: CreateUserInput!): AuthPayload!
   signIn(data: LoginUserInput!): AuthPayload!
@@ -58,7 +64,7 @@ type Mutation {
   deleteStation(id: String!): Station!
   createMembership(stationId: String!): Membership!
   updateMembership(id: String!, data: MembershipUpdateInput): Membership!
-  deleteMembership(id: String!): Membership!
+  deleteMembership(id: String!): DeleteMembership!
 }
 
 type AuthPayload {
