@@ -81,6 +81,7 @@ type Mutation {
   deleteTopic(id: String!): Topic!
   createComment(data: CreateCommentInput!): Comment!
   updateComment(id: String!, data: UpdateCommentInput!): Comment!
+  deleteComment(id: String!): Comment!
 }
 
 type AuthPayload {

@@ -541,4 +541,28 @@ export default {
       data,
     })
   },
+
+  /**
+   * This mutation is dedicated to enable members to delete their own comments
+   */
+  deleteComment: async (
+    parent,
+    { id }: { id: string },
+    { prisma, request }: { prisma: Prisma; request: any }
+  ) => {
+    const userId = getUserId(request)
+    const isAuthorized = await prisma.$exists.comment({
+      id,
+      membership: {
+        user: {
+          id: userId,
+        },
+        state: 'ACTIVE',
+      },
+    })
+
+    if (!isAuthorized) throw new Error('Authorization Required')
+
+    return prisma.deleteComment({ id })
+  },
 }
