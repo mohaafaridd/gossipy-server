@@ -56,5 +56,6 @@ enum Role {
 enum MembershipState {
   PENDING
   ACTIVE
+  DETACHED
   BANNED
 }

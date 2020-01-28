@@ -241,6 +241,7 @@ input MembershipScalarWhereInput {
 enum MembershipState {
   PENDING
   ACTIVE
+  DETACHED
   BANNED
 }
 

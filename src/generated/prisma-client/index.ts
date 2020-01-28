@@ -265,7 +265,7 @@ export type CommentOrderByInput =
 
 export type Role = "FOUNDER" | "ADMIN" | "MODERATOR" | "MEMBER";
 
-export type MembershipState = "PENDING" | "ACTIVE" | "BANNED";
+export type MembershipState = "PENDING" | "ACTIVE" | "DETACHED" | "BANNED";
 
 export type MembershipOrderByInput =
   | "id_ASC"

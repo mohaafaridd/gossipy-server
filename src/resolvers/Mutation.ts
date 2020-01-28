@@ -262,7 +262,36 @@ export default {
   },
 
   /**
-   * This mutation is dedicated to enable admins and founder to remove a membership
+   * This mutation is dedicated to enable users to get out of a station without removing their posts and comments
+   */
+  unsubscribeMembership: async (
+    parent,
+    { id }: { id: string },
+    { prisma, request }: { prisma: Prisma; request: any }
+  ) => {
+    const userId = getUserId(request)
+
+    const isAuthorized = await prisma.$exists.membership({
+      id,
+      user: {
+        id: userId,
+      },
+      state: 'ACTIVE',
+      role_in: ['ADMIN', 'MEMBER', 'MODERATOR'],
+    })
+
+    if (!isAuthorized) throw new Error('Authorization Required')
+
+    return prisma.updateMembership({
+      where: { id },
+      data: {
+        role: 'MEMBER',
+        state: 'DETACHED',
+      },
+    })
+  },
+  /**
+   * This mutation is dedicated to enable admins and founder to remove a membership (Cascading their Topics and Comments)
    */
   deleteMembership: async (
     parent,
@@ -403,6 +432,7 @@ export default {
             user: {
               id: userId,
             },
+            state: 'ACTIVE',
           },
         },
         {

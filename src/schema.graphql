@@ -66,6 +66,7 @@ type Mutation {
   deleteStation(id: String!): Station!
   createMembership(stationId: String!): Membership!
   updateMembership(id: String!, data: MembershipUpdateInput): Membership!
+  unsubscribeMembership(id: String!): Membership!
   deleteMembership(id: String!): DeleteMembership!
   createTopic(data: CreateTopicInput!): Topic!
   updateTopic(id: String!, data: UpdateTopicInput): Topic!
@@ -130,5 +131,6 @@ enum Role {
 enum MembershipState {
   PENDING
   ACTIVE
+  DETACHED
   BANNED
 }
