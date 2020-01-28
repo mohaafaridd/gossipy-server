@@ -29,6 +29,10 @@ type BatchPayload {
 type Comment {
   id: ID!
   content: String!
+  membership: Membership!
+  topic: Topic!
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 type CommentConnection {
@@ -40,6 +44,30 @@ type CommentConnection {
 input CommentCreateInput {
   id: ID
   content: String!
+  membership: MembershipCreateOneWithoutCommentsInput!
+  topic: TopicCreateOneWithoutCommentsInput!
+}
+
+input CommentCreateManyWithoutMembershipInput {
+  create: [CommentCreateWithoutMembershipInput!]
+  connect: [CommentWhereUniqueInput!]
+}
+
+input CommentCreateManyWithoutTopicInput {
+  create: [CommentCreateWithoutTopicInput!]
+  connect: [CommentWhereUniqueInput!]
+}
+
+input CommentCreateWithoutMembershipInput {
+  id: ID
+  content: String!
+  topic: TopicCreateOneWithoutCommentsInput!
+}
+
+input CommentCreateWithoutTopicInput {
+  id: ID
+  content: String!
+  membership: MembershipCreateOneWithoutCommentsInput!
 }
 
 type CommentEdge {
@@ -52,11 +80,67 @@ enum CommentOrderByInput {
   id_DESC
   content_ASC
   content_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
 }
 
 type CommentPreviousValues {
   id: ID!
   content: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+input CommentScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  content: String
+  content_not: String
+  content_in: [String!]
+  content_not_in: [String!]
+  content_lt: String
+  content_lte: String
+  content_gt: String
+  content_gte: String
+  content_contains: String
+  content_not_contains: String
+  content_starts_with: String
+  content_not_starts_with: String
+  content_ends_with: String
+  content_not_ends_with: String
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  AND: [CommentScalarWhereInput!]
+  OR: [CommentScalarWhereInput!]
+  NOT: [CommentScalarWhereInput!]
 }
 
 type CommentSubscriptionPayload {
@@ -79,10 +163,77 @@ input CommentSubscriptionWhereInput {
 
 input CommentUpdateInput {
   content: String
+  membership: MembershipUpdateOneRequiredWithoutCommentsInput
+  topic: TopicUpdateOneRequiredWithoutCommentsInput
+}
+
+input CommentUpdateManyDataInput {
+  content: String
 }
 
 input CommentUpdateManyMutationInput {
   content: String
+}
+
+input CommentUpdateManyWithoutMembershipInput {
+  create: [CommentCreateWithoutMembershipInput!]
+  delete: [CommentWhereUniqueInput!]
+  connect: [CommentWhereUniqueInput!]
+  set: [CommentWhereUniqueInput!]
+  disconnect: [CommentWhereUniqueInput!]
+  update: [CommentUpdateWithWhereUniqueWithoutMembershipInput!]
+  upsert: [CommentUpsertWithWhereUniqueWithoutMembershipInput!]
+  deleteMany: [CommentScalarWhereInput!]
+  updateMany: [CommentUpdateManyWithWhereNestedInput!]
+}
+
+input CommentUpdateManyWithoutTopicInput {
+  create: [CommentCreateWithoutTopicInput!]
+  delete: [CommentWhereUniqueInput!]
+  connect: [CommentWhereUniqueInput!]
+  set: [CommentWhereUniqueInput!]
+  disconnect: [CommentWhereUniqueInput!]
+  update: [CommentUpdateWithWhereUniqueWithoutTopicInput!]
+  upsert: [CommentUpsertWithWhereUniqueWithoutTopicInput!]
+  deleteMany: [CommentScalarWhereInput!]
+  updateMany: [CommentUpdateManyWithWhereNestedInput!]
+}
+
+input CommentUpdateManyWithWhereNestedInput {
+  where: CommentScalarWhereInput!
+  data: CommentUpdateManyDataInput!
+}
+
+input CommentUpdateWithoutMembershipDataInput {
+  content: String
+  topic: TopicUpdateOneRequiredWithoutCommentsInput
+}
+
+input CommentUpdateWithoutTopicDataInput {
+  content: String
+  membership: MembershipUpdateOneRequiredWithoutCommentsInput
+}
+
+input CommentUpdateWithWhereUniqueWithoutMembershipInput {
+  where: CommentWhereUniqueInput!
+  data: CommentUpdateWithoutMembershipDataInput!
+}
+
+input CommentUpdateWithWhereUniqueWithoutTopicInput {
+  where: CommentWhereUniqueInput!
+  data: CommentUpdateWithoutTopicDataInput!
+}
+
+input CommentUpsertWithWhereUniqueWithoutMembershipInput {
+  where: CommentWhereUniqueInput!
+  update: CommentUpdateWithoutMembershipDataInput!
+  create: CommentCreateWithoutMembershipInput!
+}
+
+input CommentUpsertWithWhereUniqueWithoutTopicInput {
+  where: CommentWhereUniqueInput!
+  update: CommentUpdateWithoutTopicDataInput!
+  create: CommentCreateWithoutTopicInput!
 }
 
 input CommentWhereInput {
@@ -114,6 +265,24 @@ input CommentWhereInput {
   content_not_starts_with: String
   content_ends_with: String
   content_not_ends_with: String
+  membership: MembershipWhereInput
+  topic: TopicWhereInput
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
   AND: [CommentWhereInput!]
   OR: [CommentWhereInput!]
   NOT: [CommentWhereInput!]
@@ -132,8 +301,11 @@ type Membership {
   user: User!
   station: Station!
   topics(where: TopicWhereInput, orderBy: TopicOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Topic!]
+  comments(where: CommentWhereInput, orderBy: CommentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Comment!]
   role: Role!
   state: MembershipState!
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 type MembershipConnection {
@@ -147,6 +319,7 @@ input MembershipCreateInput {
   user: UserCreateOneWithoutMembershipsInput!
   station: StationCreateOneWithoutMembersInput!
   topics: TopicCreateManyWithoutMembershipInput
+  comments: CommentCreateManyWithoutMembershipInput
   role: Role
   state: MembershipState
 }
@@ -161,15 +334,30 @@ input MembershipCreateManyWithoutUserInput {
   connect: [MembershipWhereUniqueInput!]
 }
 
+input MembershipCreateOneWithoutCommentsInput {
+  create: MembershipCreateWithoutCommentsInput
+  connect: MembershipWhereUniqueInput
+}
+
 input MembershipCreateOneWithoutTopicsInput {
   create: MembershipCreateWithoutTopicsInput
   connect: MembershipWhereUniqueInput
+}
+
+input MembershipCreateWithoutCommentsInput {
+  id: ID
+  user: UserCreateOneWithoutMembershipsInput!
+  station: StationCreateOneWithoutMembersInput!
+  topics: TopicCreateManyWithoutMembershipInput
+  role: Role
+  state: MembershipState
 }
 
 input MembershipCreateWithoutStationInput {
   id: ID
   user: UserCreateOneWithoutMembershipsInput!
   topics: TopicCreateManyWithoutMembershipInput
+  comments: CommentCreateManyWithoutMembershipInput
   role: Role
   state: MembershipState
 }
@@ -178,6 +366,7 @@ input MembershipCreateWithoutTopicsInput {
   id: ID
   user: UserCreateOneWithoutMembershipsInput!
   station: StationCreateOneWithoutMembersInput!
+  comments: CommentCreateManyWithoutMembershipInput
   role: Role
   state: MembershipState
 }
@@ -186,6 +375,7 @@ input MembershipCreateWithoutUserInput {
   id: ID
   station: StationCreateOneWithoutMembersInput!
   topics: TopicCreateManyWithoutMembershipInput
+  comments: CommentCreateManyWithoutMembershipInput
   role: Role
   state: MembershipState
 }
@@ -202,12 +392,18 @@ enum MembershipOrderByInput {
   role_DESC
   state_ASC
   state_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
 }
 
 type MembershipPreviousValues {
   id: ID!
   role: Role!
   state: MembershipState!
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 input MembershipScalarWhereInput {
@@ -233,6 +429,22 @@ input MembershipScalarWhereInput {
   state_not: MembershipState
   state_in: [MembershipState!]
   state_not_in: [MembershipState!]
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
   AND: [MembershipScalarWhereInput!]
   OR: [MembershipScalarWhereInput!]
   NOT: [MembershipScalarWhereInput!]
@@ -267,6 +479,7 @@ input MembershipUpdateInput {
   user: UserUpdateOneRequiredWithoutMembershipsInput
   station: StationUpdateOneRequiredWithoutMembersInput
   topics: TopicUpdateManyWithoutMembershipInput
+  comments: CommentUpdateManyWithoutMembershipInput
   role: Role
   state: MembershipState
 }
@@ -310,6 +523,13 @@ input MembershipUpdateManyWithWhereNestedInput {
   data: MembershipUpdateManyDataInput!
 }
 
+input MembershipUpdateOneRequiredWithoutCommentsInput {
+  create: MembershipCreateWithoutCommentsInput
+  update: MembershipUpdateWithoutCommentsDataInput
+  upsert: MembershipUpsertWithoutCommentsInput
+  connect: MembershipWhereUniqueInput
+}
+
 input MembershipUpdateOneRequiredWithoutTopicsInput {
   create: MembershipCreateWithoutTopicsInput
   update: MembershipUpdateWithoutTopicsDataInput
@@ -317,9 +537,18 @@ input MembershipUpdateOneRequiredWithoutTopicsInput {
   connect: MembershipWhereUniqueInput
 }
 
+input MembershipUpdateWithoutCommentsDataInput {
+  user: UserUpdateOneRequiredWithoutMembershipsInput
+  station: StationUpdateOneRequiredWithoutMembersInput
+  topics: TopicUpdateManyWithoutMembershipInput
+  role: Role
+  state: MembershipState
+}
+
 input MembershipUpdateWithoutStationDataInput {
   user: UserUpdateOneRequiredWithoutMembershipsInput
   topics: TopicUpdateManyWithoutMembershipInput
+  comments: CommentUpdateManyWithoutMembershipInput
   role: Role
   state: MembershipState
 }
@@ -327,6 +556,7 @@ input MembershipUpdateWithoutStationDataInput {
 input MembershipUpdateWithoutTopicsDataInput {
   user: UserUpdateOneRequiredWithoutMembershipsInput
   station: StationUpdateOneRequiredWithoutMembersInput
+  comments: CommentUpdateManyWithoutMembershipInput
   role: Role
   state: MembershipState
 }
@@ -334,6 +564,7 @@ input MembershipUpdateWithoutTopicsDataInput {
 input MembershipUpdateWithoutUserDataInput {
   station: StationUpdateOneRequiredWithoutMembersInput
   topics: TopicUpdateManyWithoutMembershipInput
+  comments: CommentUpdateManyWithoutMembershipInput
   role: Role
   state: MembershipState
 }
@@ -346,6 +577,11 @@ input MembershipUpdateWithWhereUniqueWithoutStationInput {
 input MembershipUpdateWithWhereUniqueWithoutUserInput {
   where: MembershipWhereUniqueInput!
   data: MembershipUpdateWithoutUserDataInput!
+}
+
+input MembershipUpsertWithoutCommentsInput {
+  update: MembershipUpdateWithoutCommentsDataInput!
+  create: MembershipCreateWithoutCommentsInput!
 }
 
 input MembershipUpsertWithoutTopicsInput {
@@ -385,6 +621,9 @@ input MembershipWhereInput {
   topics_every: TopicWhereInput
   topics_some: TopicWhereInput
   topics_none: TopicWhereInput
+  comments_every: CommentWhereInput
+  comments_some: CommentWhereInput
+  comments_none: CommentWhereInput
   role: Role
   role_not: Role
   role_in: [Role!]
@@ -393,6 +632,22 @@ input MembershipWhereInput {
   state_not: MembershipState
   state_in: [MembershipState!]
   state_not_in: [MembershipState!]
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
   AND: [MembershipWhereInput!]
   OR: [MembershipWhereInput!]
   NOT: [MembershipWhereInput!]
@@ -702,6 +957,7 @@ type Topic {
   title: String!
   content: String!
   membership: Membership!
+  comments(where: CommentWhereInput, orderBy: CommentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Comment!]
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -717,6 +973,7 @@ input TopicCreateInput {
   title: String!
   content: String!
   membership: MembershipCreateOneWithoutTopicsInput!
+  comments: CommentCreateManyWithoutTopicInput
 }
 
 input TopicCreateManyWithoutMembershipInput {
@@ -724,10 +981,23 @@ input TopicCreateManyWithoutMembershipInput {
   connect: [TopicWhereUniqueInput!]
 }
 
+input TopicCreateOneWithoutCommentsInput {
+  create: TopicCreateWithoutCommentsInput
+  connect: TopicWhereUniqueInput
+}
+
+input TopicCreateWithoutCommentsInput {
+  id: ID
+  title: String!
+  content: String!
+  membership: MembershipCreateOneWithoutTopicsInput!
+}
+
 input TopicCreateWithoutMembershipInput {
   id: ID
   title: String!
   content: String!
+  comments: CommentCreateManyWithoutTopicInput
 }
 
 type TopicEdge {
@@ -842,6 +1112,7 @@ input TopicUpdateInput {
   title: String
   content: String
   membership: MembershipUpdateOneRequiredWithoutTopicsInput
+  comments: CommentUpdateManyWithoutTopicInput
 }
 
 input TopicUpdateManyDataInput {
@@ -871,14 +1142,33 @@ input TopicUpdateManyWithWhereNestedInput {
   data: TopicUpdateManyDataInput!
 }
 
+input TopicUpdateOneRequiredWithoutCommentsInput {
+  create: TopicCreateWithoutCommentsInput
+  update: TopicUpdateWithoutCommentsDataInput
+  upsert: TopicUpsertWithoutCommentsInput
+  connect: TopicWhereUniqueInput
+}
+
+input TopicUpdateWithoutCommentsDataInput {
+  title: String
+  content: String
+  membership: MembershipUpdateOneRequiredWithoutTopicsInput
+}
+
 input TopicUpdateWithoutMembershipDataInput {
   title: String
   content: String
+  comments: CommentUpdateManyWithoutTopicInput
 }
 
 input TopicUpdateWithWhereUniqueWithoutMembershipInput {
   where: TopicWhereUniqueInput!
   data: TopicUpdateWithoutMembershipDataInput!
+}
+
+input TopicUpsertWithoutCommentsInput {
+  update: TopicUpdateWithoutCommentsDataInput!
+  create: TopicCreateWithoutCommentsInput!
 }
 
 input TopicUpsertWithWhereUniqueWithoutMembershipInput {
@@ -931,6 +1221,9 @@ input TopicWhereInput {
   content_ends_with: String
   content_not_ends_with: String
   membership: MembershipWhereInput
+  comments_every: CommentWhereInput
+  comments_some: CommentWhereInput
+  comments_none: CommentWhereInput
   createdAt: DateTime
   createdAt_not: DateTime
   createdAt_in: [DateTime!]

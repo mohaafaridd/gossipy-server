@@ -26,9 +26,13 @@ type Membership {
   id: ID! @id
   user: User! @relation(name: "UserToMembership", onDelete: SET_NULL)
   station: Station! @relation(name: "StationToMembership", onDelete: SET_NULL)
-  topics: [Topic!]! @relation(name: "TopicToMembership", onDelete: SET_NULL)
+  topics: [Topic!]! @relation(name: "TopicToMembership", onDelete: CASCADE)
+  comments: [Comment!]!
+    @relation(name: "MembershipToComment", onDelete: CASCADE)
   role: Role! @default(value: MEMBER)
   state: MembershipState! @default(value: PENDING)
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
 }
 
 type Topic {
@@ -37,6 +41,7 @@ type Topic {
   content: String!
   membership: Membership!
     @relation(name: "TopicToMembership", onDelete: SET_NULL)
+  comments: [Comment!]! @relation(name: "TopicToComment", onDelete: CASCADE)
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
 }
@@ -44,6 +49,11 @@ type Topic {
 type Comment {
   id: ID! @id
   content: String!
+  membership: Membership!
+    @relation(name: "MembershipToComment", onDelete: SET_NULL)
+  topic: Topic! @relation(name: "TopicToComment", onDelete: SET_NULL)
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
 }
 
 enum Role {

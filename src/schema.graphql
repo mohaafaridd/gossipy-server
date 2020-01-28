@@ -26,7 +26,10 @@ type Membership {
   station: Station!
   role: Role!
   topics: [Topic!]!
+  comments: [Comment!]!
   state: MembershipState!
+  createdAt: String!
+  updatedAt: String!
 }
 
 type Topic {
@@ -34,6 +37,7 @@ type Topic {
   title: String!
   content: String!
   membership: Membership!
+  comments: [Comment!]!
   createdAt: String!
   updatedAt: String!
 }
@@ -41,6 +45,10 @@ type Topic {
 type Comment {
   id: ID!
   content: String!
+  membership: Membership!
+  topic: Topic!
+  createdAt: String!
+  updatedAt: String!
 }
 
 type Query {
@@ -71,6 +79,7 @@ type Mutation {
   createTopic(data: CreateTopicInput!): Topic!
   updateTopic(id: String!, data: UpdateTopicInput): Topic!
   deleteTopic(id: String!): Topic!
+  createComment(data: CreateCommentInput!): Comment!
 }
 
 type AuthPayload {
@@ -119,6 +128,12 @@ input CreateTopicInput {
 input UpdateTopicInput {
   title: String
   content: String
+}
+
+input CreateCommentInput {
+  content: String!
+  topic: String!
+  membership: String!
 }
 
 enum Role {
