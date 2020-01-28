@@ -503,11 +503,6 @@ input StationCreateInput {
   members: MembershipCreateManyWithoutStationInput
 }
 
-input StationCreateOneInput {
-  create: StationCreateInput
-  connect: StationWhereUniqueInput
-}
-
 input StationCreateOneWithoutMembersInput {
   create: StationCreateWithoutMembersInput
   connect: StationWhereUniqueInput
@@ -571,14 +566,6 @@ input StationSubscriptionWhereInput {
   NOT: [StationSubscriptionWhereInput!]
 }
 
-input StationUpdateDataInput {
-  name: String
-  identifier: String
-  description: String
-  public: Boolean
-  members: MembershipUpdateManyWithoutStationInput
-}
-
 input StationUpdateInput {
   name: String
   identifier: String
@@ -594,13 +581,6 @@ input StationUpdateManyMutationInput {
   public: Boolean
 }
 
-input StationUpdateOneRequiredInput {
-  create: StationCreateInput
-  update: StationUpdateDataInput
-  upsert: StationUpsertNestedInput
-  connect: StationWhereUniqueInput
-}
-
 input StationUpdateOneRequiredWithoutMembersInput {
   create: StationCreateWithoutMembersInput
   update: StationUpdateWithoutMembersDataInput
@@ -613,11 +593,6 @@ input StationUpdateWithoutMembersDataInput {
   identifier: String
   description: String
   public: Boolean
-}
-
-input StationUpsertNestedInput {
-  update: StationUpdateDataInput!
-  create: StationCreateInput!
 }
 
 input StationUpsertWithoutMembersInput {
@@ -725,7 +700,6 @@ type Topic {
   id: ID!
   title: String!
   content: String!
-  station: Station!
   membership: Membership!
   createdAt: DateTime!
   updatedAt: DateTime!
@@ -741,7 +715,6 @@ input TopicCreateInput {
   id: ID
   title: String!
   content: String!
-  station: StationCreateOneInput!
   membership: MembershipCreateOneWithoutTopicsInput!
 }
 
@@ -754,7 +727,6 @@ input TopicCreateWithoutMembershipInput {
   id: ID
   title: String!
   content: String!
-  station: StationCreateOneInput!
 }
 
 type TopicEdge {
@@ -868,7 +840,6 @@ input TopicSubscriptionWhereInput {
 input TopicUpdateInput {
   title: String
   content: String
-  station: StationUpdateOneRequiredInput
   membership: MembershipUpdateOneRequiredWithoutTopicsInput
 }
 
@@ -902,7 +873,6 @@ input TopicUpdateManyWithWhereNestedInput {
 input TopicUpdateWithoutMembershipDataInput {
   title: String
   content: String
-  station: StationUpdateOneRequiredInput
 }
 
 input TopicUpdateWithWhereUniqueWithoutMembershipInput {
@@ -959,7 +929,6 @@ input TopicWhereInput {
   content_not_starts_with: String
   content_ends_with: String
   content_not_ends_with: String
-  station: StationWhereInput
   membership: MembershipWhereInput
   createdAt: DateTime
   createdAt_not: DateTime

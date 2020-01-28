@@ -10,6 +10,8 @@ import {
   Membership,
   MembershipCreateInput,
   MembershipUpdateInput,
+  Topic,
+  TopicCreateInput,
 } from '../generated/prisma-client'
 import hashPasswords from '../utils/hashPasswords'
 import generateToken from '../utils/generateToken'
@@ -181,11 +183,10 @@ export default {
    */
   createMembership: async (
     parent,
-    { stationId, data }: { stationId: string; data: MembershipCreateInput },
+    { stationId }: { stationId: string },
     { prisma, request }: { prisma: Prisma; request: any }
   ) => {
     const userId = getUserId(request)
-
     const hasMembership = await prisma.$exists.membership({
       AND: {
         user: {
@@ -302,5 +303,49 @@ export default {
       user,
       station,
     }
+  },
+
+  /**
+   * This mutation is dedicated to enable active station members to post topics
+   */
+  createTopic: async (
+    parent,
+    {
+      data,
+    }: {
+      data: {
+        title: string
+        content: string
+        membership: string
+      }
+    },
+    { prisma, request }: { prisma: Prisma; request: any }
+  ) => {
+    const userId = getUserId(request)
+
+    const [membership]: Membership[] = await prisma.memberships({
+      where: {
+        AND: {
+          id: data.membership,
+          user: {
+            id: userId,
+          },
+          state: 'ACTIVE',
+        },
+      },
+    })
+
+    if (!membership) throw new Error('Authorization Required')
+
+    const topic = await prisma.createTopic({
+      ...data,
+      membership: {
+        connect: {
+          id: membership.id,
+        },
+      },
+    })
+
+    return topic
   },
 }

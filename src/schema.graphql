@@ -33,7 +33,6 @@ type Topic {
   id: ID!
   title: String!
   content: String!
-  station: Station!
   membership: Membership!
   createdAt: String!
   updatedAt: String!
@@ -68,6 +67,7 @@ type Mutation {
   createMembership(stationId: String!): Membership!
   updateMembership(id: String!, data: MembershipUpdateInput): Membership!
   deleteMembership(id: String!): DeleteMembership!
+  createTopic(data: CreateTopicInput!): Topic!
 }
 
 type AuthPayload {
@@ -105,6 +105,12 @@ input UpdateStationInput {
 input MembershipUpdateInput {
   role: Role
   state: MembershipState
+}
+
+input CreateTopicInput {
+  title: String!
+  content: String!
+  membership: String!
 }
 
 enum Role {
