@@ -505,4 +505,40 @@ export default {
       },
     })
   },
+
+  /**
+   * This mutation is dedicated to enable members to update their own comments
+   */
+  updateComment: async (
+    parent,
+    {
+      id,
+      data,
+    }: {
+      id: string
+      data: {
+        content: string
+      }
+    },
+    { prisma, request }: { prisma: Prisma; request: any }
+  ) => {
+    const userId = getUserId(request)
+
+    const isAuthorized = await prisma.$exists.comment({
+      id,
+      membership: {
+        user: {
+          id: userId,
+        },
+        state: 'ACTIVE',
+      },
+    })
+
+    if (!isAuthorized) throw new Error('Authorization Required')
+
+    return prisma.updateComment({
+      where: { id },
+      data,
+    })
+  },
 }
