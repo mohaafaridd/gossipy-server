@@ -69,6 +69,7 @@ type Mutation {
   deleteMembership(id: String!): DeleteMembership!
   createTopic(data: CreateTopicInput!): Topic!
   updateTopic(id: String!, data: UpdateTopicInput): Topic!
+  deleteTopic(id: String!): Topic!
 }
 
 type AuthPayload {

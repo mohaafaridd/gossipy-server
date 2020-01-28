@@ -387,4 +387,42 @@ export default {
       data,
     })
   },
+
+  deleteTopic: async (
+    parent,
+    { id }: { id: string },
+    { prisma, request }: { prisma: Prisma; request: any }
+  ) => {
+    const userId = getUserId(request)
+
+    const isAuthorized = await prisma.$exists.topic({
+      OR: [
+        {
+          id,
+          membership: {
+            user: {
+              id: userId,
+            },
+          },
+        },
+        {
+          id,
+          membership: {
+            station: {
+              members_some: {
+                user: {
+                  id: userId,
+                },
+                role_in: ['ADMIN', 'FOUNDER'],
+              },
+            },
+          },
+        },
+      ],
+    })
+
+    if (!isAuthorized) throw new Error('Authorization Required')
+
+    return prisma.deleteTopic({ id })
+  },
 }
