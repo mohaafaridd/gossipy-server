@@ -68,6 +68,7 @@ type Mutation {
   updateMembership(id: String!, data: MembershipUpdateInput): Membership!
   deleteMembership(id: String!): DeleteMembership!
   createTopic(data: CreateTopicInput!): Topic!
+  updateTopic(id: String!, data: UpdateTopicInput): Topic!
 }
 
 type AuthPayload {
@@ -111,6 +112,11 @@ input CreateTopicInput {
   title: String!
   content: String!
   membership: String!
+}
+
+input UpdateTopicInput {
+  title: String
+  content: String
 }
 
 enum Role {

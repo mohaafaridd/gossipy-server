@@ -348,4 +348,43 @@ export default {
 
     return topic
   },
+
+  /**
+   * This mutation is dedicated to enable users to update their own topics
+   */
+  updateTopic: async (
+    parent,
+    {
+      id,
+      data,
+    }: {
+      id: string
+      data: {
+        title: string
+        content: string
+      }
+    },
+    { prisma, request }: { prisma: Prisma; request: any }
+  ) => {
+    const userId = getUserId(request)
+
+    const isAuthorized = await prisma.$exists.topic({
+      AND: {
+        id,
+        membership: {
+          user: {
+            id: userId,
+          },
+          state: 'ACTIVE',
+        },
+      },
+    })
+
+    if (!isAuthorized) throw new Error('Authorization Required')
+
+    return prisma.updateTopic({
+      where: { id },
+      data,
+    })
+  },
 }
