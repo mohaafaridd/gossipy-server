@@ -5,6 +5,7 @@ import {
   User,
   Station,
   Membership,
+  Topic,
 } from '../../src/generated/prisma-client'
 import sanitizer from '../../src/utils/sanitizer'
 
@@ -32,6 +33,17 @@ interface IStationInput {
   identifier: string
   description: string
   public: boolean
+}
+
+interface ITopicData {
+  input: ITopicInput
+  topic: Topic
+  membership: Membership
+}
+
+interface ITopicInput {
+  title: string
+  content: string
 }
 
 const userOne: IUserData = {
@@ -101,9 +113,9 @@ const userFive: IUserData = {
 
 const userSix: IUserData = {
   input: {
-    name: sanitizer.alphanumeric('Mostafa Hussien'),
-    identifier: sanitizer.alphanumeric('Mostafa Hussien').toLowerCase(),
-    email: 'mostafa@gmail.com',
+    name: sanitizer.alphanumeric('Ahmed Adel'),
+    identifier: sanitizer.alphanumeric('Ahmed Adel').toLowerCase(),
+    email: 'ahmed@gmail.com',
     password: bcrypt.hashSync('qwertyzxc123'),
   },
 
@@ -134,10 +146,47 @@ const stationTwo: IStationData = {
   station: undefined,
 }
 
+const topicOne: ITopicData = {
+  input: {
+    title: 'Al Ahly, Club of the century',
+    content: 'Title is descriptive :)',
+  },
+  topic: undefined,
+  membership: undefined,
+}
+
+const topicTwo: ITopicData = {
+  input: {
+    title: 'El Zamalek Art in football',
+    content: 'Title is descriptive :)',
+  },
+  topic: undefined,
+  membership: undefined,
+}
+
+const topicThree: ITopicData = {
+  input: {
+    title: 'Al Ahly and CAF',
+    content: 'CAF is giving Al Ahly 10mil for winning the CL',
+  },
+  topic: undefined,
+  membership: undefined,
+}
+
+const topicFour: ITopicData = {
+  input: {
+    title: 'El Zamalek weak personality in CL',
+    content: 'No real men on the pitch',
+  },
+  topic: undefined,
+  membership: undefined,
+}
+
 const seed = async () => {
   await prisma.deleteManyUsers()
   await prisma.deleteManyMemberships()
   await prisma.deleteManyStations()
+  await prisma.deleteManyTopics()
 
   // User One
   userOne.user = await prisma.createUser(userOne.input)
@@ -278,6 +327,46 @@ const seed = async () => {
 
     role: 'MEMBER',
     state: 'BANNED',
+  })
+
+  // Topic One With User One (A Founder)
+  topicOne.topic = await prisma.createTopic({
+    ...topicOne.input,
+    membership: {
+      connect: {
+        id: userOne.membership.id,
+      },
+    },
+  })
+
+  // Topic Two with User Four (A Member)
+  topicTwo.topic = await prisma.createTopic({
+    ...topicTwo.input,
+    membership: {
+      connect: {
+        id: userFour.membership.id,
+      },
+    },
+  })
+
+  // Topic Two with User Four (A Detached Member)
+  topicThree.topic = await prisma.createTopic({
+    ...topicThree.input,
+    membership: {
+      connect: {
+        id: userFive.membership.id,
+      },
+    },
+  })
+
+  // Topic Two with User Four (A Banned Member)
+  topicFour.topic = await prisma.createTopic({
+    ...topicFour.input,
+    membership: {
+      connect: {
+        id: userSix.membership.id,
+      },
+    },
   })
 }
 
