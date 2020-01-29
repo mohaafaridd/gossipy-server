@@ -7,14 +7,26 @@
     "heroku-postbuild": "prisma generate",
     "start": "ts-node ./src/index.ts",
     "dev": "env-cmd -f ./config/prod.env ts-node ./src/index.ts",
+    "test": "env-cmd -f ./config/test.env jest --watch --runInBand",
     "prod:gene": "prisma generate -e ./config/prod.env",
     "prod:deploy": "prisma deploy -e ./config/prod.env",
     "prod:token": "prisma token -c -e ./config/prod.env",
     "prod:reset": "prisma reset -e ./config/prod.env"
   },
-  "author": "",
+  "jest": {
+    "globalSetup": "./tests/jest/globalSetup.ts",
+    "globalTeardown": "./tests/jest/globalTeardown.ts"
+  },
+  "author": "Mohammed Farid",
   "license": "ISC",
   "devDependencies": {
+    "@babel/core": "^7.8.3",
+    "@babel/polyfill": "^7.8.3",
+    "@babel/preset-env": "^7.8.3",
+    "@babel/preset-typescript": "^7.8.3",
+    "apollo-boost": "^0.4.7",
+    "babel-jest": "^25.1.0",
+    "jest": "^25.1.0",
     "ts-node-dev": "^1.0.0-pre.44"
   },
   "dependencies": {
