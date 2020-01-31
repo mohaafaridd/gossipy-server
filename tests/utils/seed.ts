@@ -62,7 +62,7 @@ const userOne: IUserData = {
     name: sanitizer.alphanumeric('Mohammed Farid'),
     identifier: sanitizer.alphanumeric('Mohammed Farid').toLowerCase(),
     email: 'moha@gmail.com',
-    password: bcrypt.hashSync('qwertyzxc123'),
+    password: 'qwertyzxc123',
   },
 
   user: undefined,
@@ -75,7 +75,7 @@ const userTwo: IUserData = {
     name: sanitizer.alphanumeric('Farid Khamis'),
     identifier: sanitizer.alphanumeric('Farid Khamis').toLowerCase(),
     email: 'farid@gmail.com',
-    password: bcrypt.hashSync('qwertyzxc123'),
+    password: 'qwertyzxc123',
   },
 
   user: undefined,
@@ -88,7 +88,7 @@ const userThree: IUserData = {
     name: sanitizer.alphanumeric('Sherif Ashraf'),
     identifier: sanitizer.alphanumeric('Sherif Ashraf').toLowerCase(),
     email: 'sherif@gmail.com',
-    password: bcrypt.hashSync('qwertyzxc123'),
+    password: 'qwertyzxc123',
   },
 
   user: undefined,
@@ -101,7 +101,7 @@ const userFour: IUserData = {
     name: sanitizer.alphanumeric('Ashraf Farouq'),
     identifier: sanitizer.alphanumeric('Ashraf Farouq').toLowerCase(),
     email: 'farouq@gmail.com',
-    password: bcrypt.hashSync('qwertyzxc123'),
+    password: 'qwertyzxc123',
   },
 
   user: undefined,
@@ -114,7 +114,7 @@ const userFive: IUserData = {
     name: sanitizer.alphanumeric('Mohamed Adel'),
     identifier: sanitizer.alphanumeric('Mohamed Adel').toLowerCase(),
     email: 'adel@gmail.com',
-    password: bcrypt.hashSync('qwertyzxc123'),
+    password: 'qwertyzxc123',
   },
 
   user: undefined,
@@ -127,7 +127,7 @@ const userSix: IUserData = {
     name: sanitizer.alphanumeric('Ahmed Adel'),
     identifier: sanitizer.alphanumeric('Ahmed Adel').toLowerCase(),
     email: 'ahmed@gmail.com',
-    password: bcrypt.hashSync('qwertyzxc123'),
+    password: 'qwertyzxc123',
   },
 
   user: undefined,
@@ -233,30 +233,48 @@ const seed = async () => {
   await prisma.deleteManyComments()
 
   // User One
-  userOne.user = await prisma.createUser(userOne.input)
+  userOne.user = await prisma.createUser({
+    ...userOne.input,
+    password: bcrypt.hashSync(userOne.input.password),
+  })
   userOne.jwt = jwt.sign({ userId: userOne.user.id }, process.env.JWT_SECRET)
 
   // User Two
-  userTwo.user = await prisma.createUser(userTwo.input)
+  userTwo.user = await prisma.createUser({
+    ...userTwo.input,
+    password: bcrypt.hashSync(userTwo.input.password),
+  })
   userTwo.jwt = jwt.sign({ userId: userTwo.user.id }, process.env.JWT_SECRET)
 
   // User Three
-  userThree.user = await prisma.createUser(userThree.input)
+  userThree.user = await prisma.createUser({
+    ...userThree.input,
+    password: bcrypt.hashSync(userThree.input.password),
+  })
   userThree.jwt = jwt.sign(
     { userId: userThree.user.id },
     process.env.JWT_SECRET
   )
 
   // User Four
-  userFour.user = await prisma.createUser(userFour.input)
+  userFour.user = await prisma.createUser({
+    ...userFour.input,
+    password: bcrypt.hashSync(userFour.input.password),
+  })
   userFour.jwt = jwt.sign({ userId: userFour.user.id }, process.env.JWT_SECRET)
 
   // User Five
-  userFive.user = await prisma.createUser(userFive.input)
+  userFive.user = await prisma.createUser({
+    ...userFive.input,
+    password: bcrypt.hashSync(userFive.input.password),
+  })
   userFive.jwt = jwt.sign({ userId: userFive.user.id }, process.env.JWT_SECRET)
 
   // User Six
-  userSix.user = await prisma.createUser(userSix.input)
+  userSix.user = await prisma.createUser({
+    ...userSix.input,
+    password: bcrypt.hashSync(userSix.input.password),
+  })
   userSix.jwt = jwt.sign({ userId: userSix.user.id }, process.env.JWT_SECRET)
 
   // Station One
@@ -417,6 +435,7 @@ const seed = async () => {
   })
   topicFour.membership = userSix.membership
 
+  // Comment One on Topic Two by User Six
   commentOne.comment = await prisma.createComment({
     ...commentOne.input,
     topic: {
@@ -432,6 +451,7 @@ const seed = async () => {
   })
   commentOne.membership = userSix.membership
 
+  // Comment Two on Topic One by User Five
   commentTwo.comment = await prisma.createComment({
     ...commentTwo.input,
     topic: {
@@ -447,6 +467,7 @@ const seed = async () => {
   })
   commentTwo.membership = userFive.membership
 
+  // Comment Three on Topic Four by User Four
   commentThree.comment = await prisma.createComment({
     ...commentThree.input,
     topic: {
@@ -462,6 +483,7 @@ const seed = async () => {
   })
   commentThree.membership = userFour.membership
 
+  // Comment Four on Topic Three by User One
   commentFour.comment = await prisma.createComment({
     ...commentFour.input,
     topic: {
@@ -478,4 +500,22 @@ const seed = async () => {
   commentFour.membership = userOne.membership
 }
 
+export {
+  userOne,
+  userTwo,
+  userThree,
+  userFour,
+  userFive,
+  userSix,
+  stationOne,
+  stationTwo,
+  topicOne,
+  topicTwo,
+  topicThree,
+  topicFour,
+  commentOne,
+  commentTwo,
+  commentThree,
+  commentFour,
+}
 export default seed
