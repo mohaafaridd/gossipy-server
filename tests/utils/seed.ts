@@ -6,6 +6,7 @@ import {
   Station,
   Membership,
   Topic,
+  Comment,
 } from '../../src/generated/prisma-client'
 import sanitizer from '../../src/utils/sanitizer'
 
@@ -43,6 +44,16 @@ interface ITopicData {
 
 interface ITopicInput {
   title: string
+  content: string
+}
+
+interface ICommentData {
+  input: ICommentInput
+  comment: Comment
+  membership: Membership
+}
+
+interface ICommentInput {
   content: string
 }
 
@@ -182,11 +193,44 @@ const topicFour: ITopicData = {
   membership: undefined,
 }
 
+const commentOne: ICommentData = {
+  input: {
+    content: 'True',
+  },
+  comment: undefined,
+  membership: undefined,
+}
+
+const commentTwo: ICommentData = {
+  input: {
+    content: "It's not true",
+  },
+  comment: undefined,
+  membership: undefined,
+}
+
+const commentThree: ICommentData = {
+  input: {
+    content: 'Why not?!',
+  },
+  comment: undefined,
+  membership: undefined,
+}
+
+const commentFour: ICommentData = {
+  input: {
+    content: "That's debatable",
+  },
+  comment: undefined,
+  membership: undefined,
+}
+
 const seed = async () => {
   await prisma.deleteManyUsers()
   await prisma.deleteManyMemberships()
   await prisma.deleteManyStations()
   await prisma.deleteManyTopics()
+  await prisma.deleteManyComments()
 
   // User One
   userOne.user = await prisma.createUser(userOne.input)
@@ -338,6 +382,7 @@ const seed = async () => {
       },
     },
   })
+  topicOne.membership = userOne.membership
 
   // Topic Two with User Four (A Member)
   topicTwo.topic = await prisma.createTopic({
@@ -348,8 +393,9 @@ const seed = async () => {
       },
     },
   })
+  topicTwo.membership = userFour.membership
 
-  // Topic Two with User Four (A Detached Member)
+  // Topic Three with User Five (A Detached Member)
   topicThree.topic = await prisma.createTopic({
     ...topicThree.input,
     membership: {
@@ -358,8 +404,9 @@ const seed = async () => {
       },
     },
   })
+  topicThree.membership = topicThree.membership
 
-  // Topic Two with User Four (A Banned Member)
+  // Topic Four with User Six (A Banned Member)
   topicFour.topic = await prisma.createTopic({
     ...topicFour.input,
     membership: {
@@ -368,6 +415,67 @@ const seed = async () => {
       },
     },
   })
+  topicFour.membership = userSix.membership
+
+  commentOne.comment = await prisma.createComment({
+    ...commentOne.input,
+    topic: {
+      connect: {
+        id: topicTwo.topic.id,
+      },
+    },
+    membership: {
+      connect: {
+        id: userSix.membership.id,
+      },
+    },
+  })
+  commentOne.membership = userSix.membership
+
+  commentTwo.comment = await prisma.createComment({
+    ...commentTwo.input,
+    topic: {
+      connect: {
+        id: topicOne.topic.id,
+      },
+    },
+    membership: {
+      connect: {
+        id: userFive.membership.id,
+      },
+    },
+  })
+  commentTwo.membership = userFive.membership
+
+  commentThree.comment = await prisma.createComment({
+    ...commentThree.input,
+    topic: {
+      connect: {
+        id: topicFour.topic.id,
+      },
+    },
+    membership: {
+      connect: {
+        id: userFour.membership.id,
+      },
+    },
+  })
+  commentThree.membership = userFour.membership
+
+  commentFour.comment = await prisma.createComment({
+    ...commentFour.input,
+    topic: {
+      connect: {
+        id: topicThree.topic.id,
+      },
+    },
+    membership: {
+      connect: {
+        id: userOne.membership.id,
+      },
+    },
+  })
+  commentFour.membership = userOne.membership
 }
 
 export default seed
