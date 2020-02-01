@@ -40,3 +40,20 @@ test('should create a station for an authentic user', async () => {
 
   expect(membershipExists).toBe(true)
 })
+
+test('should not create a station for not authentic user', async () => {
+  const variables = {
+    data: {
+      name: 'middle ground',
+      description: 'we eliminate hatred between team supporters',
+      public: true,
+    },
+  }
+
+  await expect(
+    client.mutate({
+      mutation: createStation,
+      variables,
+    })
+  ).rejects.toThrow()
+})

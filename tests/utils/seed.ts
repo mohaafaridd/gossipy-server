@@ -151,7 +151,7 @@ const stationTwo: IStationData = {
     name: sanitizer.alphanumeric('elzamalek'),
     identifier: sanitizer.alphanumeric('elzamalek').toLowerCase(),
     description: 'el zamalek supporters in gossipy',
-    public: true,
+    public: false,
   },
 
   station: undefined,
