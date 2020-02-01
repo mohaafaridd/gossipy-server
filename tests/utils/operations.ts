@@ -25,4 +25,15 @@ const signIn = gql`
   }
 `
 
+const createStation = gql`
+  mutation($data: CreateStationInput!) {
+    createStation(data: $data) {
+      id
+      name
+      identifier
+    }
+  }
+`
+
 export { signUp, signIn }
+export { createStation }
