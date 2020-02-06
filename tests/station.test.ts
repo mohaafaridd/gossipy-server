@@ -8,7 +8,7 @@ import seed, {
 } from './utils/seed'
 import getClient from './utils/getClient'
 import { prisma } from '../src/generated/prisma-client'
-import { createStation, updateStation } from './utils/operations'
+import { createStation, updateStation, deleteStation } from './utils/operations'
 const client = getClient(null)
 beforeEach(seed, 30000)
 
@@ -122,5 +122,44 @@ test('should not update station if user is a member role', async () => {
       mutation: updateStation,
       variables: update,
     })
+  ).rejects.toThrow()
+})
+
+test('should delete station when user is founder', async () => {
+  const founder = getClient(userOne.jwt)
+  const variables = {
+    id: stationOne.station.id,
+  }
+
+  await founder.mutate({ mutation: deleteStation, variables })
+
+  const memberships = await prisma.$exists.membership({
+    station: {
+      id: stationOne.station.id,
+    },
+  })
+
+  expect(memberships).toBe(false)
+})
+
+test('should not delete station when user is admin ', async () => {
+  const admin = getClient(userThree.jwt)
+  const variables = {
+    id: stationOne.station.id,
+  }
+
+  await expect(
+    admin.mutate({ mutation: deleteStation, variables })
+  ).rejects.toThrow()
+})
+
+test('should not delete station when user is member ', async () => {
+  const member = getClient(userFour.jwt)
+  const variables = {
+    id: stationTwo.station.id,
+  }
+
+  await expect(
+    member.mutate({ mutation: deleteStation, variables })
   ).rejects.toThrow()
 })

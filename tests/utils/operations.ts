@@ -45,6 +45,14 @@ const updateStation = gql`
   }
 `
 
+const deleteStation = gql`
+  mutation($id: ID!) {
+    deleteStation(id: $id) {
+      id
+    }
+  }
+`
+
 const createMembership = gql`
   mutation($stationId: ID!) {
     createMembership(stationId: $stationId) {
@@ -54,4 +62,4 @@ const createMembership = gql`
 `
 
 export { signUp, signIn }
-export { createStation, updateStation, createMembership }
+export { createStation, updateStation, deleteStation, createMembership }
