@@ -70,18 +70,18 @@ type Mutation {
   signIn(data: LoginUserInput!): AuthPayload!
   updateUser(data: UpdateUserInput!): User!
   createStation(data: CreateStationInput!): Station!
-  updateStation(id: String!, data: UpdateStationInput!): Station!
-  deleteStation(id: String!): Station!
-  createMembership(stationId: String!): Membership!
-  updateMembership(id: String!, data: MembershipUpdateInput): Membership!
-  unsubscribeMembership(id: String!): Membership!
-  deleteMembership(id: String!): DeleteMembership!
+  updateStation(id: ID!, data: UpdateStationInput!): Station!
+  deleteStation(id: ID!): Station!
+  createMembership(stationId: ID!): Membership!
+  updateMembership(id: ID!, data: MembershipUpdateInput): Membership!
+  unsubscribeMembership(id: ID!): Membership!
+  deleteMembership(id: ID!): DeleteMembership!
   createTopic(data: CreateTopicInput!): Topic!
-  updateTopic(id: String!, data: UpdateTopicInput): Topic!
-  deleteTopic(id: String!): Topic!
+  updateTopic(id: ID!, data: UpdateTopicInput): Topic!
+  deleteTopic(id: ID!): Topic!
   createComment(data: CreateCommentInput!): Comment!
-  updateComment(id: String!, data: UpdateCommentInput!): Comment!
-  deleteComment(id: String!): Comment!
+  updateComment(id: ID!, data: UpdateCommentInput!): Comment!
+  deleteComment(id: ID!): Comment!
 }
 
 type AuthPayload {
