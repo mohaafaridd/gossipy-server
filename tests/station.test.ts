@@ -1,8 +1,14 @@
 import '@babel/polyfill'
-import seed, { userTwo, userThree, stationOne } from './utils/seed'
+import seed, {
+  userOne,
+  userThree,
+  stationOne,
+  userFour,
+  stationTwo,
+} from './utils/seed'
 import getClient from './utils/getClient'
 import { prisma } from '../src/generated/prisma-client'
-import { createStation, createMembership } from './utils/operations'
+import { createStation, updateStation } from './utils/operations'
 const client = getClient(null)
 beforeEach(seed, 30000)
 
@@ -57,30 +63,64 @@ test('should not create a station for not authentic user', async () => {
   ).rejects.toThrow()
 })
 
-test('should create a membership for a user', async () => {
-  const client = getClient(userTwo.jwt)
-  const variables = {
-    stationId: stationOne.station.id,
+test('should update station description if user is founder or admin', async () => {
+  const founder = getClient(userOne.jwt)
+  const firstUpdate = {
+    id: stationOne.station.id,
+    data: {
+      public: false,
+      description: 'test 0',
+    },
+  }
+  await founder.mutate({
+    mutation: updateStation,
+    variables: firstUpdate,
+  })
+
+  const updateOne = await prisma.$exists.station({
+    id: stationOne.station.id,
+    public: firstUpdate.data.public,
+    description: firstUpdate.data.description,
+  })
+
+  expect(updateOne).toBe(true)
+
+  const admin = getClient(userThree.jwt)
+  const secondUpdate = {
+    id: stationOne.station.id,
+    data: {
+      public: true,
+      description: 'test 1',
+    },
+  }
+  await admin.mutate({
+    mutation: updateStation,
+    variables: secondUpdate,
+  })
+
+  const updateTwo = await prisma.$exists.station({
+    id: stationOne.station.id,
+    public: secondUpdate.data.public,
+    description: secondUpdate.data.description,
+  })
+
+  expect(updateTwo).toBe(true)
+})
+
+test('should not update station if user is a member role', async () => {
+  const member = getClient(userFour.jwt)
+  const update = {
+    id: stationTwo.station.id,
+    data: {
+      public: false,
+      description: 'test 0',
+    },
   }
 
-  const response = await client.mutate({
-    mutation: createMembership,
-    variables,
-  })
-
-  const membershipId = response.data.createMembership.id
-
-  const membershipExists = await prisma.$exists.membership({
-    id: membershipId,
-    user: {
-      id: userTwo.user.id,
-    },
-    station: {
-      id: stationOne.station.id,
-    },
-    state: 'PENDING',
-    role: 'MEMBER',
-  })
-
-  expect(membershipExists).toBe(true)
+  await expect(
+    member.mutate({
+      mutation: updateStation,
+      variables: update,
+    })
+  ).rejects.toThrow()
 })
