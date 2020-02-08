@@ -16,34 +16,42 @@ export default {
     { prisma, request }: { prisma: Prisma; request: any }
   ) => {
     const userId = getUserId(request)
-    const hasMembership = await prisma.$exists.membership({
-      AND: {
+    const [membership]: Membership[] = await prisma.memberships({
+      where: {
         user: {
           id: userId,
         },
-
         station: {
           id: stationId,
         },
       },
     })
 
-    if (hasMembership) throw new Error('Already a member')
+    if (membership?.state === 'BANNED') throw new Error('Membership is banned')
+    if (membership?.state === 'PENDING')
+      throw new Error('Membership is Pending')
+    if (membership?.state === 'ACTIVE') throw new Error('Already a member')
 
-    const membership = await prisma.createMembership({
-      user: {
-        connect: {
-          id: userId,
+    return prisma.upsertMembership({
+      where: {
+        id: membership?.id || '',
+      },
+      create: {
+        user: {
+          connect: {
+            id: userId,
+          },
+        },
+        station: {
+          connect: {
+            id: stationId,
+          },
         },
       },
-      station: {
-        connect: {
-          id: stationId,
-        },
+      update: {
+        state: 'PENDING',
       },
     })
-
-    return membership
   },
 
   /**
