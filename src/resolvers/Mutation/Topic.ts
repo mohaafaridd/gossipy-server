@@ -39,6 +39,16 @@ export default {
           id: membership.id,
         },
       },
+      votes: {
+        create: {
+          membership: {
+            connect: {
+              id: membership.id,
+            },
+          },
+          type: 'UPVOTE',
+        },
+      },
     })
 
     return topic

@@ -27,6 +27,7 @@ type Membership {
   role: Role!
   topics: [Topic!]!
   comments: [Comment!]!
+  votes: [Vote!]!
   state: MembershipState!
   createdAt: String!
   updatedAt: String!
@@ -38,6 +39,7 @@ type Topic {
   content: String!
   membership: Membership!
   comments: [Comment!]!
+  votes: [Vote!]!
   createdAt: String!
   updatedAt: String!
 }
@@ -47,6 +49,17 @@ type Comment {
   content: String!
   membership: Membership!
   topic: Topic!
+  votes: [Vote!]!
+  createdAt: String!
+  updatedAt: String!
+}
+
+type Vote {
+  id: ID!
+  type: VoteType!
+  topic: Topic!
+  comment: Comment
+  membership: Membership!
   createdAt: String!
   updatedAt: String!
 }
@@ -154,4 +167,9 @@ enum MembershipState {
   ACTIVE
   DETACHED
   BANNED
+}
+
+enum VoteType {
+  UPVOTE
+  DOWNVOTE
 }

@@ -8,4 +8,8 @@ export default {
   topic: async ({ id }, args, { prisma }: { prisma: Prisma }) => {
     return prisma.comment({ id }).topic()
   },
+
+  votes: async ({ id }, args, { prisma }: { prisma: Prisma }) => {
+    return prisma.comment({ id }).votes()
+  },
 }

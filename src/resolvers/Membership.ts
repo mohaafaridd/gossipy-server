@@ -16,4 +16,8 @@ export default {
   comments: async ({ id }, args, { prisma }: { prisma: Prisma }) => {
     return prisma.membership({ id }).comments()
   },
+
+  votes: async ({ id }, args, { prisma }: { prisma: Prisma }) => {
+    return prisma.membership({ id }).votes()
+  },
 }

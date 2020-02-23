@@ -29,6 +29,7 @@ type Membership {
   topics: [Topic!]! @relation(name: "TopicToMembership", onDelete: CASCADE)
   comments: [Comment!]!
     @relation(name: "MembershipToComment", onDelete: CASCADE)
+  votes: [Vote!]! @relation(name: "MembershipToVotes", onDelete: CASCADE)
   role: Role! @default(value: MEMBER)
   state: MembershipState! @default(value: PENDING)
   createdAt: DateTime! @createdAt
@@ -42,6 +43,7 @@ type Topic {
   membership: Membership!
     @relation(name: "TopicToMembership", onDelete: SET_NULL)
   comments: [Comment!]! @relation(name: "TopicToComment", onDelete: CASCADE)
+  votes: [Vote!]! @relation(name: "TopicToVotes", onDelete: CASCADE)
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
 }
@@ -52,6 +54,18 @@ type Comment {
   membership: Membership!
     @relation(name: "MembershipToComment", onDelete: SET_NULL)
   topic: Topic! @relation(name: "TopicToComment", onDelete: SET_NULL)
+  votes: [Vote!]! @relation(name: "CommentToVotes", onDelete: CASCADE)
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+}
+
+type Vote {
+  id: ID! @id
+  type: VoteType!
+  topic: Topic! @relation(name: "TopicToVotes", onDelete: SET_NULL)
+  comment: Comment @relation(name: "CommentToVotes", onDelete: SET_NULL)
+  membership: Membership!
+    @relation(name: "MembershipToVotes", onDelete: SET_NULL)
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
 }
@@ -68,4 +82,9 @@ enum MembershipState {
   ACTIVE
   DETACHED
   BANNED
+}
+
+enum VoteType {
+  UPVOTE
+  DOWNVOTE
 }
