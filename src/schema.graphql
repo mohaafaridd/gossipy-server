@@ -95,6 +95,7 @@ type Mutation {
   createComment(data: CreateCommentInput!): Comment!
   updateComment(id: ID!, data: UpdateCommentInput!): Comment!
   deleteComment(id: ID!): Comment!
+  createVote(data: CreateVoteInput): Vote!
 }
 
 type AuthPayload {
@@ -153,6 +154,13 @@ input CreateCommentInput {
 
 input UpdateCommentInput {
   content: String!
+}
+
+input CreateVoteInput {
+  membership: ID!
+  topic: ID!
+  comment: ID
+  type: VoteType
 }
 
 enum Role {
