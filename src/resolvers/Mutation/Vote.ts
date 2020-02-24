@@ -1,4 +1,8 @@
-import { Prisma, VoteCreateInput } from '../../generated/prisma-client'
+import {
+  Prisma,
+  VoteCreateInput,
+  VoteUpdateInput,
+} from '../../generated/prisma-client'
 import getUserId from '../../utils/getUserId'
 export default {
   createVote: async (
@@ -30,5 +34,37 @@ export default {
     if (!isAuthorized) throw new Error('Authorization Required')
 
     return prisma.createVote(data)
+  },
+
+  updateVote: async (
+    parent,
+    {
+      id,
+      data,
+    }: {
+      id: string
+      data: VoteUpdateInput
+    },
+    { prisma, request }: { prisma: Prisma; request: any }
+  ) => {
+    const userId = getUserId(request)
+
+    const isAuthorized = await prisma.$exists.vote({
+      id,
+      membership: {
+        user: {
+          id: userId,
+        },
+      },
+    })
+
+    if (!isAuthorized) throw new Error('Authorization Required')
+
+    return prisma.updateVote({
+      where: { id },
+      data: {
+        type: data.type,
+      },
+    })
   },
 }

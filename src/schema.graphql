@@ -96,6 +96,7 @@ type Mutation {
   updateComment(id: ID!, data: UpdateCommentInput!): Comment!
   deleteComment(id: ID!): Comment!
   createVote(data: CreateVoteInput): Vote!
+  updateVote(id: ID!, data: UpdateVoteInput!): Vote!
 }
 
 type AuthPayload {
@@ -160,6 +161,10 @@ input CreateVoteInput {
   membership: ID!
   topic: ID!
   comment: ID
+  type: VoteType
+}
+
+input UpdateVoteInput {
   type: VoteType
 }
 
