@@ -68,7 +68,7 @@ type Query {
   users: [User!]!
   stations: [Station!]!
   memberships: [Membership!]!
-  topics: [Topic!]!
+  topics(sort: SortType, dateRange: DateRange!): [Topic!]!
   comments: [Comment!]!
 }
 
@@ -186,4 +186,21 @@ enum MembershipState {
 enum VoteType {
   UPVOTE
   DOWNVOTE
+}
+
+enum SortType {
+  HOT
+  Topic
+  NEW
+}
+
+enum DateRange {
+  TODAY
+  THREE_DAYS
+  WEEK
+  MONTH
+  THREE_MONTH
+  SIX_MONTH
+  YEAR
+  EVER
 }
