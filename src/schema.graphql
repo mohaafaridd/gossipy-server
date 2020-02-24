@@ -70,6 +70,7 @@ type Query {
   memberships: [Membership!]!
   topics(sort: SortType, dateRange: DateRange!): [Topic!]!
   comments: [Comment!]!
+  votes: [Vote!]!
 }
 
 type DeleteMembership {
@@ -190,7 +191,7 @@ enum VoteType {
 
 enum SortType {
   HOT
-  Topic
+  TOP
   NEW
 }
 

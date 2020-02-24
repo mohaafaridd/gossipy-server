@@ -1,6 +1,7 @@
 import { Prisma, User, Station, Membership } from '../generated/prisma-client'
 import { DateRange } from '../constants/time'
 import getSortingDate from '../utils/getSortingDate'
+import { sortHot } from '../utils/sortMethods'
 
 type SortType = 'HOT' | 'TOP' | 'NEW'
 
@@ -22,7 +23,7 @@ export default {
     return memberships
   },
 
-  topics: (
+  topics: async (
     parent,
     { sort, dateRange }: { sort: SortType; dateRange: DateRange },
     { prisma }: { prisma: Prisma },
@@ -30,6 +31,25 @@ export default {
   ) => {
     const finalDate = getSortingDate(dateRange)
     console.log('finalDate', finalDate)
+
+    const topics = await prisma.topics({
+      where: {
+        createdAt_gte: finalDate,
+      },
+    })
+
+    const votes = await prisma.votes({
+      where: {
+        topic: {
+          createdAt_gte: finalDate,
+        },
+      },
+    })
+
+    const [topic] = topics
+    const hotRatio = sortHot(votes, topic)
+    console.log('hotRatio', hotRatio)
+
     switch (sort) {
       case 'HOT':
         console.log('HOT')
@@ -43,10 +63,14 @@ export default {
         console.log('NEW')
         break
     }
-    return prisma.topics()
+    return topics
   },
 
   comments: (parent, args, { prisma }: { prisma: Prisma }, info) => {
     return prisma.comments()
+  },
+
+  votes: (parent, args, { prisma }: { prisma: Prisma }, info) => {
+    return prisma.votes()
   },
 }
