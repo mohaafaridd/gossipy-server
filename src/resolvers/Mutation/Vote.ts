@@ -67,4 +67,25 @@ export default {
       },
     })
   },
+
+  deleteVote: async (
+    parent,
+    { id }: { id: string },
+    { prisma, request }: { prisma: Prisma; request: any }
+  ) => {
+    const userId = getUserId(request)
+
+    const isAuthorized = await prisma.$exists.vote({
+      id,
+      membership: {
+        user: {
+          id: userId,
+        },
+      },
+    })
+
+    if (!isAuthorized) throw new Error('Authorization Required')
+
+    return prisma.deleteVote({ id })
+  },
 }

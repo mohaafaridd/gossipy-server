@@ -97,6 +97,7 @@ type Mutation {
   deleteComment(id: ID!): Comment!
   createVote(data: CreateVoteInput): Vote!
   updateVote(id: ID!, data: UpdateVoteInput!): Vote!
+  deleteVote(id: ID!): Vote!
 }
 
 type AuthPayload {
