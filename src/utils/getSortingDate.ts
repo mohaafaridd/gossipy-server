@@ -38,6 +38,6 @@ export default (dateRange: DateRange) => {
         .subtract(1, 'year')
         .toISOString()
     default:
-      break
+      return moment.unix(0).toISOString()
   }
 }
