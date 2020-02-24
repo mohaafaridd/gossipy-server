@@ -1,9 +1,7 @@
 import { Prisma, User, Station, Membership } from '../generated/prisma-client'
-import { DateRange } from '../constants/time'
+import { DateRange, SortType } from '../constants'
 import getSortingDate from '../utils/getSortingDate'
-import { sortHot } from '../utils/sortMethods'
-
-type SortType = 'HOT' | 'TOP' | 'NEW'
+// import { sortHot } from '../utils/sortMethods'
 
 const topTopics = () => {}
 
@@ -46,22 +44,22 @@ export default {
       },
     })
 
-    const [topic] = topics
-    const hotRatio = sortHot(votes, topic)
-    console.log('hotRatio', hotRatio)
+    // const [topic] = topics
+    // const hotRatio = sortHot(votes, topic)
+    // console.log('hotRatio', hotRatio)
 
     switch (sort) {
       case 'HOT':
         console.log('HOT')
-        break
+        return 1
 
       case 'TOP':
         console.log('TOP')
-        break
+        return 1
 
       default:
         console.log('NEW')
-        break
+        return 1
     }
     return topics
   },

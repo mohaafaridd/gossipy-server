@@ -7,7 +7,7 @@ const extractVotes = (votes: Vote[]) => {
   return [ups, downs]
 }
 
-export const sortHot = (votes: Vote[], topic: Topic) => {
+export const getHotScore = (votes: Vote[], topic: Topic) => {
   const { log10, max, abs, round } = Math
   const [ups, downs] = extractVotes(votes)
   const score = ups - downs
@@ -18,12 +18,12 @@ export const sortHot = (votes: Vote[], topic: Topic) => {
   return round(order + sign * unix)
 }
 
-export const sortTop = (votes: Vote[], topic: Topic) => {
+export const getTopScore = (votes: Vote[], topic: Topic) => {
   const [ups, downs] = extractVotes(votes)
   const score = ups - downs
   return score
 }
 
-export const sortNew = (topic: Topic) => {
+export const getNewScore = (topic: Topic) => {
   return moment(topic.createdAt).unix()
 }
