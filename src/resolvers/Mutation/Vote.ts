@@ -13,7 +13,6 @@ export default {
     }: {
       data: {
         topic: string
-        membership: string
         type: VoteType
       }
     },
@@ -21,26 +20,29 @@ export default {
   ) => {
     const userId = getUserId(request)
 
-    // Must be station member to vote
-    const isAuthorized = await prisma.$exists.topic({
-      id: data.topic,
-      membership: {
+    const [membership] = await prisma.memberships({
+      where: {
+        state: 'ACTIVE',
+        user: {
+          id: userId,
+        },
         station: {
           members_some: {
-            id: data.membership,
-            user: {
-              id: userId,
+            topics_some: {
+              id: data.topic,
             },
           },
         },
       },
     })
 
-    if (!isAuthorized) throw new Error('Authorization Required')
+    if (!membership) throw new Error('Authorization Required')
 
     const userVoted = await prisma.$exists.vote({
       membership: {
-        id: data.membership,
+        user: {
+          id: userId,
+        },
       },
       topic: {
         id: data.topic,
@@ -52,7 +54,7 @@ export default {
     return prisma.createVote({
       membership: {
         connect: {
-          id: data.membership,
+          id: membership.id,
         },
       },
 

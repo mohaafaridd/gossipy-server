@@ -160,7 +160,6 @@ input UpdateCommentInput {
 }
 
 input CreateVoteInput {
-  membership: ID!
   topic: ID!
   comment: ID
   type: VoteType
