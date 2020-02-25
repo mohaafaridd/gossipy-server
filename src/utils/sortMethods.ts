@@ -23,7 +23,3 @@ export const getTopScore = (votes: Vote[], topic: Topic) => {
   const score = ups - downs
   return score
 }
-
-export const getNewScore = (topic: Topic) => {
-  return moment(topic.createdAt).unix()
-}
