@@ -7,6 +7,7 @@ import User from './User'
 import Station from './Station'
 import Membership from './Membership'
 import Topic from './Topic'
+import Vote from './Vote'
 
 const resolvers = {
   Query,
@@ -15,6 +16,7 @@ const resolvers = {
   Station,
   Membership,
   Topic,
+  Vote,
 }
 
 const fragmentReplacements = extractFragmentReplacements(resolvers)
