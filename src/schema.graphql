@@ -141,7 +141,6 @@ input MembershipUpdateInput {
 input CreateTopicInput {
   title: String!
   content: String!
-  membership: String!
 }
 
 input UpdateTopicInput {
@@ -152,7 +151,6 @@ input UpdateTopicInput {
 input CreateCommentInput {
   content: String!
   topic: String!
-  membership: String!
 }
 
 input UpdateCommentInput {

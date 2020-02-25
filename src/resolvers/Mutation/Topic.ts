@@ -13,7 +13,6 @@ export default {
       data: {
         title: string
         content: string
-        membership: string
       }
     },
     { prisma, request }: { prisma: Prisma; request: any }
@@ -22,7 +21,6 @@ export default {
 
     const [membership]: Membership[] = await prisma.memberships({
       where: {
-        id: data.membership,
         user: {
           id: userId,
         },

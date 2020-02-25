@@ -13,34 +13,28 @@ export default {
       data: {
         content: string
         topic: string
-        membership: string
       }
     },
     { prisma, request }: { prisma: Prisma; request: any }
   ) => {
     const userId = getUserId(request)
-    const isAuthorized = await prisma.$exists.topic({
-      id: data.topic,
-      membership: {
-        station: {
-          members_some: {
-            id: data.membership,
-            user: {
-              id: userId,
-            },
-            state: 'ACTIVE',
-          },
+
+    const [membership] = await prisma.memberships({
+      where: {
+        user: {
+          id: userId,
         },
+        state: 'ACTIVE',
       },
     })
 
-    if (!isAuthorized) throw new Error('Authorization Required')
+    if (!membership) throw new Error('Authorization Required')
 
     return prisma.createComment({
       content: data.content,
       membership: {
         connect: {
-          id: data.membership,
+          id: membership.id,
         },
       },
       topic: {
