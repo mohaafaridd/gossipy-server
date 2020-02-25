@@ -9,7 +9,7 @@ import {
 } from '../generated/prisma-client'
 import { DateRange, SortType } from '../constants'
 import getSortingDate from '../utils/getSortingDate'
-import { getHotScore, getTopScore } from '../utils/sortMethods'
+import { getHotScore, getTopScore, sortTopics } from '../utils/sortMethods'
 // import { sortHot } from '../utils/sortMethods'
 
 const topTopics = () => {}
@@ -58,32 +58,8 @@ export default {
           }
         `)
 
-        const reduced = votes.reduce((acc, current) => {
-          if (current.topic.id in acc) {
-            acc[current.topic.id].push({ id: current.id, type: current.type })
-          } else {
-            acc[current.topic.id] = [{ id: current.id, type: current.type }]
-          }
-          return acc
-        }, {})
-
-        const sorted = votes
-          .sort((a, b) => {
-            const aVotes: Vote[] = reduced[a.topic.id]
-            const bVotes: Vote[] = reduced[b.topic.id]
-            const aScore = getHotScore(aVotes, a.topic)
-            const bScore = getHotScore(bVotes, b.topic)
-            return aScore > bScore ? -1 : aScore < bScore ? 1 : 0
-          })
-          .map(vote => vote.topic)
-
-        // Convert Objects to strings (To ease the removal)
-        const unique = new Set(sorted.map(e => JSON.stringify(e)))
-
-        // Converting back to Objects
-        const result = Array.from(unique).map(e => JSON.parse(e))
-
-        return result
+        const topics = sortTopics('HOT', votes)
+        return topics
       }
 
       case 'TOP': {
@@ -105,32 +81,8 @@ export default {
             }
           `)
 
-        const reduced = votes.reduce((acc, current) => {
-          if (current.topic.id in acc) {
-            acc[current.topic.id].push({ id: current.id, type: current.type })
-          } else {
-            acc[current.topic.id] = [{ id: current.id, type: current.type }]
-          }
-          return acc
-        }, {})
-
-        const sorted = votes
-          .sort((a, b) => {
-            const aVotes: Vote[] = reduced[a.topic.id]
-            const bVotes: Vote[] = reduced[b.topic.id]
-            const aScore = getTopScore(aVotes, a.topic)
-            const bScore = getTopScore(bVotes, b.topic)
-            return aScore > bScore ? -1 : aScore < bScore ? 1 : 0
-          })
-          .map(vote => vote.topic)
-
-        // Convert Objects to strings (To ease the removal)
-        const unique = new Set(sorted.map(e => JSON.stringify(e)))
-
-        // Converting back to Objects
-        const result = Array.from(unique).map(e => JSON.parse(e))
-
-        return result
+        const topics = sortTopics('TOP', votes)
+        return topics
       }
 
       default:
