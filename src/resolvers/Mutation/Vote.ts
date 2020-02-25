@@ -2,6 +2,7 @@ import {
   Prisma,
   VoteCreateInput,
   VoteUpdateInput,
+  VoteType,
 } from '../../generated/prisma-client'
 import getUserId from '../../utils/getUserId'
 export default {
@@ -10,7 +11,11 @@ export default {
     {
       data,
     }: {
-      data: VoteCreateInput
+      data: {
+        topic: string
+        membership: string
+        type: VoteType
+      }
     },
     { prisma, request }: { prisma: Prisma; request: any }
   ) => {
@@ -18,11 +23,11 @@ export default {
 
     // Must be station member to vote
     const isAuthorized = await prisma.$exists.topic({
-      id: data.topic.connect.id,
+      id: data.topic,
       membership: {
         station: {
           members_some: {
-            id: data.membership.connect.id,
+            id: data.membership,
             user: {
               id: userId,
             },
@@ -33,7 +38,32 @@ export default {
 
     if (!isAuthorized) throw new Error('Authorization Required')
 
-    return prisma.createVote(data)
+    const userVoted = await prisma.$exists.vote({
+      membership: {
+        id: data.membership,
+      },
+      topic: {
+        id: data.topic,
+      },
+    })
+
+    if (userVoted) throw new Error('User already voted')
+
+    return prisma.createVote({
+      membership: {
+        connect: {
+          id: data.membership,
+        },
+      },
+
+      topic: {
+        connect: {
+          id: data.topic,
+        },
+      },
+
+      type: data.type,
+    })
   },
 
   updateVote: async (
