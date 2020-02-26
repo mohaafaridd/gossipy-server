@@ -7,6 +7,7 @@ import User from './User'
 import Station from './Station'
 import Membership from './Membership'
 import Topic from './Topic'
+import Comment from './Comment'
 import Vote from './Vote'
 
 const resolvers = {
@@ -16,6 +17,7 @@ const resolvers = {
   Station,
   Membership,
   Topic,
+  Comment,
   Vote,
 }
 

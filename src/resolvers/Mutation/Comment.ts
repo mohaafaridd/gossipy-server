@@ -21,6 +21,11 @@ export default {
 
     const [membership] = await prisma.memberships({
       where: {
+        station: {
+          topics_some: {
+            id: data.topic,
+          },
+        },
         user: {
           id: userId,
         },
@@ -30,8 +35,15 @@ export default {
 
     if (!membership) throw new Error('Authorization Required')
 
+    const station = await prisma.membership({ id: membership.id }).station()
+
     return prisma.createComment({
       content: data.content,
+      station: {
+        connect: {
+          id: station.id,
+        },
+      },
       membership: {
         connect: {
           id: membership.id,
