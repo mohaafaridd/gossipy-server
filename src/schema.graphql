@@ -16,6 +16,9 @@ type Station {
   description: String!
   public: Boolean!
   members: [Membership!]!
+  topics: [Topic!]!
+  comments: [Comment!]!
+  votes: [Vote!]!
   createdAt: String!
   updatedAt: String!
 }
@@ -38,6 +41,7 @@ type Topic {
   title: String!
   content: String!
   membership: Membership!
+  station: Station!
   comments: [Comment!]!
   votes: [Vote!]!
   createdAt: String!
@@ -48,6 +52,7 @@ type Comment {
   id: ID!
   content: String!
   membership: Membership!
+  station: Station!
   topic: Topic!
   votes: [Vote!]!
   createdAt: String!
@@ -60,6 +65,7 @@ type Vote {
   topic: Topic!
   comment: Comment
   membership: Membership!
+  station: Station!
   createdAt: String!
   updatedAt: String!
 }
@@ -141,6 +147,7 @@ input MembershipUpdateInput {
 input CreateTopicInput {
   title: String!
   content: String!
+  station: ID!
 }
 
 input UpdateTopicInput {

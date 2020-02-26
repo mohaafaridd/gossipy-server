@@ -13,6 +13,7 @@ export default {
       data: {
         title: string
         content: string
+        station: string
       }
     },
     { prisma, request }: { prisma: Prisma; request: any }
@@ -21,6 +22,9 @@ export default {
 
     const [membership]: Membership[] = await prisma.memberships({
       where: {
+        station: {
+          id: data.station,
+        },
         user: {
           id: userId,
         },
@@ -32,6 +36,11 @@ export default {
 
     const topic = await prisma.createTopic({
       ...data,
+      station: {
+        connect: {
+          id: data.station,
+        },
+      },
       membership: {
         connect: {
           id: membership.id,
@@ -39,6 +48,11 @@ export default {
       },
       votes: {
         create: {
+          station: {
+            connect: {
+              id: data.station,
+            },
+          },
           membership: {
             connect: {
               id: membership.id,
