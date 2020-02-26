@@ -27,10 +27,8 @@ export default {
           id: userId,
         },
         station: {
-          members_some: {
-            topics_some: {
-              id: data.topic,
-            },
+          topics_some: {
+            id: data.topic,
           },
         },
       },
@@ -38,7 +36,7 @@ export default {
 
     if (!membership) throw new Error('Authorization Required')
 
-    const userVoted = await prisma.$exists.vote({
+    const hasVoted = await prisma.$exists.vote({
       membership: {
         user: {
           id: userId,
@@ -49,9 +47,17 @@ export default {
       },
     })
 
-    if (userVoted) throw new Error('User already voted')
+    if (hasVoted) throw new Error('User already voted')
+
+    const station = await prisma.membership({ id: membership.id }).station()
 
     return prisma.createVote({
+      station: {
+        connect: {
+          id: station.id,
+        },
+      },
+
       membership: {
         connect: {
           id: membership.id,
