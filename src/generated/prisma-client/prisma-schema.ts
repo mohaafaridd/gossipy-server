@@ -33,6 +33,7 @@ type BatchPayload {
 type Comment {
   id: ID!
   content: String!
+  station: Station!
   membership: Membership!
   topic: Topic!
   votes(where: VoteWhereInput, orderBy: VoteOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Vote!]
@@ -49,6 +50,7 @@ type CommentConnection {
 input CommentCreateInput {
   id: ID
   content: String!
+  station: StationCreateOneWithoutCommentsInput!
   membership: MembershipCreateOneWithoutCommentsInput!
   topic: TopicCreateOneWithoutCommentsInput!
   votes: VoteCreateManyWithoutCommentInput
@@ -56,6 +58,11 @@ input CommentCreateInput {
 
 input CommentCreateManyWithoutMembershipInput {
   create: [CommentCreateWithoutMembershipInput!]
+  connect: [CommentWhereUniqueInput!]
+}
+
+input CommentCreateManyWithoutStationInput {
+  create: [CommentCreateWithoutStationInput!]
   connect: [CommentWhereUniqueInput!]
 }
 
@@ -72,6 +79,15 @@ input CommentCreateOneWithoutVotesInput {
 input CommentCreateWithoutMembershipInput {
   id: ID
   content: String!
+  station: StationCreateOneWithoutCommentsInput!
+  topic: TopicCreateOneWithoutCommentsInput!
+  votes: VoteCreateManyWithoutCommentInput
+}
+
+input CommentCreateWithoutStationInput {
+  id: ID
+  content: String!
+  membership: MembershipCreateOneWithoutCommentsInput!
   topic: TopicCreateOneWithoutCommentsInput!
   votes: VoteCreateManyWithoutCommentInput
 }
@@ -79,6 +95,7 @@ input CommentCreateWithoutMembershipInput {
 input CommentCreateWithoutTopicInput {
   id: ID
   content: String!
+  station: StationCreateOneWithoutCommentsInput!
   membership: MembershipCreateOneWithoutCommentsInput!
   votes: VoteCreateManyWithoutCommentInput
 }
@@ -86,6 +103,7 @@ input CommentCreateWithoutTopicInput {
 input CommentCreateWithoutVotesInput {
   id: ID
   content: String!
+  station: StationCreateOneWithoutCommentsInput!
   membership: MembershipCreateOneWithoutCommentsInput!
   topic: TopicCreateOneWithoutCommentsInput!
 }
@@ -183,6 +201,7 @@ input CommentSubscriptionWhereInput {
 
 input CommentUpdateInput {
   content: String
+  station: StationUpdateOneRequiredWithoutCommentsInput
   membership: MembershipUpdateOneRequiredWithoutCommentsInput
   topic: TopicUpdateOneRequiredWithoutCommentsInput
   votes: VoteUpdateManyWithoutCommentInput
@@ -204,6 +223,18 @@ input CommentUpdateManyWithoutMembershipInput {
   disconnect: [CommentWhereUniqueInput!]
   update: [CommentUpdateWithWhereUniqueWithoutMembershipInput!]
   upsert: [CommentUpsertWithWhereUniqueWithoutMembershipInput!]
+  deleteMany: [CommentScalarWhereInput!]
+  updateMany: [CommentUpdateManyWithWhereNestedInput!]
+}
+
+input CommentUpdateManyWithoutStationInput {
+  create: [CommentCreateWithoutStationInput!]
+  delete: [CommentWhereUniqueInput!]
+  connect: [CommentWhereUniqueInput!]
+  set: [CommentWhereUniqueInput!]
+  disconnect: [CommentWhereUniqueInput!]
+  update: [CommentUpdateWithWhereUniqueWithoutStationInput!]
+  upsert: [CommentUpsertWithWhereUniqueWithoutStationInput!]
   deleteMany: [CommentScalarWhereInput!]
   updateMany: [CommentUpdateManyWithWhereNestedInput!]
 }
@@ -236,18 +267,28 @@ input CommentUpdateOneWithoutVotesInput {
 
 input CommentUpdateWithoutMembershipDataInput {
   content: String
+  station: StationUpdateOneRequiredWithoutCommentsInput
+  topic: TopicUpdateOneRequiredWithoutCommentsInput
+  votes: VoteUpdateManyWithoutCommentInput
+}
+
+input CommentUpdateWithoutStationDataInput {
+  content: String
+  membership: MembershipUpdateOneRequiredWithoutCommentsInput
   topic: TopicUpdateOneRequiredWithoutCommentsInput
   votes: VoteUpdateManyWithoutCommentInput
 }
 
 input CommentUpdateWithoutTopicDataInput {
   content: String
+  station: StationUpdateOneRequiredWithoutCommentsInput
   membership: MembershipUpdateOneRequiredWithoutCommentsInput
   votes: VoteUpdateManyWithoutCommentInput
 }
 
 input CommentUpdateWithoutVotesDataInput {
   content: String
+  station: StationUpdateOneRequiredWithoutCommentsInput
   membership: MembershipUpdateOneRequiredWithoutCommentsInput
   topic: TopicUpdateOneRequiredWithoutCommentsInput
 }
@@ -255,6 +296,11 @@ input CommentUpdateWithoutVotesDataInput {
 input CommentUpdateWithWhereUniqueWithoutMembershipInput {
   where: CommentWhereUniqueInput!
   data: CommentUpdateWithoutMembershipDataInput!
+}
+
+input CommentUpdateWithWhereUniqueWithoutStationInput {
+  where: CommentWhereUniqueInput!
+  data: CommentUpdateWithoutStationDataInput!
 }
 
 input CommentUpdateWithWhereUniqueWithoutTopicInput {
@@ -271,6 +317,12 @@ input CommentUpsertWithWhereUniqueWithoutMembershipInput {
   where: CommentWhereUniqueInput!
   update: CommentUpdateWithoutMembershipDataInput!
   create: CommentCreateWithoutMembershipInput!
+}
+
+input CommentUpsertWithWhereUniqueWithoutStationInput {
+  where: CommentWhereUniqueInput!
+  update: CommentUpdateWithoutStationDataInput!
+  create: CommentCreateWithoutStationInput!
 }
 
 input CommentUpsertWithWhereUniqueWithoutTopicInput {
@@ -308,6 +360,7 @@ input CommentWhereInput {
   content_not_starts_with: String
   content_ends_with: String
   content_not_ends_with: String
+  station: StationWhereInput
   membership: MembershipWhereInput
   topic: TopicWhereInput
   votes_every: VoteWhereInput
@@ -845,6 +898,9 @@ type Station {
   description: String!
   public: Boolean!
   members(where: MembershipWhereInput, orderBy: MembershipOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Membership!]
+  topics(where: TopicWhereInput, orderBy: TopicOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Topic!]
+  comments(where: CommentWhereInput, orderBy: CommentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Comment!]
+  votes(where: VoteWhereInput, orderBy: VoteOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Vote!]
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -862,11 +918,40 @@ input StationCreateInput {
   description: String!
   public: Boolean
   members: MembershipCreateManyWithoutStationInput
+  topics: TopicCreateManyWithoutStationInput
+  comments: CommentCreateManyWithoutStationInput
+  votes: VoteCreateManyWithoutStationInput
+}
+
+input StationCreateOneWithoutCommentsInput {
+  create: StationCreateWithoutCommentsInput
+  connect: StationWhereUniqueInput
 }
 
 input StationCreateOneWithoutMembersInput {
   create: StationCreateWithoutMembersInput
   connect: StationWhereUniqueInput
+}
+
+input StationCreateOneWithoutTopicsInput {
+  create: StationCreateWithoutTopicsInput
+  connect: StationWhereUniqueInput
+}
+
+input StationCreateOneWithoutVotesInput {
+  create: StationCreateWithoutVotesInput
+  connect: StationWhereUniqueInput
+}
+
+input StationCreateWithoutCommentsInput {
+  id: ID
+  name: String!
+  identifier: String
+  description: String!
+  public: Boolean
+  members: MembershipCreateManyWithoutStationInput
+  topics: TopicCreateManyWithoutStationInput
+  votes: VoteCreateManyWithoutStationInput
 }
 
 input StationCreateWithoutMembersInput {
@@ -875,6 +960,31 @@ input StationCreateWithoutMembersInput {
   identifier: String
   description: String!
   public: Boolean
+  topics: TopicCreateManyWithoutStationInput
+  comments: CommentCreateManyWithoutStationInput
+  votes: VoteCreateManyWithoutStationInput
+}
+
+input StationCreateWithoutTopicsInput {
+  id: ID
+  name: String!
+  identifier: String
+  description: String!
+  public: Boolean
+  members: MembershipCreateManyWithoutStationInput
+  comments: CommentCreateManyWithoutStationInput
+  votes: VoteCreateManyWithoutStationInput
+}
+
+input StationCreateWithoutVotesInput {
+  id: ID
+  name: String!
+  identifier: String
+  description: String!
+  public: Boolean
+  members: MembershipCreateManyWithoutStationInput
+  topics: TopicCreateManyWithoutStationInput
+  comments: CommentCreateManyWithoutStationInput
 }
 
 type StationEdge {
@@ -933,6 +1043,9 @@ input StationUpdateInput {
   description: String
   public: Boolean
   members: MembershipUpdateManyWithoutStationInput
+  topics: TopicUpdateManyWithoutStationInput
+  comments: CommentUpdateManyWithoutStationInput
+  votes: VoteUpdateManyWithoutStationInput
 }
 
 input StationUpdateManyMutationInput {
@@ -942,6 +1055,13 @@ input StationUpdateManyMutationInput {
   public: Boolean
 }
 
+input StationUpdateOneRequiredWithoutCommentsInput {
+  create: StationCreateWithoutCommentsInput
+  update: StationUpdateWithoutCommentsDataInput
+  upsert: StationUpsertWithoutCommentsInput
+  connect: StationWhereUniqueInput
+}
+
 input StationUpdateOneRequiredWithoutMembersInput {
   create: StationCreateWithoutMembersInput
   update: StationUpdateWithoutMembersDataInput
@@ -949,16 +1069,78 @@ input StationUpdateOneRequiredWithoutMembersInput {
   connect: StationWhereUniqueInput
 }
 
+input StationUpdateOneRequiredWithoutTopicsInput {
+  create: StationCreateWithoutTopicsInput
+  update: StationUpdateWithoutTopicsDataInput
+  upsert: StationUpsertWithoutTopicsInput
+  connect: StationWhereUniqueInput
+}
+
+input StationUpdateOneRequiredWithoutVotesInput {
+  create: StationCreateWithoutVotesInput
+  update: StationUpdateWithoutVotesDataInput
+  upsert: StationUpsertWithoutVotesInput
+  connect: StationWhereUniqueInput
+}
+
+input StationUpdateWithoutCommentsDataInput {
+  name: String
+  identifier: String
+  description: String
+  public: Boolean
+  members: MembershipUpdateManyWithoutStationInput
+  topics: TopicUpdateManyWithoutStationInput
+  votes: VoteUpdateManyWithoutStationInput
+}
+
 input StationUpdateWithoutMembersDataInput {
   name: String
   identifier: String
   description: String
   public: Boolean
+  topics: TopicUpdateManyWithoutStationInput
+  comments: CommentUpdateManyWithoutStationInput
+  votes: VoteUpdateManyWithoutStationInput
+}
+
+input StationUpdateWithoutTopicsDataInput {
+  name: String
+  identifier: String
+  description: String
+  public: Boolean
+  members: MembershipUpdateManyWithoutStationInput
+  comments: CommentUpdateManyWithoutStationInput
+  votes: VoteUpdateManyWithoutStationInput
+}
+
+input StationUpdateWithoutVotesDataInput {
+  name: String
+  identifier: String
+  description: String
+  public: Boolean
+  members: MembershipUpdateManyWithoutStationInput
+  topics: TopicUpdateManyWithoutStationInput
+  comments: CommentUpdateManyWithoutStationInput
+}
+
+input StationUpsertWithoutCommentsInput {
+  update: StationUpdateWithoutCommentsDataInput!
+  create: StationCreateWithoutCommentsInput!
 }
 
 input StationUpsertWithoutMembersInput {
   update: StationUpdateWithoutMembersDataInput!
   create: StationCreateWithoutMembersInput!
+}
+
+input StationUpsertWithoutTopicsInput {
+  update: StationUpdateWithoutTopicsDataInput!
+  create: StationCreateWithoutTopicsInput!
+}
+
+input StationUpsertWithoutVotesInput {
+  update: StationUpdateWithoutVotesDataInput!
+  create: StationCreateWithoutVotesInput!
 }
 
 input StationWhereInput {
@@ -1023,6 +1205,15 @@ input StationWhereInput {
   members_every: MembershipWhereInput
   members_some: MembershipWhereInput
   members_none: MembershipWhereInput
+  topics_every: TopicWhereInput
+  topics_some: TopicWhereInput
+  topics_none: TopicWhereInput
+  comments_every: CommentWhereInput
+  comments_some: CommentWhereInput
+  comments_none: CommentWhereInput
+  votes_every: VoteWhereInput
+  votes_some: VoteWhereInput
+  votes_none: VoteWhereInput
   createdAt: DateTime
   createdAt_not: DateTime
   createdAt_in: [DateTime!]
@@ -1062,6 +1253,7 @@ type Topic {
   id: ID!
   title: String!
   content: String!
+  station: Station!
   membership: Membership!
   comments(where: CommentWhereInput, orderBy: CommentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Comment!]
   votes(where: VoteWhereInput, orderBy: VoteOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Vote!]
@@ -1079,6 +1271,7 @@ input TopicCreateInput {
   id: ID
   title: String!
   content: String!
+  station: StationCreateOneWithoutTopicsInput!
   membership: MembershipCreateOneWithoutTopicsInput!
   comments: CommentCreateManyWithoutTopicInput
   votes: VoteCreateManyWithoutTopicInput
@@ -1086,6 +1279,11 @@ input TopicCreateInput {
 
 input TopicCreateManyWithoutMembershipInput {
   create: [TopicCreateWithoutMembershipInput!]
+  connect: [TopicWhereUniqueInput!]
+}
+
+input TopicCreateManyWithoutStationInput {
+  create: [TopicCreateWithoutStationInput!]
   connect: [TopicWhereUniqueInput!]
 }
 
@@ -1103,6 +1301,7 @@ input TopicCreateWithoutCommentsInput {
   id: ID
   title: String!
   content: String!
+  station: StationCreateOneWithoutTopicsInput!
   membership: MembershipCreateOneWithoutTopicsInput!
   votes: VoteCreateManyWithoutTopicInput
 }
@@ -1111,6 +1310,16 @@ input TopicCreateWithoutMembershipInput {
   id: ID
   title: String!
   content: String!
+  station: StationCreateOneWithoutTopicsInput!
+  comments: CommentCreateManyWithoutTopicInput
+  votes: VoteCreateManyWithoutTopicInput
+}
+
+input TopicCreateWithoutStationInput {
+  id: ID
+  title: String!
+  content: String!
+  membership: MembershipCreateOneWithoutTopicsInput!
   comments: CommentCreateManyWithoutTopicInput
   votes: VoteCreateManyWithoutTopicInput
 }
@@ -1119,6 +1328,7 @@ input TopicCreateWithoutVotesInput {
   id: ID
   title: String!
   content: String!
+  station: StationCreateOneWithoutTopicsInput!
   membership: MembershipCreateOneWithoutTopicsInput!
   comments: CommentCreateManyWithoutTopicInput
 }
@@ -1234,6 +1444,7 @@ input TopicSubscriptionWhereInput {
 input TopicUpdateInput {
   title: String
   content: String
+  station: StationUpdateOneRequiredWithoutTopicsInput
   membership: MembershipUpdateOneRequiredWithoutTopicsInput
   comments: CommentUpdateManyWithoutTopicInput
   votes: VoteUpdateManyWithoutTopicInput
@@ -1261,6 +1472,18 @@ input TopicUpdateManyWithoutMembershipInput {
   updateMany: [TopicUpdateManyWithWhereNestedInput!]
 }
 
+input TopicUpdateManyWithoutStationInput {
+  create: [TopicCreateWithoutStationInput!]
+  delete: [TopicWhereUniqueInput!]
+  connect: [TopicWhereUniqueInput!]
+  set: [TopicWhereUniqueInput!]
+  disconnect: [TopicWhereUniqueInput!]
+  update: [TopicUpdateWithWhereUniqueWithoutStationInput!]
+  upsert: [TopicUpsertWithWhereUniqueWithoutStationInput!]
+  deleteMany: [TopicScalarWhereInput!]
+  updateMany: [TopicUpdateManyWithWhereNestedInput!]
+}
+
 input TopicUpdateManyWithWhereNestedInput {
   where: TopicScalarWhereInput!
   data: TopicUpdateManyDataInput!
@@ -1283,6 +1506,7 @@ input TopicUpdateOneRequiredWithoutVotesInput {
 input TopicUpdateWithoutCommentsDataInput {
   title: String
   content: String
+  station: StationUpdateOneRequiredWithoutTopicsInput
   membership: MembershipUpdateOneRequiredWithoutTopicsInput
   votes: VoteUpdateManyWithoutTopicInput
 }
@@ -1290,6 +1514,15 @@ input TopicUpdateWithoutCommentsDataInput {
 input TopicUpdateWithoutMembershipDataInput {
   title: String
   content: String
+  station: StationUpdateOneRequiredWithoutTopicsInput
+  comments: CommentUpdateManyWithoutTopicInput
+  votes: VoteUpdateManyWithoutTopicInput
+}
+
+input TopicUpdateWithoutStationDataInput {
+  title: String
+  content: String
+  membership: MembershipUpdateOneRequiredWithoutTopicsInput
   comments: CommentUpdateManyWithoutTopicInput
   votes: VoteUpdateManyWithoutTopicInput
 }
@@ -1297,6 +1530,7 @@ input TopicUpdateWithoutMembershipDataInput {
 input TopicUpdateWithoutVotesDataInput {
   title: String
   content: String
+  station: StationUpdateOneRequiredWithoutTopicsInput
   membership: MembershipUpdateOneRequiredWithoutTopicsInput
   comments: CommentUpdateManyWithoutTopicInput
 }
@@ -1304,6 +1538,11 @@ input TopicUpdateWithoutVotesDataInput {
 input TopicUpdateWithWhereUniqueWithoutMembershipInput {
   where: TopicWhereUniqueInput!
   data: TopicUpdateWithoutMembershipDataInput!
+}
+
+input TopicUpdateWithWhereUniqueWithoutStationInput {
+  where: TopicWhereUniqueInput!
+  data: TopicUpdateWithoutStationDataInput!
 }
 
 input TopicUpsertWithoutCommentsInput {
@@ -1320,6 +1559,12 @@ input TopicUpsertWithWhereUniqueWithoutMembershipInput {
   where: TopicWhereUniqueInput!
   update: TopicUpdateWithoutMembershipDataInput!
   create: TopicCreateWithoutMembershipInput!
+}
+
+input TopicUpsertWithWhereUniqueWithoutStationInput {
+  where: TopicWhereUniqueInput!
+  update: TopicUpdateWithoutStationDataInput!
+  create: TopicCreateWithoutStationInput!
 }
 
 input TopicWhereInput {
@@ -1365,6 +1610,7 @@ input TopicWhereInput {
   content_not_starts_with: String
   content_ends_with: String
   content_not_ends_with: String
+  station: StationWhereInput
   membership: MembershipWhereInput
   comments_every: CommentWhereInput
   comments_some: CommentWhereInput
@@ -1624,6 +1870,7 @@ input UserWhereUniqueInput {
 type Vote {
   id: ID!
   type: VoteType!
+  station: Station!
   topic: Topic!
   comment: Comment
   membership: Membership!
@@ -1640,6 +1887,7 @@ type VoteConnection {
 input VoteCreateInput {
   id: ID
   type: VoteType!
+  station: StationCreateOneWithoutVotesInput!
   topic: TopicCreateOneWithoutVotesInput!
   comment: CommentCreateOneWithoutVotesInput
   membership: MembershipCreateOneWithoutVotesInput!
@@ -1655,6 +1903,11 @@ input VoteCreateManyWithoutMembershipInput {
   connect: [VoteWhereUniqueInput!]
 }
 
+input VoteCreateManyWithoutStationInput {
+  create: [VoteCreateWithoutStationInput!]
+  connect: [VoteWhereUniqueInput!]
+}
+
 input VoteCreateManyWithoutTopicInput {
   create: [VoteCreateWithoutTopicInput!]
   connect: [VoteWhereUniqueInput!]
@@ -1663,6 +1916,7 @@ input VoteCreateManyWithoutTopicInput {
 input VoteCreateWithoutCommentInput {
   id: ID
   type: VoteType!
+  station: StationCreateOneWithoutVotesInput!
   topic: TopicCreateOneWithoutVotesInput!
   membership: MembershipCreateOneWithoutVotesInput!
 }
@@ -1670,13 +1924,23 @@ input VoteCreateWithoutCommentInput {
 input VoteCreateWithoutMembershipInput {
   id: ID
   type: VoteType!
+  station: StationCreateOneWithoutVotesInput!
   topic: TopicCreateOneWithoutVotesInput!
   comment: CommentCreateOneWithoutVotesInput
+}
+
+input VoteCreateWithoutStationInput {
+  id: ID
+  type: VoteType!
+  topic: TopicCreateOneWithoutVotesInput!
+  comment: CommentCreateOneWithoutVotesInput
+  membership: MembershipCreateOneWithoutVotesInput!
 }
 
 input VoteCreateWithoutTopicInput {
   id: ID
   type: VoteType!
+  station: StationCreateOneWithoutVotesInput!
   comment: CommentCreateOneWithoutVotesInput
   membership: MembershipCreateOneWithoutVotesInput!
 }
@@ -1769,6 +2033,7 @@ enum VoteType {
 
 input VoteUpdateInput {
   type: VoteType
+  station: StationUpdateOneRequiredWithoutVotesInput
   topic: TopicUpdateOneRequiredWithoutVotesInput
   comment: CommentUpdateOneWithoutVotesInput
   membership: MembershipUpdateOneRequiredWithoutVotesInput
@@ -1806,6 +2071,18 @@ input VoteUpdateManyWithoutMembershipInput {
   updateMany: [VoteUpdateManyWithWhereNestedInput!]
 }
 
+input VoteUpdateManyWithoutStationInput {
+  create: [VoteCreateWithoutStationInput!]
+  delete: [VoteWhereUniqueInput!]
+  connect: [VoteWhereUniqueInput!]
+  set: [VoteWhereUniqueInput!]
+  disconnect: [VoteWhereUniqueInput!]
+  update: [VoteUpdateWithWhereUniqueWithoutStationInput!]
+  upsert: [VoteUpsertWithWhereUniqueWithoutStationInput!]
+  deleteMany: [VoteScalarWhereInput!]
+  updateMany: [VoteUpdateManyWithWhereNestedInput!]
+}
+
 input VoteUpdateManyWithoutTopicInput {
   create: [VoteCreateWithoutTopicInput!]
   delete: [VoteWhereUniqueInput!]
@@ -1825,18 +2102,28 @@ input VoteUpdateManyWithWhereNestedInput {
 
 input VoteUpdateWithoutCommentDataInput {
   type: VoteType
+  station: StationUpdateOneRequiredWithoutVotesInput
   topic: TopicUpdateOneRequiredWithoutVotesInput
   membership: MembershipUpdateOneRequiredWithoutVotesInput
 }
 
 input VoteUpdateWithoutMembershipDataInput {
   type: VoteType
+  station: StationUpdateOneRequiredWithoutVotesInput
   topic: TopicUpdateOneRequiredWithoutVotesInput
   comment: CommentUpdateOneWithoutVotesInput
 }
 
+input VoteUpdateWithoutStationDataInput {
+  type: VoteType
+  topic: TopicUpdateOneRequiredWithoutVotesInput
+  comment: CommentUpdateOneWithoutVotesInput
+  membership: MembershipUpdateOneRequiredWithoutVotesInput
+}
+
 input VoteUpdateWithoutTopicDataInput {
   type: VoteType
+  station: StationUpdateOneRequiredWithoutVotesInput
   comment: CommentUpdateOneWithoutVotesInput
   membership: MembershipUpdateOneRequiredWithoutVotesInput
 }
@@ -1849,6 +2136,11 @@ input VoteUpdateWithWhereUniqueWithoutCommentInput {
 input VoteUpdateWithWhereUniqueWithoutMembershipInput {
   where: VoteWhereUniqueInput!
   data: VoteUpdateWithoutMembershipDataInput!
+}
+
+input VoteUpdateWithWhereUniqueWithoutStationInput {
+  where: VoteWhereUniqueInput!
+  data: VoteUpdateWithoutStationDataInput!
 }
 
 input VoteUpdateWithWhereUniqueWithoutTopicInput {
@@ -1866,6 +2158,12 @@ input VoteUpsertWithWhereUniqueWithoutMembershipInput {
   where: VoteWhereUniqueInput!
   update: VoteUpdateWithoutMembershipDataInput!
   create: VoteCreateWithoutMembershipInput!
+}
+
+input VoteUpsertWithWhereUniqueWithoutStationInput {
+  where: VoteWhereUniqueInput!
+  update: VoteUpdateWithoutStationDataInput!
+  create: VoteCreateWithoutStationInput!
 }
 
 input VoteUpsertWithWhereUniqueWithoutTopicInput {
@@ -1893,6 +2191,7 @@ input VoteWhereInput {
   type_not: VoteType
   type_in: [VoteType!]
   type_not_in: [VoteType!]
+  station: StationWhereInput
   topic: TopicWhereInput
   comment: CommentWhereInput
   membership: MembershipWhereInput

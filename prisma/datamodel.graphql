@@ -18,6 +18,9 @@ type Station {
   public: Boolean! @default(value: false)
   members: [Membership!]!
     @relation(name: "StationToMembership", onDelete: CASCADE)
+  topics: [Topic!]! @relation(name: "StationToTopics", onDelete: CASCADE)
+  comments: [Comment!]! @relation(name: "StationToComments", onDelete: CASCADE)
+  votes: [Vote!]! @relation(name: "StationToVotes", onDelete: CASCADE)
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
 }
@@ -40,6 +43,7 @@ type Topic {
   id: ID! @id
   title: String!
   content: String!
+  station: Station! @relation(name: "StationToTopics", onDelete: SET_NULL)
   membership: Membership!
     @relation(name: "TopicToMembership", onDelete: SET_NULL)
   comments: [Comment!]! @relation(name: "TopicToComment", onDelete: CASCADE)
@@ -51,6 +55,7 @@ type Topic {
 type Comment {
   id: ID! @id
   content: String!
+  station: Station! @relation(name: "StationToComments", onDelete: SET_NULL)
   membership: Membership!
     @relation(name: "MembershipToComment", onDelete: SET_NULL)
   topic: Topic! @relation(name: "TopicToComment", onDelete: SET_NULL)
@@ -62,6 +67,7 @@ type Comment {
 type Vote {
   id: ID! @id
   type: VoteType!
+  station: Station! @relation(name: "StationToVotes", onDelete: SET_NULL)
   topic: Topic! @relation(name: "TopicToVotes", onDelete: SET_NULL)
   comment: Comment @relation(name: "CommentToVotes", onDelete: SET_NULL)
   membership: Membership!
