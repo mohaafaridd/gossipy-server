@@ -9,15 +9,19 @@ import {
 } from '../generated/prisma-client'
 import { DateRange, SortType } from '../constants'
 import getSortingDate from '../utils/getSortingDate'
-import { getHotScore, getTopScore, sortTopics } from '../utils/sortMethods'
-// import { sortHot } from '../utils/sortMethods'
-
-const topTopics = () => {}
+import { sortTopics } from '../utils/sortMethods'
 
 export default {
-  users: async (parent, args, { prisma }: { prisma: Prisma }, info) => {
-    const users: User[] = await prisma.users()
-    return users
+  users: async (parent, args, { prisma }: { prisma: Prisma }) => {
+    return prisma.users()
+  },
+
+  user: async (
+    parent,
+    { identifier }: { identifier: string },
+    { prisma }: { prisma: Prisma }
+  ) => {
+    return prisma.user({ identifier })
   },
 
   stations: async (parent, args, { prisma }: { prisma: Prisma }, info) => {
