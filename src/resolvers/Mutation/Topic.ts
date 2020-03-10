@@ -20,7 +20,7 @@ export default {
   ) => {
     const userId = getUserId(request)
 
-    const [membership]: Membership[] = await prisma.memberships({
+    const [membership] = await prisma.memberships({
       where: {
         station: {
           id: data.station,
@@ -36,6 +36,11 @@ export default {
 
     const topic = await prisma.createTopic({
       ...data,
+      user: {
+        connect: {
+          id: userId,
+        },
+      },
       station: {
         connect: {
           id: data.station,
@@ -48,6 +53,11 @@ export default {
       },
       votes: {
         create: {
+          user: {
+            connect: {
+              id: userId,
+            },
+          },
           station: {
             connect: {
               id: data.station,

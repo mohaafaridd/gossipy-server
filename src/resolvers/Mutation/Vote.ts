@@ -52,6 +52,12 @@ export default {
     const station = await prisma.membership({ id: membership.id }).station()
 
     return prisma.createVote({
+      user: {
+        connect: {
+          id: userId,
+        },
+      },
+
       station: {
         connect: {
           id: station.id,

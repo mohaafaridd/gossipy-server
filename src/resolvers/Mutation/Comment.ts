@@ -39,6 +39,11 @@ export default {
 
     return prisma.createComment({
       content: data.content,
+      user: {
+        connect: {
+          id: userId,
+        },
+      },
       station: {
         connect: {
           id: station.id,
