@@ -71,8 +71,9 @@ type Vote {
 }
 
 type Query {
+  profile(identifier: ID!): UserProfile!
   users: [User!]!
-  user(identifier: ID!): User!
+  station(identifier: ID!): Station!
   stations: [Station!]!
   memberships: [Membership!]!
   topics(sort: SortType, dateRange: DateRange!): [Topic!]!
@@ -111,6 +112,11 @@ type Mutation {
 type AuthPayload {
   token: String!
   user: User!
+}
+
+type UserProfile {
+  user: User!
+  stations: [Station!]!
 }
 
 input CreateUserInput {

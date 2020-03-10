@@ -16,17 +16,35 @@ export default {
     return prisma.users()
   },
 
-  user: async (
+  profile: async (
     parent,
     { identifier }: { identifier: string },
     { prisma }: { prisma: Prisma }
   ) => {
-    return prisma.user({ identifier })
+    const user = await prisma.user({ identifier })
+    const stations = await prisma.stations({
+      where: {
+        members_some: {
+          user: {
+            identifier,
+          },
+        },
+      },
+    })
+    return { user, stations }
   },
 
   stations: async (parent, args, { prisma }: { prisma: Prisma }, info) => {
     const stations: Station[] = await prisma.stations()
     return stations
+  },
+
+  station: async (
+    parent,
+    { identifier }: { identifier: string },
+    { prisma }: { prisma: Prisma }
+  ) => {
+    return prisma.station({ identifier })
   },
 
   memberships: async (parent, args, { prisma }: { prisma: Prisma }, info) => {
