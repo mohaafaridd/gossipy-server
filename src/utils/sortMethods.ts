@@ -1,10 +1,8 @@
 import * as moment from 'moment'
-import { Vote, Topic, VoteType } from '../generated/prisma-client'
+import { Vote, Topic } from '../generated/prisma-client'
 import { SortType } from '../constants'
 
-export interface VotesQueryTopic {
-  id: string
-  type: VoteType
+interface VoteCollection extends Vote {
   topic: Topic
 }
 
@@ -31,7 +29,7 @@ export const getTopScore = (votes: Vote[], topic: Topic) => {
   return score
 }
 
-export const sortTopics = (sortType: SortType, votes: VotesQueryTopic[]) => {
+export const sortTopics = (sortType: SortType, votes: VoteCollection[]) => {
   const reduced = votes.reduce((acc, current) => {
     if (current.topic.id in acc) {
       acc[current.topic.id].push({ id: current.id, type: current.type })

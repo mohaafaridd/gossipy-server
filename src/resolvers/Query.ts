@@ -11,6 +11,7 @@ import { DateRange, SortType } from '../constants'
 import getSortingDate from '../utils/getSortingDate'
 import { sortTopics } from '../utils/sortMethods'
 import getUserId from '../utils/getUserId'
+import getTopics from '../utils/getTopics'
 
 export default {
   users: async (parent, args, { prisma }: { prisma: Prisma }) => {
@@ -69,7 +70,13 @@ export default {
     { prisma, request }: { prisma: Prisma; request: any }
   ) => {
     const finalDate = getSortingDate(dateRange)
-    const topics = await prisma.topics({})
+
+    const filter = {
+      user,
+      station,
+    }
+
+    return getTopics(sortType, finalDate, filter)
   },
 
   comments: (parent, args, { prisma }: { prisma: Prisma }, info) => {
