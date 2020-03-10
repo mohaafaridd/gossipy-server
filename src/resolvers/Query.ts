@@ -10,6 +10,7 @@ import {
 import { DateRange, SortType } from '../constants'
 import getSortingDate from '../utils/getSortingDate'
 import { sortTopics } from '../utils/sortMethods'
+import getUserId from '../utils/getUserId'
 
 export default {
   users: async (parent, args, { prisma }: { prisma: Prisma }) => {
@@ -54,68 +55,21 @@ export default {
 
   topics: async (
     parent,
-    { sort, dateRange }: { sort: SortType; dateRange: DateRange },
-    { prisma }: { prisma: Prisma },
-    info
+    {
+      sortType,
+      dateRange,
+      user,
+      station,
+    }: {
+      sortType: SortType
+      dateRange: DateRange
+      user: string
+      station: string
+    },
+    { prisma, request }: { prisma: Prisma; request: any }
   ) => {
     const finalDate = getSortingDate(dateRange)
-
-    switch (sort) {
-      case 'HOT': {
-        const votes: {
-          id: string
-          type: VoteType
-          topic: Topic
-        }[] = await prisma.votes({
-          where: { createdAt_gte: finalDate },
-        }).$fragment(`
-          fragment TopicToVotes on Vote {
-            id
-            type
-            topic {
-              id
-              title
-              createdAt
-            }
-          }
-        `)
-
-        const topics = sortTopics('HOT', votes)
-        return topics
-      }
-
-      case 'TOP': {
-        const votes: {
-          id: string
-          type: VoteType
-          topic: Topic
-        }[] = await prisma.votes({
-          where: { createdAt_gte: finalDate },
-        }).$fragment(`
-            fragment TopicToVotes on Vote {
-              id
-              type
-              topic {
-                id
-                title
-                createdAt
-              }
-            }
-          `)
-
-        const topics = sortTopics('TOP', votes)
-        return topics
-      }
-
-      default:
-        const topics = await prisma.topics({
-          orderBy: 'createdAt_DESC',
-          where: {
-            createdAt_gte: finalDate,
-          },
-        })
-        return topics
-    }
+    const topics = await prisma.topics({})
   },
 
   comments: (parent, args, { prisma }: { prisma: Prisma }, info) => {

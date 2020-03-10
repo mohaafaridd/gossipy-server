@@ -76,7 +76,12 @@ type Query {
   station(identifier: ID!): Station!
   stations: [Station!]!
   memberships: [Membership!]!
-  topics(sort: SortType, dateRange: DateRange!): [Topic!]!
+  topics(
+    dateRange: DateRange!
+    sortType: SortType!
+    user: ID
+    station: ID
+  ): [Topic!]!
   comments: [Comment!]!
   votes: [Vote!]!
 }

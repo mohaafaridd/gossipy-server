@@ -513,6 +513,15 @@ export interface UserWhereInput {
   memberships_every?: Maybe<MembershipWhereInput>;
   memberships_some?: Maybe<MembershipWhereInput>;
   memberships_none?: Maybe<MembershipWhereInput>;
+  topics_every?: Maybe<TopicWhereInput>;
+  topics_some?: Maybe<TopicWhereInput>;
+  topics_none?: Maybe<TopicWhereInput>;
+  comments_every?: Maybe<CommentWhereInput>;
+  comments_some?: Maybe<CommentWhereInput>;
+  comments_none?: Maybe<CommentWhereInput>;
+  votes_every?: Maybe<VoteWhereInput>;
+  votes_some?: Maybe<VoteWhereInput>;
+  votes_none?: Maybe<VoteWhereInput>;
   createdAt?: Maybe<DateTimeInput>;
   createdAt_not?: Maybe<DateTimeInput>;
   createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
@@ -532,6 +541,79 @@ export interface UserWhereInput {
   AND?: Maybe<UserWhereInput[] | UserWhereInput>;
   OR?: Maybe<UserWhereInput[] | UserWhereInput>;
   NOT?: Maybe<UserWhereInput[] | UserWhereInput>;
+}
+
+export interface TopicWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  title?: Maybe<String>;
+  title_not?: Maybe<String>;
+  title_in?: Maybe<String[] | String>;
+  title_not_in?: Maybe<String[] | String>;
+  title_lt?: Maybe<String>;
+  title_lte?: Maybe<String>;
+  title_gt?: Maybe<String>;
+  title_gte?: Maybe<String>;
+  title_contains?: Maybe<String>;
+  title_not_contains?: Maybe<String>;
+  title_starts_with?: Maybe<String>;
+  title_not_starts_with?: Maybe<String>;
+  title_ends_with?: Maybe<String>;
+  title_not_ends_with?: Maybe<String>;
+  content?: Maybe<String>;
+  content_not?: Maybe<String>;
+  content_in?: Maybe<String[] | String>;
+  content_not_in?: Maybe<String[] | String>;
+  content_lt?: Maybe<String>;
+  content_lte?: Maybe<String>;
+  content_gt?: Maybe<String>;
+  content_gte?: Maybe<String>;
+  content_contains?: Maybe<String>;
+  content_not_contains?: Maybe<String>;
+  content_starts_with?: Maybe<String>;
+  content_not_starts_with?: Maybe<String>;
+  content_ends_with?: Maybe<String>;
+  content_not_ends_with?: Maybe<String>;
+  user?: Maybe<UserWhereInput>;
+  station?: Maybe<StationWhereInput>;
+  membership?: Maybe<MembershipWhereInput>;
+  comments_every?: Maybe<CommentWhereInput>;
+  comments_some?: Maybe<CommentWhereInput>;
+  comments_none?: Maybe<CommentWhereInput>;
+  votes_every?: Maybe<VoteWhereInput>;
+  votes_some?: Maybe<VoteWhereInput>;
+  votes_none?: Maybe<VoteWhereInput>;
+  createdAt?: Maybe<DateTimeInput>;
+  createdAt_not?: Maybe<DateTimeInput>;
+  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_lt?: Maybe<DateTimeInput>;
+  createdAt_lte?: Maybe<DateTimeInput>;
+  createdAt_gt?: Maybe<DateTimeInput>;
+  createdAt_gte?: Maybe<DateTimeInput>;
+  updatedAt?: Maybe<DateTimeInput>;
+  updatedAt_not?: Maybe<DateTimeInput>;
+  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_lt?: Maybe<DateTimeInput>;
+  updatedAt_lte?: Maybe<DateTimeInput>;
+  updatedAt_gt?: Maybe<DateTimeInput>;
+  updatedAt_gte?: Maybe<DateTimeInput>;
+  AND?: Maybe<TopicWhereInput[] | TopicWhereInput>;
+  OR?: Maybe<TopicWhereInput[] | TopicWhereInput>;
+  NOT?: Maybe<TopicWhereInput[] | TopicWhereInput>;
 }
 
 export interface StationWhereInput {
@@ -626,78 +708,6 @@ export interface StationWhereInput {
   NOT?: Maybe<StationWhereInput[] | StationWhereInput>;
 }
 
-export interface TopicWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  title?: Maybe<String>;
-  title_not?: Maybe<String>;
-  title_in?: Maybe<String[] | String>;
-  title_not_in?: Maybe<String[] | String>;
-  title_lt?: Maybe<String>;
-  title_lte?: Maybe<String>;
-  title_gt?: Maybe<String>;
-  title_gte?: Maybe<String>;
-  title_contains?: Maybe<String>;
-  title_not_contains?: Maybe<String>;
-  title_starts_with?: Maybe<String>;
-  title_not_starts_with?: Maybe<String>;
-  title_ends_with?: Maybe<String>;
-  title_not_ends_with?: Maybe<String>;
-  content?: Maybe<String>;
-  content_not?: Maybe<String>;
-  content_in?: Maybe<String[] | String>;
-  content_not_in?: Maybe<String[] | String>;
-  content_lt?: Maybe<String>;
-  content_lte?: Maybe<String>;
-  content_gt?: Maybe<String>;
-  content_gte?: Maybe<String>;
-  content_contains?: Maybe<String>;
-  content_not_contains?: Maybe<String>;
-  content_starts_with?: Maybe<String>;
-  content_not_starts_with?: Maybe<String>;
-  content_ends_with?: Maybe<String>;
-  content_not_ends_with?: Maybe<String>;
-  station?: Maybe<StationWhereInput>;
-  membership?: Maybe<MembershipWhereInput>;
-  comments_every?: Maybe<CommentWhereInput>;
-  comments_some?: Maybe<CommentWhereInput>;
-  comments_none?: Maybe<CommentWhereInput>;
-  votes_every?: Maybe<VoteWhereInput>;
-  votes_some?: Maybe<VoteWhereInput>;
-  votes_none?: Maybe<VoteWhereInput>;
-  createdAt?: Maybe<DateTimeInput>;
-  createdAt_not?: Maybe<DateTimeInput>;
-  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_lt?: Maybe<DateTimeInput>;
-  createdAt_lte?: Maybe<DateTimeInput>;
-  createdAt_gt?: Maybe<DateTimeInput>;
-  createdAt_gte?: Maybe<DateTimeInput>;
-  updatedAt?: Maybe<DateTimeInput>;
-  updatedAt_not?: Maybe<DateTimeInput>;
-  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  updatedAt_lt?: Maybe<DateTimeInput>;
-  updatedAt_lte?: Maybe<DateTimeInput>;
-  updatedAt_gt?: Maybe<DateTimeInput>;
-  updatedAt_gte?: Maybe<DateTimeInput>;
-  AND?: Maybe<TopicWhereInput[] | TopicWhereInput>;
-  OR?: Maybe<TopicWhereInput[] | TopicWhereInput>;
-  NOT?: Maybe<TopicWhereInput[] | TopicWhereInput>;
-}
-
 export interface CommentWhereInput {
   id?: Maybe<ID_Input>;
   id_not?: Maybe<ID_Input>;
@@ -727,6 +737,7 @@ export interface CommentWhereInput {
   content_not_starts_with?: Maybe<String>;
   content_ends_with?: Maybe<String>;
   content_not_ends_with?: Maybe<String>;
+  user?: Maybe<UserWhereInput>;
   station?: Maybe<StationWhereInput>;
   membership?: Maybe<MembershipWhereInput>;
   topic?: Maybe<TopicWhereInput>;
@@ -773,6 +784,7 @@ export interface VoteWhereInput {
   type_not?: Maybe<VoteType>;
   type_in?: Maybe<VoteType[] | VoteType>;
   type_not_in?: Maybe<VoteType[] | VoteType>;
+  user?: Maybe<UserWhereInput>;
   station?: Maybe<StationWhereInput>;
   topic?: Maybe<TopicWhereInput>;
   comment?: Maybe<CommentWhereInput>;
@@ -822,6 +834,105 @@ export type VoteWhereUniqueInput = AtLeastOne<{
 }>;
 
 export interface CommentCreateInput {
+  id?: Maybe<ID_Input>;
+  content: String;
+  user: UserCreateOneWithoutCommentsInput;
+  station: StationCreateOneWithoutCommentsInput;
+  membership: MembershipCreateOneWithoutCommentsInput;
+  topic: TopicCreateOneWithoutCommentsInput;
+  votes?: Maybe<VoteCreateManyWithoutCommentInput>;
+}
+
+export interface UserCreateOneWithoutCommentsInput {
+  create?: Maybe<UserCreateWithoutCommentsInput>;
+  connect?: Maybe<UserWhereUniqueInput>;
+}
+
+export interface UserCreateWithoutCommentsInput {
+  id?: Maybe<ID_Input>;
+  name: String;
+  identifier?: Maybe<String>;
+  password: String;
+  email: String;
+  memberships?: Maybe<MembershipCreateManyWithoutUserInput>;
+  topics?: Maybe<TopicCreateManyWithoutUserInput>;
+  votes?: Maybe<VoteCreateManyWithoutUserInput>;
+}
+
+export interface MembershipCreateManyWithoutUserInput {
+  create?: Maybe<
+    MembershipCreateWithoutUserInput[] | MembershipCreateWithoutUserInput
+  >;
+  connect?: Maybe<MembershipWhereUniqueInput[] | MembershipWhereUniqueInput>;
+}
+
+export interface MembershipCreateWithoutUserInput {
+  id?: Maybe<ID_Input>;
+  station: StationCreateOneWithoutMembersInput;
+  topics?: Maybe<TopicCreateManyWithoutMembershipInput>;
+  comments?: Maybe<CommentCreateManyWithoutMembershipInput>;
+  votes?: Maybe<VoteCreateManyWithoutMembershipInput>;
+  role?: Maybe<Role>;
+  state?: Maybe<MembershipState>;
+}
+
+export interface StationCreateOneWithoutMembersInput {
+  create?: Maybe<StationCreateWithoutMembersInput>;
+  connect?: Maybe<StationWhereUniqueInput>;
+}
+
+export interface StationCreateWithoutMembersInput {
+  id?: Maybe<ID_Input>;
+  name: String;
+  identifier?: Maybe<String>;
+  description: String;
+  public?: Maybe<Boolean>;
+  topics?: Maybe<TopicCreateManyWithoutStationInput>;
+  comments?: Maybe<CommentCreateManyWithoutStationInput>;
+  votes?: Maybe<VoteCreateManyWithoutStationInput>;
+}
+
+export interface TopicCreateManyWithoutStationInput {
+  create?: Maybe<
+    TopicCreateWithoutStationInput[] | TopicCreateWithoutStationInput
+  >;
+  connect?: Maybe<TopicWhereUniqueInput[] | TopicWhereUniqueInput>;
+}
+
+export interface TopicCreateWithoutStationInput {
+  id?: Maybe<ID_Input>;
+  title: String;
+  content: String;
+  user: UserCreateOneWithoutTopicsInput;
+  membership: MembershipCreateOneWithoutTopicsInput;
+  comments?: Maybe<CommentCreateManyWithoutTopicInput>;
+  votes?: Maybe<VoteCreateManyWithoutTopicInput>;
+}
+
+export interface UserCreateOneWithoutTopicsInput {
+  create?: Maybe<UserCreateWithoutTopicsInput>;
+  connect?: Maybe<UserWhereUniqueInput>;
+}
+
+export interface UserCreateWithoutTopicsInput {
+  id?: Maybe<ID_Input>;
+  name: String;
+  identifier?: Maybe<String>;
+  password: String;
+  email: String;
+  memberships?: Maybe<MembershipCreateManyWithoutUserInput>;
+  comments?: Maybe<CommentCreateManyWithoutUserInput>;
+  votes?: Maybe<VoteCreateManyWithoutUserInput>;
+}
+
+export interface CommentCreateManyWithoutUserInput {
+  create?: Maybe<
+    CommentCreateWithoutUserInput[] | CommentCreateWithoutUserInput
+  >;
+  connect?: Maybe<CommentWhereUniqueInput[] | CommentWhereUniqueInput>;
+}
+
+export interface CommentCreateWithoutUserInput {
   id?: Maybe<ID_Input>;
   content: String;
   station: StationCreateOneWithoutCommentsInput;
@@ -874,20 +985,22 @@ export interface UserCreateWithoutMembershipsInput {
   identifier?: Maybe<String>;
   password: String;
   email: String;
+  topics?: Maybe<TopicCreateManyWithoutUserInput>;
+  comments?: Maybe<CommentCreateManyWithoutUserInput>;
+  votes?: Maybe<VoteCreateManyWithoutUserInput>;
 }
 
-export interface TopicCreateManyWithoutMembershipInput {
-  create?: Maybe<
-    TopicCreateWithoutMembershipInput[] | TopicCreateWithoutMembershipInput
-  >;
+export interface TopicCreateManyWithoutUserInput {
+  create?: Maybe<TopicCreateWithoutUserInput[] | TopicCreateWithoutUserInput>;
   connect?: Maybe<TopicWhereUniqueInput[] | TopicWhereUniqueInput>;
 }
 
-export interface TopicCreateWithoutMembershipInput {
+export interface TopicCreateWithoutUserInput {
   id?: Maybe<ID_Input>;
   title: String;
   content: String;
   station: StationCreateOneWithoutTopicsInput;
+  membership: MembershipCreateOneWithoutTopicsInput;
   comments?: Maybe<CommentCreateManyWithoutTopicInput>;
   votes?: Maybe<VoteCreateManyWithoutTopicInput>;
 }
@@ -918,6 +1031,7 @@ export interface CommentCreateManyWithoutStationInput {
 export interface CommentCreateWithoutStationInput {
   id?: Maybe<ID_Input>;
   content: String;
+  user: UserCreateOneWithoutCommentsInput;
   membership: MembershipCreateOneWithoutCommentsInput;
   topic: TopicCreateOneWithoutCommentsInput;
   votes?: Maybe<VoteCreateManyWithoutCommentInput>;
@@ -938,36 +1052,100 @@ export interface MembershipCreateWithoutCommentsInput {
   state?: Maybe<MembershipState>;
 }
 
-export interface StationCreateOneWithoutMembersInput {
-  create?: Maybe<StationCreateWithoutMembersInput>;
+export interface TopicCreateManyWithoutMembershipInput {
+  create?: Maybe<
+    TopicCreateWithoutMembershipInput[] | TopicCreateWithoutMembershipInput
+  >;
+  connect?: Maybe<TopicWhereUniqueInput[] | TopicWhereUniqueInput>;
+}
+
+export interface TopicCreateWithoutMembershipInput {
+  id?: Maybe<ID_Input>;
+  title: String;
+  content: String;
+  user: UserCreateOneWithoutTopicsInput;
+  station: StationCreateOneWithoutTopicsInput;
+  comments?: Maybe<CommentCreateManyWithoutTopicInput>;
+  votes?: Maybe<VoteCreateManyWithoutTopicInput>;
+}
+
+export interface CommentCreateManyWithoutTopicInput {
+  create?: Maybe<
+    CommentCreateWithoutTopicInput[] | CommentCreateWithoutTopicInput
+  >;
+  connect?: Maybe<CommentWhereUniqueInput[] | CommentWhereUniqueInput>;
+}
+
+export interface CommentCreateWithoutTopicInput {
+  id?: Maybe<ID_Input>;
+  content: String;
+  user: UserCreateOneWithoutCommentsInput;
+  station: StationCreateOneWithoutCommentsInput;
+  membership: MembershipCreateOneWithoutCommentsInput;
+  votes?: Maybe<VoteCreateManyWithoutCommentInput>;
+}
+
+export interface VoteCreateManyWithoutCommentInput {
+  create?: Maybe<
+    VoteCreateWithoutCommentInput[] | VoteCreateWithoutCommentInput
+  >;
+  connect?: Maybe<VoteWhereUniqueInput[] | VoteWhereUniqueInput>;
+}
+
+export interface VoteCreateWithoutCommentInput {
+  id?: Maybe<ID_Input>;
+  type: VoteType;
+  user: UserCreateOneWithoutVotesInput;
+  station: StationCreateOneWithoutVotesInput;
+  topic: TopicCreateOneWithoutVotesInput;
+  membership: MembershipCreateOneWithoutVotesInput;
+}
+
+export interface UserCreateOneWithoutVotesInput {
+  create?: Maybe<UserCreateWithoutVotesInput>;
+  connect?: Maybe<UserWhereUniqueInput>;
+}
+
+export interface UserCreateWithoutVotesInput {
+  id?: Maybe<ID_Input>;
+  name: String;
+  identifier?: Maybe<String>;
+  password: String;
+  email: String;
+  memberships?: Maybe<MembershipCreateManyWithoutUserInput>;
+  topics?: Maybe<TopicCreateManyWithoutUserInput>;
+  comments?: Maybe<CommentCreateManyWithoutUserInput>;
+}
+
+export interface StationCreateOneWithoutVotesInput {
+  create?: Maybe<StationCreateWithoutVotesInput>;
   connect?: Maybe<StationWhereUniqueInput>;
 }
 
-export interface StationCreateWithoutMembersInput {
+export interface StationCreateWithoutVotesInput {
   id?: Maybe<ID_Input>;
   name: String;
   identifier?: Maybe<String>;
   description: String;
   public?: Maybe<Boolean>;
+  members?: Maybe<MembershipCreateManyWithoutStationInput>;
   topics?: Maybe<TopicCreateManyWithoutStationInput>;
   comments?: Maybe<CommentCreateManyWithoutStationInput>;
-  votes?: Maybe<VoteCreateManyWithoutStationInput>;
 }
 
-export interface TopicCreateManyWithoutStationInput {
-  create?: Maybe<
-    TopicCreateWithoutStationInput[] | TopicCreateWithoutStationInput
-  >;
-  connect?: Maybe<TopicWhereUniqueInput[] | TopicWhereUniqueInput>;
+export interface TopicCreateOneWithoutVotesInput {
+  create?: Maybe<TopicCreateWithoutVotesInput>;
+  connect?: Maybe<TopicWhereUniqueInput>;
 }
 
-export interface TopicCreateWithoutStationInput {
+export interface TopicCreateWithoutVotesInput {
   id?: Maybe<ID_Input>;
   title: String;
   content: String;
+  user: UserCreateOneWithoutTopicsInput;
+  station: StationCreateOneWithoutTopicsInput;
   membership: MembershipCreateOneWithoutTopicsInput;
   comments?: Maybe<CommentCreateManyWithoutTopicInput>;
-  votes?: Maybe<VoteCreateManyWithoutTopicInput>;
 }
 
 export interface MembershipCreateOneWithoutTopicsInput {
@@ -995,6 +1173,7 @@ export interface CommentCreateManyWithoutMembershipInput {
 export interface CommentCreateWithoutMembershipInput {
   id?: Maybe<ID_Input>;
   content: String;
+  user: UserCreateOneWithoutCommentsInput;
   station: StationCreateOneWithoutCommentsInput;
   topic: TopicCreateOneWithoutCommentsInput;
   votes?: Maybe<VoteCreateManyWithoutCommentInput>;
@@ -1009,6 +1188,7 @@ export interface TopicCreateWithoutCommentsInput {
   id?: Maybe<ID_Input>;
   title: String;
   content: String;
+  user: UserCreateOneWithoutTopicsInput;
   station: StationCreateOneWithoutTopicsInput;
   membership: MembershipCreateOneWithoutTopicsInput;
   votes?: Maybe<VoteCreateManyWithoutTopicInput>;
@@ -1022,25 +1202,10 @@ export interface VoteCreateManyWithoutTopicInput {
 export interface VoteCreateWithoutTopicInput {
   id?: Maybe<ID_Input>;
   type: VoteType;
+  user: UserCreateOneWithoutVotesInput;
   station: StationCreateOneWithoutVotesInput;
   comment?: Maybe<CommentCreateOneWithoutVotesInput>;
   membership: MembershipCreateOneWithoutVotesInput;
-}
-
-export interface StationCreateOneWithoutVotesInput {
-  create?: Maybe<StationCreateWithoutVotesInput>;
-  connect?: Maybe<StationWhereUniqueInput>;
-}
-
-export interface StationCreateWithoutVotesInput {
-  id?: Maybe<ID_Input>;
-  name: String;
-  identifier?: Maybe<String>;
-  description: String;
-  public?: Maybe<Boolean>;
-  members?: Maybe<MembershipCreateManyWithoutStationInput>;
-  topics?: Maybe<TopicCreateManyWithoutStationInput>;
-  comments?: Maybe<CommentCreateManyWithoutStationInput>;
 }
 
 export interface CommentCreateOneWithoutVotesInput {
@@ -1051,6 +1216,7 @@ export interface CommentCreateOneWithoutVotesInput {
 export interface CommentCreateWithoutVotesInput {
   id?: Maybe<ID_Input>;
   content: String;
+  user: UserCreateOneWithoutCommentsInput;
   station: StationCreateOneWithoutCommentsInput;
   membership: MembershipCreateOneWithoutCommentsInput;
   topic: TopicCreateOneWithoutCommentsInput;
@@ -1071,50 +1237,6 @@ export interface MembershipCreateWithoutVotesInput {
   state?: Maybe<MembershipState>;
 }
 
-export interface VoteCreateManyWithoutCommentInput {
-  create?: Maybe<
-    VoteCreateWithoutCommentInput[] | VoteCreateWithoutCommentInput
-  >;
-  connect?: Maybe<VoteWhereUniqueInput[] | VoteWhereUniqueInput>;
-}
-
-export interface VoteCreateWithoutCommentInput {
-  id?: Maybe<ID_Input>;
-  type: VoteType;
-  station: StationCreateOneWithoutVotesInput;
-  topic: TopicCreateOneWithoutVotesInput;
-  membership: MembershipCreateOneWithoutVotesInput;
-}
-
-export interface TopicCreateOneWithoutVotesInput {
-  create?: Maybe<TopicCreateWithoutVotesInput>;
-  connect?: Maybe<TopicWhereUniqueInput>;
-}
-
-export interface TopicCreateWithoutVotesInput {
-  id?: Maybe<ID_Input>;
-  title: String;
-  content: String;
-  station: StationCreateOneWithoutTopicsInput;
-  membership: MembershipCreateOneWithoutTopicsInput;
-  comments?: Maybe<CommentCreateManyWithoutTopicInput>;
-}
-
-export interface CommentCreateManyWithoutTopicInput {
-  create?: Maybe<
-    CommentCreateWithoutTopicInput[] | CommentCreateWithoutTopicInput
-  >;
-  connect?: Maybe<CommentWhereUniqueInput[] | CommentWhereUniqueInput>;
-}
-
-export interface CommentCreateWithoutTopicInput {
-  id?: Maybe<ID_Input>;
-  content: String;
-  station: StationCreateOneWithoutCommentsInput;
-  membership: MembershipCreateOneWithoutCommentsInput;
-  votes?: Maybe<VoteCreateManyWithoutCommentInput>;
-}
-
 export interface VoteCreateManyWithoutMembershipInput {
   create?: Maybe<
     VoteCreateWithoutMembershipInput[] | VoteCreateWithoutMembershipInput
@@ -1125,6 +1247,7 @@ export interface VoteCreateManyWithoutMembershipInput {
 export interface VoteCreateWithoutMembershipInput {
   id?: Maybe<ID_Input>;
   type: VoteType;
+  user: UserCreateOneWithoutVotesInput;
   station: StationCreateOneWithoutVotesInput;
   topic: TopicCreateOneWithoutVotesInput;
   comment?: Maybe<CommentCreateOneWithoutVotesInput>;
@@ -1140,12 +1263,188 @@ export interface VoteCreateManyWithoutStationInput {
 export interface VoteCreateWithoutStationInput {
   id?: Maybe<ID_Input>;
   type: VoteType;
+  user: UserCreateOneWithoutVotesInput;
+  topic: TopicCreateOneWithoutVotesInput;
+  comment?: Maybe<CommentCreateOneWithoutVotesInput>;
+  membership: MembershipCreateOneWithoutVotesInput;
+}
+
+export interface VoteCreateManyWithoutUserInput {
+  create?: Maybe<VoteCreateWithoutUserInput[] | VoteCreateWithoutUserInput>;
+  connect?: Maybe<VoteWhereUniqueInput[] | VoteWhereUniqueInput>;
+}
+
+export interface VoteCreateWithoutUserInput {
+  id?: Maybe<ID_Input>;
+  type: VoteType;
+  station: StationCreateOneWithoutVotesInput;
   topic: TopicCreateOneWithoutVotesInput;
   comment?: Maybe<CommentCreateOneWithoutVotesInput>;
   membership: MembershipCreateOneWithoutVotesInput;
 }
 
 export interface CommentUpdateInput {
+  content?: Maybe<String>;
+  user?: Maybe<UserUpdateOneRequiredWithoutCommentsInput>;
+  station?: Maybe<StationUpdateOneRequiredWithoutCommentsInput>;
+  membership?: Maybe<MembershipUpdateOneRequiredWithoutCommentsInput>;
+  topic?: Maybe<TopicUpdateOneRequiredWithoutCommentsInput>;
+  votes?: Maybe<VoteUpdateManyWithoutCommentInput>;
+}
+
+export interface UserUpdateOneRequiredWithoutCommentsInput {
+  create?: Maybe<UserCreateWithoutCommentsInput>;
+  update?: Maybe<UserUpdateWithoutCommentsDataInput>;
+  upsert?: Maybe<UserUpsertWithoutCommentsInput>;
+  connect?: Maybe<UserWhereUniqueInput>;
+}
+
+export interface UserUpdateWithoutCommentsDataInput {
+  name?: Maybe<String>;
+  identifier?: Maybe<String>;
+  password?: Maybe<String>;
+  email?: Maybe<String>;
+  memberships?: Maybe<MembershipUpdateManyWithoutUserInput>;
+  topics?: Maybe<TopicUpdateManyWithoutUserInput>;
+  votes?: Maybe<VoteUpdateManyWithoutUserInput>;
+}
+
+export interface MembershipUpdateManyWithoutUserInput {
+  create?: Maybe<
+    MembershipCreateWithoutUserInput[] | MembershipCreateWithoutUserInput
+  >;
+  delete?: Maybe<MembershipWhereUniqueInput[] | MembershipWhereUniqueInput>;
+  connect?: Maybe<MembershipWhereUniqueInput[] | MembershipWhereUniqueInput>;
+  set?: Maybe<MembershipWhereUniqueInput[] | MembershipWhereUniqueInput>;
+  disconnect?: Maybe<MembershipWhereUniqueInput[] | MembershipWhereUniqueInput>;
+  update?: Maybe<
+    | MembershipUpdateWithWhereUniqueWithoutUserInput[]
+    | MembershipUpdateWithWhereUniqueWithoutUserInput
+  >;
+  upsert?: Maybe<
+    | MembershipUpsertWithWhereUniqueWithoutUserInput[]
+    | MembershipUpsertWithWhereUniqueWithoutUserInput
+  >;
+  deleteMany?: Maybe<MembershipScalarWhereInput[] | MembershipScalarWhereInput>;
+  updateMany?: Maybe<
+    | MembershipUpdateManyWithWhereNestedInput[]
+    | MembershipUpdateManyWithWhereNestedInput
+  >;
+}
+
+export interface MembershipUpdateWithWhereUniqueWithoutUserInput {
+  where: MembershipWhereUniqueInput;
+  data: MembershipUpdateWithoutUserDataInput;
+}
+
+export interface MembershipUpdateWithoutUserDataInput {
+  station?: Maybe<StationUpdateOneRequiredWithoutMembersInput>;
+  topics?: Maybe<TopicUpdateManyWithoutMembershipInput>;
+  comments?: Maybe<CommentUpdateManyWithoutMembershipInput>;
+  votes?: Maybe<VoteUpdateManyWithoutMembershipInput>;
+  role?: Maybe<Role>;
+  state?: Maybe<MembershipState>;
+}
+
+export interface StationUpdateOneRequiredWithoutMembersInput {
+  create?: Maybe<StationCreateWithoutMembersInput>;
+  update?: Maybe<StationUpdateWithoutMembersDataInput>;
+  upsert?: Maybe<StationUpsertWithoutMembersInput>;
+  connect?: Maybe<StationWhereUniqueInput>;
+}
+
+export interface StationUpdateWithoutMembersDataInput {
+  name?: Maybe<String>;
+  identifier?: Maybe<String>;
+  description?: Maybe<String>;
+  public?: Maybe<Boolean>;
+  topics?: Maybe<TopicUpdateManyWithoutStationInput>;
+  comments?: Maybe<CommentUpdateManyWithoutStationInput>;
+  votes?: Maybe<VoteUpdateManyWithoutStationInput>;
+}
+
+export interface TopicUpdateManyWithoutStationInput {
+  create?: Maybe<
+    TopicCreateWithoutStationInput[] | TopicCreateWithoutStationInput
+  >;
+  delete?: Maybe<TopicWhereUniqueInput[] | TopicWhereUniqueInput>;
+  connect?: Maybe<TopicWhereUniqueInput[] | TopicWhereUniqueInput>;
+  set?: Maybe<TopicWhereUniqueInput[] | TopicWhereUniqueInput>;
+  disconnect?: Maybe<TopicWhereUniqueInput[] | TopicWhereUniqueInput>;
+  update?: Maybe<
+    | TopicUpdateWithWhereUniqueWithoutStationInput[]
+    | TopicUpdateWithWhereUniqueWithoutStationInput
+  >;
+  upsert?: Maybe<
+    | TopicUpsertWithWhereUniqueWithoutStationInput[]
+    | TopicUpsertWithWhereUniqueWithoutStationInput
+  >;
+  deleteMany?: Maybe<TopicScalarWhereInput[] | TopicScalarWhereInput>;
+  updateMany?: Maybe<
+    TopicUpdateManyWithWhereNestedInput[] | TopicUpdateManyWithWhereNestedInput
+  >;
+}
+
+export interface TopicUpdateWithWhereUniqueWithoutStationInput {
+  where: TopicWhereUniqueInput;
+  data: TopicUpdateWithoutStationDataInput;
+}
+
+export interface TopicUpdateWithoutStationDataInput {
+  title?: Maybe<String>;
+  content?: Maybe<String>;
+  user?: Maybe<UserUpdateOneRequiredWithoutTopicsInput>;
+  membership?: Maybe<MembershipUpdateOneRequiredWithoutTopicsInput>;
+  comments?: Maybe<CommentUpdateManyWithoutTopicInput>;
+  votes?: Maybe<VoteUpdateManyWithoutTopicInput>;
+}
+
+export interface UserUpdateOneRequiredWithoutTopicsInput {
+  create?: Maybe<UserCreateWithoutTopicsInput>;
+  update?: Maybe<UserUpdateWithoutTopicsDataInput>;
+  upsert?: Maybe<UserUpsertWithoutTopicsInput>;
+  connect?: Maybe<UserWhereUniqueInput>;
+}
+
+export interface UserUpdateWithoutTopicsDataInput {
+  name?: Maybe<String>;
+  identifier?: Maybe<String>;
+  password?: Maybe<String>;
+  email?: Maybe<String>;
+  memberships?: Maybe<MembershipUpdateManyWithoutUserInput>;
+  comments?: Maybe<CommentUpdateManyWithoutUserInput>;
+  votes?: Maybe<VoteUpdateManyWithoutUserInput>;
+}
+
+export interface CommentUpdateManyWithoutUserInput {
+  create?: Maybe<
+    CommentCreateWithoutUserInput[] | CommentCreateWithoutUserInput
+  >;
+  delete?: Maybe<CommentWhereUniqueInput[] | CommentWhereUniqueInput>;
+  connect?: Maybe<CommentWhereUniqueInput[] | CommentWhereUniqueInput>;
+  set?: Maybe<CommentWhereUniqueInput[] | CommentWhereUniqueInput>;
+  disconnect?: Maybe<CommentWhereUniqueInput[] | CommentWhereUniqueInput>;
+  update?: Maybe<
+    | CommentUpdateWithWhereUniqueWithoutUserInput[]
+    | CommentUpdateWithWhereUniqueWithoutUserInput
+  >;
+  upsert?: Maybe<
+    | CommentUpsertWithWhereUniqueWithoutUserInput[]
+    | CommentUpsertWithWhereUniqueWithoutUserInput
+  >;
+  deleteMany?: Maybe<CommentScalarWhereInput[] | CommentScalarWhereInput>;
+  updateMany?: Maybe<
+    | CommentUpdateManyWithWhereNestedInput[]
+    | CommentUpdateManyWithWhereNestedInput
+  >;
+}
+
+export interface CommentUpdateWithWhereUniqueWithoutUserInput {
+  where: CommentWhereUniqueInput;
+  data: CommentUpdateWithoutUserDataInput;
+}
+
+export interface CommentUpdateWithoutUserDataInput {
   content?: Maybe<String>;
   station?: Maybe<StationUpdateOneRequiredWithoutCommentsInput>;
   membership?: Maybe<MembershipUpdateOneRequiredWithoutCommentsInput>;
@@ -1219,28 +1518,24 @@ export interface UserUpdateWithoutMembershipsDataInput {
   identifier?: Maybe<String>;
   password?: Maybe<String>;
   email?: Maybe<String>;
+  topics?: Maybe<TopicUpdateManyWithoutUserInput>;
+  comments?: Maybe<CommentUpdateManyWithoutUserInput>;
+  votes?: Maybe<VoteUpdateManyWithoutUserInput>;
 }
 
-export interface UserUpsertWithoutMembershipsInput {
-  update: UserUpdateWithoutMembershipsDataInput;
-  create: UserCreateWithoutMembershipsInput;
-}
-
-export interface TopicUpdateManyWithoutMembershipInput {
-  create?: Maybe<
-    TopicCreateWithoutMembershipInput[] | TopicCreateWithoutMembershipInput
-  >;
+export interface TopicUpdateManyWithoutUserInput {
+  create?: Maybe<TopicCreateWithoutUserInput[] | TopicCreateWithoutUserInput>;
   delete?: Maybe<TopicWhereUniqueInput[] | TopicWhereUniqueInput>;
   connect?: Maybe<TopicWhereUniqueInput[] | TopicWhereUniqueInput>;
   set?: Maybe<TopicWhereUniqueInput[] | TopicWhereUniqueInput>;
   disconnect?: Maybe<TopicWhereUniqueInput[] | TopicWhereUniqueInput>;
   update?: Maybe<
-    | TopicUpdateWithWhereUniqueWithoutMembershipInput[]
-    | TopicUpdateWithWhereUniqueWithoutMembershipInput
+    | TopicUpdateWithWhereUniqueWithoutUserInput[]
+    | TopicUpdateWithWhereUniqueWithoutUserInput
   >;
   upsert?: Maybe<
-    | TopicUpsertWithWhereUniqueWithoutMembershipInput[]
-    | TopicUpsertWithWhereUniqueWithoutMembershipInput
+    | TopicUpsertWithWhereUniqueWithoutUserInput[]
+    | TopicUpsertWithWhereUniqueWithoutUserInput
   >;
   deleteMany?: Maybe<TopicScalarWhereInput[] | TopicScalarWhereInput>;
   updateMany?: Maybe<
@@ -1248,15 +1543,16 @@ export interface TopicUpdateManyWithoutMembershipInput {
   >;
 }
 
-export interface TopicUpdateWithWhereUniqueWithoutMembershipInput {
+export interface TopicUpdateWithWhereUniqueWithoutUserInput {
   where: TopicWhereUniqueInput;
-  data: TopicUpdateWithoutMembershipDataInput;
+  data: TopicUpdateWithoutUserDataInput;
 }
 
-export interface TopicUpdateWithoutMembershipDataInput {
+export interface TopicUpdateWithoutUserDataInput {
   title?: Maybe<String>;
   content?: Maybe<String>;
   station?: Maybe<StationUpdateOneRequiredWithoutTopicsInput>;
+  membership?: Maybe<MembershipUpdateOneRequiredWithoutTopicsInput>;
   comments?: Maybe<CommentUpdateManyWithoutTopicInput>;
   votes?: Maybe<VoteUpdateManyWithoutTopicInput>;
 }
@@ -1308,6 +1604,7 @@ export interface CommentUpdateWithWhereUniqueWithoutStationInput {
 
 export interface CommentUpdateWithoutStationDataInput {
   content?: Maybe<String>;
+  user?: Maybe<UserUpdateOneRequiredWithoutCommentsInput>;
   membership?: Maybe<MembershipUpdateOneRequiredWithoutCommentsInput>;
   topic?: Maybe<TopicUpdateOneRequiredWithoutCommentsInput>;
   votes?: Maybe<VoteUpdateManyWithoutCommentInput>;
@@ -1329,38 +1626,21 @@ export interface MembershipUpdateWithoutCommentsDataInput {
   state?: Maybe<MembershipState>;
 }
 
-export interface StationUpdateOneRequiredWithoutMembersInput {
-  create?: Maybe<StationCreateWithoutMembersInput>;
-  update?: Maybe<StationUpdateWithoutMembersDataInput>;
-  upsert?: Maybe<StationUpsertWithoutMembersInput>;
-  connect?: Maybe<StationWhereUniqueInput>;
-}
-
-export interface StationUpdateWithoutMembersDataInput {
-  name?: Maybe<String>;
-  identifier?: Maybe<String>;
-  description?: Maybe<String>;
-  public?: Maybe<Boolean>;
-  topics?: Maybe<TopicUpdateManyWithoutStationInput>;
-  comments?: Maybe<CommentUpdateManyWithoutStationInput>;
-  votes?: Maybe<VoteUpdateManyWithoutStationInput>;
-}
-
-export interface TopicUpdateManyWithoutStationInput {
+export interface TopicUpdateManyWithoutMembershipInput {
   create?: Maybe<
-    TopicCreateWithoutStationInput[] | TopicCreateWithoutStationInput
+    TopicCreateWithoutMembershipInput[] | TopicCreateWithoutMembershipInput
   >;
   delete?: Maybe<TopicWhereUniqueInput[] | TopicWhereUniqueInput>;
   connect?: Maybe<TopicWhereUniqueInput[] | TopicWhereUniqueInput>;
   set?: Maybe<TopicWhereUniqueInput[] | TopicWhereUniqueInput>;
   disconnect?: Maybe<TopicWhereUniqueInput[] | TopicWhereUniqueInput>;
   update?: Maybe<
-    | TopicUpdateWithWhereUniqueWithoutStationInput[]
-    | TopicUpdateWithWhereUniqueWithoutStationInput
+    | TopicUpdateWithWhereUniqueWithoutMembershipInput[]
+    | TopicUpdateWithWhereUniqueWithoutMembershipInput
   >;
   upsert?: Maybe<
-    | TopicUpsertWithWhereUniqueWithoutStationInput[]
-    | TopicUpsertWithWhereUniqueWithoutStationInput
+    | TopicUpsertWithWhereUniqueWithoutMembershipInput[]
+    | TopicUpsertWithWhereUniqueWithoutMembershipInput
   >;
   deleteMany?: Maybe<TopicScalarWhereInput[] | TopicScalarWhereInput>;
   updateMany?: Maybe<
@@ -1368,17 +1648,149 @@ export interface TopicUpdateManyWithoutStationInput {
   >;
 }
 
-export interface TopicUpdateWithWhereUniqueWithoutStationInput {
+export interface TopicUpdateWithWhereUniqueWithoutMembershipInput {
   where: TopicWhereUniqueInput;
-  data: TopicUpdateWithoutStationDataInput;
+  data: TopicUpdateWithoutMembershipDataInput;
 }
 
-export interface TopicUpdateWithoutStationDataInput {
+export interface TopicUpdateWithoutMembershipDataInput {
   title?: Maybe<String>;
   content?: Maybe<String>;
-  membership?: Maybe<MembershipUpdateOneRequiredWithoutTopicsInput>;
+  user?: Maybe<UserUpdateOneRequiredWithoutTopicsInput>;
+  station?: Maybe<StationUpdateOneRequiredWithoutTopicsInput>;
   comments?: Maybe<CommentUpdateManyWithoutTopicInput>;
   votes?: Maybe<VoteUpdateManyWithoutTopicInput>;
+}
+
+export interface CommentUpdateManyWithoutTopicInput {
+  create?: Maybe<
+    CommentCreateWithoutTopicInput[] | CommentCreateWithoutTopicInput
+  >;
+  delete?: Maybe<CommentWhereUniqueInput[] | CommentWhereUniqueInput>;
+  connect?: Maybe<CommentWhereUniqueInput[] | CommentWhereUniqueInput>;
+  set?: Maybe<CommentWhereUniqueInput[] | CommentWhereUniqueInput>;
+  disconnect?: Maybe<CommentWhereUniqueInput[] | CommentWhereUniqueInput>;
+  update?: Maybe<
+    | CommentUpdateWithWhereUniqueWithoutTopicInput[]
+    | CommentUpdateWithWhereUniqueWithoutTopicInput
+  >;
+  upsert?: Maybe<
+    | CommentUpsertWithWhereUniqueWithoutTopicInput[]
+    | CommentUpsertWithWhereUniqueWithoutTopicInput
+  >;
+  deleteMany?: Maybe<CommentScalarWhereInput[] | CommentScalarWhereInput>;
+  updateMany?: Maybe<
+    | CommentUpdateManyWithWhereNestedInput[]
+    | CommentUpdateManyWithWhereNestedInput
+  >;
+}
+
+export interface CommentUpdateWithWhereUniqueWithoutTopicInput {
+  where: CommentWhereUniqueInput;
+  data: CommentUpdateWithoutTopicDataInput;
+}
+
+export interface CommentUpdateWithoutTopicDataInput {
+  content?: Maybe<String>;
+  user?: Maybe<UserUpdateOneRequiredWithoutCommentsInput>;
+  station?: Maybe<StationUpdateOneRequiredWithoutCommentsInput>;
+  membership?: Maybe<MembershipUpdateOneRequiredWithoutCommentsInput>;
+  votes?: Maybe<VoteUpdateManyWithoutCommentInput>;
+}
+
+export interface VoteUpdateManyWithoutCommentInput {
+  create?: Maybe<
+    VoteCreateWithoutCommentInput[] | VoteCreateWithoutCommentInput
+  >;
+  delete?: Maybe<VoteWhereUniqueInput[] | VoteWhereUniqueInput>;
+  connect?: Maybe<VoteWhereUniqueInput[] | VoteWhereUniqueInput>;
+  set?: Maybe<VoteWhereUniqueInput[] | VoteWhereUniqueInput>;
+  disconnect?: Maybe<VoteWhereUniqueInput[] | VoteWhereUniqueInput>;
+  update?: Maybe<
+    | VoteUpdateWithWhereUniqueWithoutCommentInput[]
+    | VoteUpdateWithWhereUniqueWithoutCommentInput
+  >;
+  upsert?: Maybe<
+    | VoteUpsertWithWhereUniqueWithoutCommentInput[]
+    | VoteUpsertWithWhereUniqueWithoutCommentInput
+  >;
+  deleteMany?: Maybe<VoteScalarWhereInput[] | VoteScalarWhereInput>;
+  updateMany?: Maybe<
+    VoteUpdateManyWithWhereNestedInput[] | VoteUpdateManyWithWhereNestedInput
+  >;
+}
+
+export interface VoteUpdateWithWhereUniqueWithoutCommentInput {
+  where: VoteWhereUniqueInput;
+  data: VoteUpdateWithoutCommentDataInput;
+}
+
+export interface VoteUpdateWithoutCommentDataInput {
+  type?: Maybe<VoteType>;
+  user?: Maybe<UserUpdateOneRequiredWithoutVotesInput>;
+  station?: Maybe<StationUpdateOneRequiredWithoutVotesInput>;
+  topic?: Maybe<TopicUpdateOneRequiredWithoutVotesInput>;
+  membership?: Maybe<MembershipUpdateOneRequiredWithoutVotesInput>;
+}
+
+export interface UserUpdateOneRequiredWithoutVotesInput {
+  create?: Maybe<UserCreateWithoutVotesInput>;
+  update?: Maybe<UserUpdateWithoutVotesDataInput>;
+  upsert?: Maybe<UserUpsertWithoutVotesInput>;
+  connect?: Maybe<UserWhereUniqueInput>;
+}
+
+export interface UserUpdateWithoutVotesDataInput {
+  name?: Maybe<String>;
+  identifier?: Maybe<String>;
+  password?: Maybe<String>;
+  email?: Maybe<String>;
+  memberships?: Maybe<MembershipUpdateManyWithoutUserInput>;
+  topics?: Maybe<TopicUpdateManyWithoutUserInput>;
+  comments?: Maybe<CommentUpdateManyWithoutUserInput>;
+}
+
+export interface UserUpsertWithoutVotesInput {
+  update: UserUpdateWithoutVotesDataInput;
+  create: UserCreateWithoutVotesInput;
+}
+
+export interface StationUpdateOneRequiredWithoutVotesInput {
+  create?: Maybe<StationCreateWithoutVotesInput>;
+  update?: Maybe<StationUpdateWithoutVotesDataInput>;
+  upsert?: Maybe<StationUpsertWithoutVotesInput>;
+  connect?: Maybe<StationWhereUniqueInput>;
+}
+
+export interface StationUpdateWithoutVotesDataInput {
+  name?: Maybe<String>;
+  identifier?: Maybe<String>;
+  description?: Maybe<String>;
+  public?: Maybe<Boolean>;
+  members?: Maybe<MembershipUpdateManyWithoutStationInput>;
+  topics?: Maybe<TopicUpdateManyWithoutStationInput>;
+  comments?: Maybe<CommentUpdateManyWithoutStationInput>;
+}
+
+export interface StationUpsertWithoutVotesInput {
+  update: StationUpdateWithoutVotesDataInput;
+  create: StationCreateWithoutVotesInput;
+}
+
+export interface TopicUpdateOneRequiredWithoutVotesInput {
+  create?: Maybe<TopicCreateWithoutVotesInput>;
+  update?: Maybe<TopicUpdateWithoutVotesDataInput>;
+  upsert?: Maybe<TopicUpsertWithoutVotesInput>;
+  connect?: Maybe<TopicWhereUniqueInput>;
+}
+
+export interface TopicUpdateWithoutVotesDataInput {
+  title?: Maybe<String>;
+  content?: Maybe<String>;
+  user?: Maybe<UserUpdateOneRequiredWithoutTopicsInput>;
+  station?: Maybe<StationUpdateOneRequiredWithoutTopicsInput>;
+  membership?: Maybe<MembershipUpdateOneRequiredWithoutTopicsInput>;
+  comments?: Maybe<CommentUpdateManyWithoutTopicInput>;
 }
 
 export interface MembershipUpdateOneRequiredWithoutTopicsInput {
@@ -1427,6 +1839,7 @@ export interface CommentUpdateWithWhereUniqueWithoutMembershipInput {
 
 export interface CommentUpdateWithoutMembershipDataInput {
   content?: Maybe<String>;
+  user?: Maybe<UserUpdateOneRequiredWithoutCommentsInput>;
   station?: Maybe<StationUpdateOneRequiredWithoutCommentsInput>;
   topic?: Maybe<TopicUpdateOneRequiredWithoutCommentsInput>;
   votes?: Maybe<VoteUpdateManyWithoutCommentInput>;
@@ -1442,6 +1855,7 @@ export interface TopicUpdateOneRequiredWithoutCommentsInput {
 export interface TopicUpdateWithoutCommentsDataInput {
   title?: Maybe<String>;
   content?: Maybe<String>;
+  user?: Maybe<UserUpdateOneRequiredWithoutTopicsInput>;
   station?: Maybe<StationUpdateOneRequiredWithoutTopicsInput>;
   membership?: Maybe<MembershipUpdateOneRequiredWithoutTopicsInput>;
   votes?: Maybe<VoteUpdateManyWithoutTopicInput>;
@@ -1474,31 +1888,10 @@ export interface VoteUpdateWithWhereUniqueWithoutTopicInput {
 
 export interface VoteUpdateWithoutTopicDataInput {
   type?: Maybe<VoteType>;
+  user?: Maybe<UserUpdateOneRequiredWithoutVotesInput>;
   station?: Maybe<StationUpdateOneRequiredWithoutVotesInput>;
   comment?: Maybe<CommentUpdateOneWithoutVotesInput>;
   membership?: Maybe<MembershipUpdateOneRequiredWithoutVotesInput>;
-}
-
-export interface StationUpdateOneRequiredWithoutVotesInput {
-  create?: Maybe<StationCreateWithoutVotesInput>;
-  update?: Maybe<StationUpdateWithoutVotesDataInput>;
-  upsert?: Maybe<StationUpsertWithoutVotesInput>;
-  connect?: Maybe<StationWhereUniqueInput>;
-}
-
-export interface StationUpdateWithoutVotesDataInput {
-  name?: Maybe<String>;
-  identifier?: Maybe<String>;
-  description?: Maybe<String>;
-  public?: Maybe<Boolean>;
-  members?: Maybe<MembershipUpdateManyWithoutStationInput>;
-  topics?: Maybe<TopicUpdateManyWithoutStationInput>;
-  comments?: Maybe<CommentUpdateManyWithoutStationInput>;
-}
-
-export interface StationUpsertWithoutVotesInput {
-  update: StationUpdateWithoutVotesDataInput;
-  create: StationCreateWithoutVotesInput;
 }
 
 export interface CommentUpdateOneWithoutVotesInput {
@@ -1512,6 +1905,7 @@ export interface CommentUpdateOneWithoutVotesInput {
 
 export interface CommentUpdateWithoutVotesDataInput {
   content?: Maybe<String>;
+  user?: Maybe<UserUpdateOneRequiredWithoutCommentsInput>;
   station?: Maybe<StationUpdateOneRequiredWithoutCommentsInput>;
   membership?: Maybe<MembershipUpdateOneRequiredWithoutCommentsInput>;
   topic?: Maybe<TopicUpdateOneRequiredWithoutCommentsInput>;
@@ -1603,94 +1997,10 @@ export interface TopicUpsertWithoutCommentsInput {
   create: TopicCreateWithoutCommentsInput;
 }
 
-export interface VoteUpdateManyWithoutCommentInput {
-  create?: Maybe<
-    VoteCreateWithoutCommentInput[] | VoteCreateWithoutCommentInput
-  >;
-  delete?: Maybe<VoteWhereUniqueInput[] | VoteWhereUniqueInput>;
-  connect?: Maybe<VoteWhereUniqueInput[] | VoteWhereUniqueInput>;
-  set?: Maybe<VoteWhereUniqueInput[] | VoteWhereUniqueInput>;
-  disconnect?: Maybe<VoteWhereUniqueInput[] | VoteWhereUniqueInput>;
-  update?: Maybe<
-    | VoteUpdateWithWhereUniqueWithoutCommentInput[]
-    | VoteUpdateWithWhereUniqueWithoutCommentInput
-  >;
-  upsert?: Maybe<
-    | VoteUpsertWithWhereUniqueWithoutCommentInput[]
-    | VoteUpsertWithWhereUniqueWithoutCommentInput
-  >;
-  deleteMany?: Maybe<VoteScalarWhereInput[] | VoteScalarWhereInput>;
-  updateMany?: Maybe<
-    VoteUpdateManyWithWhereNestedInput[] | VoteUpdateManyWithWhereNestedInput
-  >;
-}
-
-export interface VoteUpdateWithWhereUniqueWithoutCommentInput {
-  where: VoteWhereUniqueInput;
-  data: VoteUpdateWithoutCommentDataInput;
-}
-
-export interface VoteUpdateWithoutCommentDataInput {
-  type?: Maybe<VoteType>;
-  station?: Maybe<StationUpdateOneRequiredWithoutVotesInput>;
-  topic?: Maybe<TopicUpdateOneRequiredWithoutVotesInput>;
-  membership?: Maybe<MembershipUpdateOneRequiredWithoutVotesInput>;
-}
-
-export interface TopicUpdateOneRequiredWithoutVotesInput {
-  create?: Maybe<TopicCreateWithoutVotesInput>;
-  update?: Maybe<TopicUpdateWithoutVotesDataInput>;
-  upsert?: Maybe<TopicUpsertWithoutVotesInput>;
-  connect?: Maybe<TopicWhereUniqueInput>;
-}
-
-export interface TopicUpdateWithoutVotesDataInput {
-  title?: Maybe<String>;
-  content?: Maybe<String>;
-  station?: Maybe<StationUpdateOneRequiredWithoutTopicsInput>;
-  membership?: Maybe<MembershipUpdateOneRequiredWithoutTopicsInput>;
-  comments?: Maybe<CommentUpdateManyWithoutTopicInput>;
-}
-
-export interface CommentUpdateManyWithoutTopicInput {
-  create?: Maybe<
-    CommentCreateWithoutTopicInput[] | CommentCreateWithoutTopicInput
-  >;
-  delete?: Maybe<CommentWhereUniqueInput[] | CommentWhereUniqueInput>;
-  connect?: Maybe<CommentWhereUniqueInput[] | CommentWhereUniqueInput>;
-  set?: Maybe<CommentWhereUniqueInput[] | CommentWhereUniqueInput>;
-  disconnect?: Maybe<CommentWhereUniqueInput[] | CommentWhereUniqueInput>;
-  update?: Maybe<
-    | CommentUpdateWithWhereUniqueWithoutTopicInput[]
-    | CommentUpdateWithWhereUniqueWithoutTopicInput
-  >;
-  upsert?: Maybe<
-    | CommentUpsertWithWhereUniqueWithoutTopicInput[]
-    | CommentUpsertWithWhereUniqueWithoutTopicInput
-  >;
-  deleteMany?: Maybe<CommentScalarWhereInput[] | CommentScalarWhereInput>;
-  updateMany?: Maybe<
-    | CommentUpdateManyWithWhereNestedInput[]
-    | CommentUpdateManyWithWhereNestedInput
-  >;
-}
-
-export interface CommentUpdateWithWhereUniqueWithoutTopicInput {
+export interface CommentUpsertWithWhereUniqueWithoutMembershipInput {
   where: CommentWhereUniqueInput;
-  data: CommentUpdateWithoutTopicDataInput;
-}
-
-export interface CommentUpdateWithoutTopicDataInput {
-  content?: Maybe<String>;
-  station?: Maybe<StationUpdateOneRequiredWithoutCommentsInput>;
-  membership?: Maybe<MembershipUpdateOneRequiredWithoutCommentsInput>;
-  votes?: Maybe<VoteUpdateManyWithoutCommentInput>;
-}
-
-export interface CommentUpsertWithWhereUniqueWithoutTopicInput {
-  where: CommentWhereUniqueInput;
-  update: CommentUpdateWithoutTopicDataInput;
-  create: CommentCreateWithoutTopicInput;
+  update: CommentUpdateWithoutMembershipDataInput;
+  create: CommentCreateWithoutMembershipInput;
 }
 
 export interface CommentScalarWhereInput {
@@ -1752,23 +2062,6 @@ export interface CommentUpdateManyDataInput {
   content?: Maybe<String>;
 }
 
-export interface TopicUpsertWithoutVotesInput {
-  update: TopicUpdateWithoutVotesDataInput;
-  create: TopicCreateWithoutVotesInput;
-}
-
-export interface VoteUpsertWithWhereUniqueWithoutCommentInput {
-  where: VoteWhereUniqueInput;
-  update: VoteUpdateWithoutCommentDataInput;
-  create: VoteCreateWithoutCommentInput;
-}
-
-export interface CommentUpsertWithWhereUniqueWithoutMembershipInput {
-  where: CommentWhereUniqueInput;
-  update: CommentUpdateWithoutMembershipDataInput;
-  create: CommentCreateWithoutMembershipInput;
-}
-
 export interface VoteUpdateManyWithoutMembershipInput {
   create?: Maybe<
     VoteCreateWithoutMembershipInput[] | VoteCreateWithoutMembershipInput
@@ -1798,6 +2091,7 @@ export interface VoteUpdateWithWhereUniqueWithoutMembershipInput {
 
 export interface VoteUpdateWithoutMembershipDataInput {
   type?: Maybe<VoteType>;
+  user?: Maybe<UserUpdateOneRequiredWithoutVotesInput>;
   station?: Maybe<StationUpdateOneRequiredWithoutVotesInput>;
   topic?: Maybe<TopicUpdateOneRequiredWithoutVotesInput>;
   comment?: Maybe<CommentUpdateOneWithoutVotesInput>;
@@ -1814,10 +2108,27 @@ export interface MembershipUpsertWithoutTopicsInput {
   create: MembershipCreateWithoutTopicsInput;
 }
 
-export interface TopicUpsertWithWhereUniqueWithoutStationInput {
+export interface TopicUpsertWithoutVotesInput {
+  update: TopicUpdateWithoutVotesDataInput;
+  create: TopicCreateWithoutVotesInput;
+}
+
+export interface VoteUpsertWithWhereUniqueWithoutCommentInput {
+  where: VoteWhereUniqueInput;
+  update: VoteUpdateWithoutCommentDataInput;
+  create: VoteCreateWithoutCommentInput;
+}
+
+export interface CommentUpsertWithWhereUniqueWithoutTopicInput {
+  where: CommentWhereUniqueInput;
+  update: CommentUpdateWithoutTopicDataInput;
+  create: CommentCreateWithoutTopicInput;
+}
+
+export interface TopicUpsertWithWhereUniqueWithoutMembershipInput {
   where: TopicWhereUniqueInput;
-  update: TopicUpdateWithoutStationDataInput;
-  create: TopicCreateWithoutStationInput;
+  update: TopicUpdateWithoutMembershipDataInput;
+  create: TopicCreateWithoutMembershipInput;
 }
 
 export interface TopicScalarWhereInput {
@@ -1894,6 +2205,17 @@ export interface TopicUpdateManyDataInput {
   content?: Maybe<String>;
 }
 
+export interface MembershipUpsertWithoutCommentsInput {
+  update: MembershipUpdateWithoutCommentsDataInput;
+  create: MembershipCreateWithoutCommentsInput;
+}
+
+export interface CommentUpsertWithWhereUniqueWithoutStationInput {
+  where: CommentWhereUniqueInput;
+  update: CommentUpdateWithoutStationDataInput;
+  create: CommentCreateWithoutStationInput;
+}
+
 export interface VoteUpdateManyWithoutStationInput {
   create?: Maybe<
     VoteCreateWithoutStationInput[] | VoteCreateWithoutStationInput
@@ -1923,6 +2245,7 @@ export interface VoteUpdateWithWhereUniqueWithoutStationInput {
 
 export interface VoteUpdateWithoutStationDataInput {
   type?: Maybe<VoteType>;
+  user?: Maybe<UserUpdateOneRequiredWithoutVotesInput>;
   topic?: Maybe<TopicUpdateOneRequiredWithoutVotesInput>;
   comment?: Maybe<CommentUpdateOneWithoutVotesInput>;
   membership?: Maybe<MembershipUpdateOneRequiredWithoutVotesInput>;
@@ -1934,31 +2257,59 @@ export interface VoteUpsertWithWhereUniqueWithoutStationInput {
   create: VoteCreateWithoutStationInput;
 }
 
-export interface StationUpsertWithoutMembersInput {
-  update: StationUpdateWithoutMembersDataInput;
-  create: StationCreateWithoutMembersInput;
-}
-
-export interface MembershipUpsertWithoutCommentsInput {
-  update: MembershipUpdateWithoutCommentsDataInput;
-  create: MembershipCreateWithoutCommentsInput;
-}
-
-export interface CommentUpsertWithWhereUniqueWithoutStationInput {
-  where: CommentWhereUniqueInput;
-  update: CommentUpdateWithoutStationDataInput;
-  create: CommentCreateWithoutStationInput;
-}
-
 export interface StationUpsertWithoutTopicsInput {
   update: StationUpdateWithoutTopicsDataInput;
   create: StationCreateWithoutTopicsInput;
 }
 
-export interface TopicUpsertWithWhereUniqueWithoutMembershipInput {
+export interface TopicUpsertWithWhereUniqueWithoutUserInput {
   where: TopicWhereUniqueInput;
-  update: TopicUpdateWithoutMembershipDataInput;
-  create: TopicCreateWithoutMembershipInput;
+  update: TopicUpdateWithoutUserDataInput;
+  create: TopicCreateWithoutUserInput;
+}
+
+export interface VoteUpdateManyWithoutUserInput {
+  create?: Maybe<VoteCreateWithoutUserInput[] | VoteCreateWithoutUserInput>;
+  delete?: Maybe<VoteWhereUniqueInput[] | VoteWhereUniqueInput>;
+  connect?: Maybe<VoteWhereUniqueInput[] | VoteWhereUniqueInput>;
+  set?: Maybe<VoteWhereUniqueInput[] | VoteWhereUniqueInput>;
+  disconnect?: Maybe<VoteWhereUniqueInput[] | VoteWhereUniqueInput>;
+  update?: Maybe<
+    | VoteUpdateWithWhereUniqueWithoutUserInput[]
+    | VoteUpdateWithWhereUniqueWithoutUserInput
+  >;
+  upsert?: Maybe<
+    | VoteUpsertWithWhereUniqueWithoutUserInput[]
+    | VoteUpsertWithWhereUniqueWithoutUserInput
+  >;
+  deleteMany?: Maybe<VoteScalarWhereInput[] | VoteScalarWhereInput>;
+  updateMany?: Maybe<
+    VoteUpdateManyWithWhereNestedInput[] | VoteUpdateManyWithWhereNestedInput
+  >;
+}
+
+export interface VoteUpdateWithWhereUniqueWithoutUserInput {
+  where: VoteWhereUniqueInput;
+  data: VoteUpdateWithoutUserDataInput;
+}
+
+export interface VoteUpdateWithoutUserDataInput {
+  type?: Maybe<VoteType>;
+  station?: Maybe<StationUpdateOneRequiredWithoutVotesInput>;
+  topic?: Maybe<TopicUpdateOneRequiredWithoutVotesInput>;
+  comment?: Maybe<CommentUpdateOneWithoutVotesInput>;
+  membership?: Maybe<MembershipUpdateOneRequiredWithoutVotesInput>;
+}
+
+export interface VoteUpsertWithWhereUniqueWithoutUserInput {
+  where: VoteWhereUniqueInput;
+  update: VoteUpdateWithoutUserDataInput;
+  create: VoteCreateWithoutUserInput;
+}
+
+export interface UserUpsertWithoutMembershipsInput {
+  update: UserUpdateWithoutMembershipsDataInput;
+  create: UserCreateWithoutMembershipsInput;
 }
 
 export interface MembershipUpsertWithWhereUniqueWithoutStationInput {
@@ -2026,6 +2377,39 @@ export interface StationUpsertWithoutCommentsInput {
   create: StationCreateWithoutCommentsInput;
 }
 
+export interface CommentUpsertWithWhereUniqueWithoutUserInput {
+  where: CommentWhereUniqueInput;
+  update: CommentUpdateWithoutUserDataInput;
+  create: CommentCreateWithoutUserInput;
+}
+
+export interface UserUpsertWithoutTopicsInput {
+  update: UserUpdateWithoutTopicsDataInput;
+  create: UserCreateWithoutTopicsInput;
+}
+
+export interface TopicUpsertWithWhereUniqueWithoutStationInput {
+  where: TopicWhereUniqueInput;
+  update: TopicUpdateWithoutStationDataInput;
+  create: TopicCreateWithoutStationInput;
+}
+
+export interface StationUpsertWithoutMembersInput {
+  update: StationUpdateWithoutMembersDataInput;
+  create: StationCreateWithoutMembersInput;
+}
+
+export interface MembershipUpsertWithWhereUniqueWithoutUserInput {
+  where: MembershipWhereUniqueInput;
+  update: MembershipUpdateWithoutUserDataInput;
+  create: MembershipCreateWithoutUserInput;
+}
+
+export interface UserUpsertWithoutCommentsInput {
+  update: UserUpdateWithoutCommentsDataInput;
+  create: UserCreateWithoutCommentsInput;
+}
+
 export interface CommentUpdateManyMutationInput {
   content?: Maybe<String>;
 }
@@ -2090,6 +2474,7 @@ export interface TopicCreateInput {
   id?: Maybe<ID_Input>;
   title: String;
   content: String;
+  user: UserCreateOneWithoutTopicsInput;
   station: StationCreateOneWithoutTopicsInput;
   membership: MembershipCreateOneWithoutTopicsInput;
   comments?: Maybe<CommentCreateManyWithoutTopicInput>;
@@ -2099,6 +2484,7 @@ export interface TopicCreateInput {
 export interface TopicUpdateInput {
   title?: Maybe<String>;
   content?: Maybe<String>;
+  user?: Maybe<UserUpdateOneRequiredWithoutTopicsInput>;
   station?: Maybe<StationUpdateOneRequiredWithoutTopicsInput>;
   membership?: Maybe<MembershipUpdateOneRequiredWithoutTopicsInput>;
   comments?: Maybe<CommentUpdateManyWithoutTopicInput>;
@@ -2117,23 +2503,9 @@ export interface UserCreateInput {
   password: String;
   email: String;
   memberships?: Maybe<MembershipCreateManyWithoutUserInput>;
-}
-
-export interface MembershipCreateManyWithoutUserInput {
-  create?: Maybe<
-    MembershipCreateWithoutUserInput[] | MembershipCreateWithoutUserInput
-  >;
-  connect?: Maybe<MembershipWhereUniqueInput[] | MembershipWhereUniqueInput>;
-}
-
-export interface MembershipCreateWithoutUserInput {
-  id?: Maybe<ID_Input>;
-  station: StationCreateOneWithoutMembersInput;
-  topics?: Maybe<TopicCreateManyWithoutMembershipInput>;
-  comments?: Maybe<CommentCreateManyWithoutMembershipInput>;
-  votes?: Maybe<VoteCreateManyWithoutMembershipInput>;
-  role?: Maybe<Role>;
-  state?: Maybe<MembershipState>;
+  topics?: Maybe<TopicCreateManyWithoutUserInput>;
+  comments?: Maybe<CommentCreateManyWithoutUserInput>;
+  votes?: Maybe<VoteCreateManyWithoutUserInput>;
 }
 
 export interface UserUpdateInput {
@@ -2142,49 +2514,9 @@ export interface UserUpdateInput {
   password?: Maybe<String>;
   email?: Maybe<String>;
   memberships?: Maybe<MembershipUpdateManyWithoutUserInput>;
-}
-
-export interface MembershipUpdateManyWithoutUserInput {
-  create?: Maybe<
-    MembershipCreateWithoutUserInput[] | MembershipCreateWithoutUserInput
-  >;
-  delete?: Maybe<MembershipWhereUniqueInput[] | MembershipWhereUniqueInput>;
-  connect?: Maybe<MembershipWhereUniqueInput[] | MembershipWhereUniqueInput>;
-  set?: Maybe<MembershipWhereUniqueInput[] | MembershipWhereUniqueInput>;
-  disconnect?: Maybe<MembershipWhereUniqueInput[] | MembershipWhereUniqueInput>;
-  update?: Maybe<
-    | MembershipUpdateWithWhereUniqueWithoutUserInput[]
-    | MembershipUpdateWithWhereUniqueWithoutUserInput
-  >;
-  upsert?: Maybe<
-    | MembershipUpsertWithWhereUniqueWithoutUserInput[]
-    | MembershipUpsertWithWhereUniqueWithoutUserInput
-  >;
-  deleteMany?: Maybe<MembershipScalarWhereInput[] | MembershipScalarWhereInput>;
-  updateMany?: Maybe<
-    | MembershipUpdateManyWithWhereNestedInput[]
-    | MembershipUpdateManyWithWhereNestedInput
-  >;
-}
-
-export interface MembershipUpdateWithWhereUniqueWithoutUserInput {
-  where: MembershipWhereUniqueInput;
-  data: MembershipUpdateWithoutUserDataInput;
-}
-
-export interface MembershipUpdateWithoutUserDataInput {
-  station?: Maybe<StationUpdateOneRequiredWithoutMembersInput>;
-  topics?: Maybe<TopicUpdateManyWithoutMembershipInput>;
-  comments?: Maybe<CommentUpdateManyWithoutMembershipInput>;
-  votes?: Maybe<VoteUpdateManyWithoutMembershipInput>;
-  role?: Maybe<Role>;
-  state?: Maybe<MembershipState>;
-}
-
-export interface MembershipUpsertWithWhereUniqueWithoutUserInput {
-  where: MembershipWhereUniqueInput;
-  update: MembershipUpdateWithoutUserDataInput;
-  create: MembershipCreateWithoutUserInput;
+  topics?: Maybe<TopicUpdateManyWithoutUserInput>;
+  comments?: Maybe<CommentUpdateManyWithoutUserInput>;
+  votes?: Maybe<VoteUpdateManyWithoutUserInput>;
 }
 
 export interface UserUpdateManyMutationInput {
@@ -2197,6 +2529,7 @@ export interface UserUpdateManyMutationInput {
 export interface VoteCreateInput {
   id?: Maybe<ID_Input>;
   type: VoteType;
+  user: UserCreateOneWithoutVotesInput;
   station: StationCreateOneWithoutVotesInput;
   topic: TopicCreateOneWithoutVotesInput;
   comment?: Maybe<CommentCreateOneWithoutVotesInput>;
@@ -2205,6 +2538,7 @@ export interface VoteCreateInput {
 
 export interface VoteUpdateInput {
   type?: Maybe<VoteType>;
+  user?: Maybe<UserUpdateOneRequiredWithoutVotesInput>;
   station?: Maybe<StationUpdateOneRequiredWithoutVotesInput>;
   topic?: Maybe<TopicUpdateOneRequiredWithoutVotesInput>;
   comment?: Maybe<CommentUpdateOneWithoutVotesInput>;
@@ -2301,6 +2635,7 @@ export interface Comment {
 export interface CommentPromise extends Promise<Comment>, Fragmentable {
   id: () => Promise<ID_Output>;
   content: () => Promise<String>;
+  user: <T = UserPromise>() => T;
   station: <T = StationPromise>() => T;
   membership: <T = MembershipPromise>() => T;
   topic: <T = TopicPromise>() => T;
@@ -2322,6 +2657,7 @@ export interface CommentSubscription
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   content: () => Promise<AsyncIterator<String>>;
+  user: <T = UserSubscription>() => T;
   station: <T = StationSubscription>() => T;
   membership: <T = MembershipSubscription>() => T;
   topic: <T = TopicSubscription>() => T;
@@ -2343,6 +2679,7 @@ export interface CommentNullablePromise
     Fragmentable {
   id: () => Promise<ID_Output>;
   content: () => Promise<String>;
+  user: <T = UserPromise>() => T;
   station: <T = StationPromise>() => T;
   membership: <T = MembershipPromise>() => T;
   topic: <T = TopicPromise>() => T;
@@ -2359,23 +2696,23 @@ export interface CommentNullablePromise
   updatedAt: () => Promise<DateTimeOutput>;
 }
 
-export interface Station {
+export interface User {
   id: ID_Output;
   name: String;
   identifier?: String;
-  description: String;
-  public: Boolean;
+  password: String;
+  email: String;
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
 }
 
-export interface StationPromise extends Promise<Station>, Fragmentable {
+export interface UserPromise extends Promise<User>, Fragmentable {
   id: () => Promise<ID_Output>;
   name: () => Promise<String>;
   identifier: () => Promise<String>;
-  description: () => Promise<String>;
-  public: () => Promise<Boolean>;
-  members: <T = FragmentableArray<Membership>>(args?: {
+  password: () => Promise<String>;
+  email: () => Promise<String>;
+  memberships: <T = FragmentableArray<Membership>>(args?: {
     where?: MembershipWhereInput;
     orderBy?: MembershipOrderByInput;
     skip?: Int;
@@ -2415,15 +2752,15 @@ export interface StationPromise extends Promise<Station>, Fragmentable {
   updatedAt: () => Promise<DateTimeOutput>;
 }
 
-export interface StationSubscription
-  extends Promise<AsyncIterator<Station>>,
+export interface UserSubscription
+  extends Promise<AsyncIterator<User>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   name: () => Promise<AsyncIterator<String>>;
   identifier: () => Promise<AsyncIterator<String>>;
-  description: () => Promise<AsyncIterator<String>>;
-  public: () => Promise<AsyncIterator<Boolean>>;
-  members: <T = Promise<AsyncIterator<MembershipSubscription>>>(args?: {
+  password: () => Promise<AsyncIterator<String>>;
+  email: () => Promise<AsyncIterator<String>>;
+  memberships: <T = Promise<AsyncIterator<MembershipSubscription>>>(args?: {
     where?: MembershipWhereInput;
     orderBy?: MembershipOrderByInput;
     skip?: Int;
@@ -2463,15 +2800,15 @@ export interface StationSubscription
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
 
-export interface StationNullablePromise
-  extends Promise<Station | null>,
+export interface UserNullablePromise
+  extends Promise<User | null>,
     Fragmentable {
   id: () => Promise<ID_Output>;
   name: () => Promise<String>;
   identifier: () => Promise<String>;
-  description: () => Promise<String>;
-  public: () => Promise<Boolean>;
-  members: <T = FragmentableArray<Membership>>(args?: {
+  password: () => Promise<String>;
+  email: () => Promise<String>;
+  memberships: <T = FragmentableArray<Membership>>(args?: {
     where?: MembershipWhereInput;
     orderBy?: MembershipOrderByInput;
     skip?: Int;
@@ -2634,25 +2971,52 @@ export interface MembershipNullablePromise
   updatedAt: () => Promise<DateTimeOutput>;
 }
 
-export interface User {
+export interface Station {
   id: ID_Output;
   name: String;
   identifier?: String;
-  password: String;
-  email: String;
+  description: String;
+  public: Boolean;
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
 }
 
-export interface UserPromise extends Promise<User>, Fragmentable {
+export interface StationPromise extends Promise<Station>, Fragmentable {
   id: () => Promise<ID_Output>;
   name: () => Promise<String>;
   identifier: () => Promise<String>;
-  password: () => Promise<String>;
-  email: () => Promise<String>;
-  memberships: <T = FragmentableArray<Membership>>(args?: {
+  description: () => Promise<String>;
+  public: () => Promise<Boolean>;
+  members: <T = FragmentableArray<Membership>>(args?: {
     where?: MembershipWhereInput;
     orderBy?: MembershipOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  topics: <T = FragmentableArray<Topic>>(args?: {
+    where?: TopicWhereInput;
+    orderBy?: TopicOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  comments: <T = FragmentableArray<Comment>>(args?: {
+    where?: CommentWhereInput;
+    orderBy?: CommentOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  votes: <T = FragmentableArray<Vote>>(args?: {
+    where?: VoteWhereInput;
+    orderBy?: VoteOrderByInput;
     skip?: Int;
     after?: String;
     before?: String;
@@ -2663,17 +3027,44 @@ export interface UserPromise extends Promise<User>, Fragmentable {
   updatedAt: () => Promise<DateTimeOutput>;
 }
 
-export interface UserSubscription
-  extends Promise<AsyncIterator<User>>,
+export interface StationSubscription
+  extends Promise<AsyncIterator<Station>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   name: () => Promise<AsyncIterator<String>>;
   identifier: () => Promise<AsyncIterator<String>>;
-  password: () => Promise<AsyncIterator<String>>;
-  email: () => Promise<AsyncIterator<String>>;
-  memberships: <T = Promise<AsyncIterator<MembershipSubscription>>>(args?: {
+  description: () => Promise<AsyncIterator<String>>;
+  public: () => Promise<AsyncIterator<Boolean>>;
+  members: <T = Promise<AsyncIterator<MembershipSubscription>>>(args?: {
     where?: MembershipWhereInput;
     orderBy?: MembershipOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  topics: <T = Promise<AsyncIterator<TopicSubscription>>>(args?: {
+    where?: TopicWhereInput;
+    orderBy?: TopicOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  comments: <T = Promise<AsyncIterator<CommentSubscription>>>(args?: {
+    where?: CommentWhereInput;
+    orderBy?: CommentOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  votes: <T = Promise<AsyncIterator<VoteSubscription>>>(args?: {
+    where?: VoteWhereInput;
+    orderBy?: VoteOrderByInput;
     skip?: Int;
     after?: String;
     before?: String;
@@ -2684,17 +3075,44 @@ export interface UserSubscription
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
 
-export interface UserNullablePromise
-  extends Promise<User | null>,
+export interface StationNullablePromise
+  extends Promise<Station | null>,
     Fragmentable {
   id: () => Promise<ID_Output>;
   name: () => Promise<String>;
   identifier: () => Promise<String>;
-  password: () => Promise<String>;
-  email: () => Promise<String>;
-  memberships: <T = FragmentableArray<Membership>>(args?: {
+  description: () => Promise<String>;
+  public: () => Promise<Boolean>;
+  members: <T = FragmentableArray<Membership>>(args?: {
     where?: MembershipWhereInput;
     orderBy?: MembershipOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  topics: <T = FragmentableArray<Topic>>(args?: {
+    where?: TopicWhereInput;
+    orderBy?: TopicOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  comments: <T = FragmentableArray<Comment>>(args?: {
+    where?: CommentWhereInput;
+    orderBy?: CommentOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  votes: <T = FragmentableArray<Vote>>(args?: {
+    where?: VoteWhereInput;
+    orderBy?: VoteOrderByInput;
     skip?: Int;
     after?: String;
     before?: String;
@@ -2717,6 +3135,7 @@ export interface TopicPromise extends Promise<Topic>, Fragmentable {
   id: () => Promise<ID_Output>;
   title: () => Promise<String>;
   content: () => Promise<String>;
+  user: <T = UserPromise>() => T;
   station: <T = StationPromise>() => T;
   membership: <T = MembershipPromise>() => T;
   comments: <T = FragmentableArray<Comment>>(args?: {
@@ -2747,6 +3166,7 @@ export interface TopicSubscription
   id: () => Promise<AsyncIterator<ID_Output>>;
   title: () => Promise<AsyncIterator<String>>;
   content: () => Promise<AsyncIterator<String>>;
+  user: <T = UserSubscription>() => T;
   station: <T = StationSubscription>() => T;
   membership: <T = MembershipSubscription>() => T;
   comments: <T = Promise<AsyncIterator<CommentSubscription>>>(args?: {
@@ -2777,6 +3197,7 @@ export interface TopicNullablePromise
   id: () => Promise<ID_Output>;
   title: () => Promise<String>;
   content: () => Promise<String>;
+  user: <T = UserPromise>() => T;
   station: <T = StationPromise>() => T;
   membership: <T = MembershipPromise>() => T;
   comments: <T = FragmentableArray<Comment>>(args?: {
@@ -2811,6 +3232,7 @@ export interface Vote {
 export interface VotePromise extends Promise<Vote>, Fragmentable {
   id: () => Promise<ID_Output>;
   type: () => Promise<VoteType>;
+  user: <T = UserPromise>() => T;
   station: <T = StationPromise>() => T;
   topic: <T = TopicPromise>() => T;
   comment: <T = CommentPromise>() => T;
@@ -2824,6 +3246,7 @@ export interface VoteSubscription
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   type: () => Promise<AsyncIterator<VoteType>>;
+  user: <T = UserSubscription>() => T;
   station: <T = StationSubscription>() => T;
   topic: <T = TopicSubscription>() => T;
   comment: <T = CommentSubscription>() => T;
@@ -2837,6 +3260,7 @@ export interface VoteNullablePromise
     Fragmentable {
   id: () => Promise<ID_Output>;
   type: () => Promise<VoteType>;
+  user: <T = UserPromise>() => T;
   station: <T = StationPromise>() => T;
   topic: <T = TopicPromise>() => T;
   comment: <T = CommentPromise>() => T;
