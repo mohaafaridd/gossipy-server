@@ -1,6 +1,6 @@
 import '@babel/polyfill'
 
-import seed from './utils/seed'
-beforeEach(seed, 30000)
+import seed from './seed'
+beforeEach(seed, 10000)
 
 test('should seed the production database', () => {})
