@@ -8,11 +8,14 @@
     "tsc": "tsc",
     "start": "node ./dist/index.js",
     "dev": "env-cmd -f ./config/prod.env ts-node-dev ./src/index.ts",
+    "seed": "env-cmd -f ./config/prod.env jest seedProd.test.ts",
     "test": "env-cmd -f ./config/test.env jest --watch --runInBand",
     "prod:gene": "prisma generate -e ./config/prod.env",
     "prod:deploy": "prisma deploy -e ./config/prod.env",
     "prod:token": "prisma token -c -e ./config/prod.env",
-    "prod:reset": "prisma reset -e ./config/prod.env"
+    "prod:reset": "prisma reset -e ./config/prod.env",
+    "test:deploy": "prisma deploy -e ./config/test.env",
+    "test:reset": "prisma reset -e ./config/test.env"
   },
   "jest": {
     "globalSetup": "./tests/jest/globalSetup.ts",

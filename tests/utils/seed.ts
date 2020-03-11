@@ -7,6 +7,8 @@ import {
   Membership,
   Topic,
   Comment,
+  VoteType,
+  Vote,
 } from '../../src/generated/prisma-client'
 import sanitizer from '../../src/utils/sanitizer'
 
@@ -45,6 +47,15 @@ interface ITopicData {
 interface ITopicInput {
   title: string
   content: string
+}
+
+interface IVoteData {
+  input: IVoteInput
+  vote: Vote
+}
+
+interface IVoteInput {
+  type: VoteType
 }
 
 interface ICommentData {
@@ -209,6 +220,48 @@ const commentTwo: ICommentData = {
   membership: undefined,
 }
 
+const voteOne: IVoteData = {
+  input: {
+    type: 'UPVOTE',
+  },
+  vote: undefined,
+}
+
+const voteTwo: IVoteData = {
+  input: {
+    type: 'UPVOTE',
+  },
+  vote: undefined,
+}
+
+const voteThree: IVoteData = {
+  input: {
+    type: 'UPVOTE',
+  },
+  vote: undefined,
+}
+
+const voteFour: IVoteData = {
+  input: {
+    type: 'UPVOTE',
+  },
+  vote: undefined,
+}
+
+const voteFive: IVoteData = {
+  input: {
+    type: 'UPVOTE',
+  },
+  vote: undefined,
+}
+
+const voteSix: IVoteData = {
+  input: {
+    type: 'DOWNVOTE',
+  },
+  vote: undefined,
+}
+
 const commentThree: ICommentData = {
   input: {
     content: 'Why not?!',
@@ -231,6 +284,7 @@ const seed = async () => {
   await prisma.deleteManyStations()
   await prisma.deleteManyTopics()
   await prisma.deleteManyComments()
+  await prisma.deleteManyVotes()
 
   // User One
   userOne.user = await prisma.createUser({
@@ -394,6 +448,16 @@ const seed = async () => {
   // Topic One With User One (A Founder)
   topicOne.topic = await prisma.createTopic({
     ...topicOne.input,
+    station: {
+      connect: {
+        id: stationOne.station.id,
+      },
+    },
+    user: {
+      connect: {
+        id: userOne.user.id,
+      },
+    },
     membership: {
       connect: {
         id: userOne.membership.id,
@@ -405,6 +469,16 @@ const seed = async () => {
   // Topic Two with User Four (A Member)
   topicTwo.topic = await prisma.createTopic({
     ...topicTwo.input,
+    station: {
+      connect: {
+        id: stationTwo.station.id,
+      },
+    },
+    user: {
+      connect: {
+        id: userFour.user.id,
+      },
+    },
     membership: {
       connect: {
         id: userFour.membership.id,
@@ -416,6 +490,16 @@ const seed = async () => {
   // Topic Three with User Five (A Detached Member)
   topicThree.topic = await prisma.createTopic({
     ...topicThree.input,
+    station: {
+      connect: {
+        id: stationOne.station.id,
+      },
+    },
+    user: {
+      connect: {
+        id: userFive.user.id,
+      },
+    },
     membership: {
       connect: {
         id: userFive.membership.id,
@@ -427,6 +511,16 @@ const seed = async () => {
   // Topic Four with User Six (A Banned Member)
   topicFour.topic = await prisma.createTopic({
     ...topicFour.input,
+    station: {
+      connect: {
+        id: stationTwo.station.id,
+      },
+    },
+    user: {
+      connect: {
+        id: userSix.user.id,
+      },
+    },
     membership: {
       connect: {
         id: userSix.membership.id,
@@ -435,9 +529,202 @@ const seed = async () => {
   })
   topicFour.membership = userSix.membership
 
+  // Votes
+  voteOne.vote = await prisma.createVote({
+    type: voteOne.input.type,
+    membership: {
+      connect: {
+        id: userOne.membership.id,
+      },
+    },
+
+    user: {
+      connect: {
+        id: userOne.user.id,
+      },
+    },
+    station: {
+      connect: {
+        id: stationOne.station.id,
+      },
+    },
+
+    topic: {
+      connect: {
+        id: topicOne.topic.id,
+      },
+    },
+  })
+
+  voteTwo.vote = await prisma.createVote({
+    type: voteTwo.input.type,
+    membership: {
+      connect: {
+        id: userFour.membership.id,
+      },
+    },
+
+    user: {
+      connect: {
+        id: userFour.user.id,
+      },
+    },
+    station: {
+      connect: {
+        id: stationTwo.station.id,
+      },
+    },
+
+    topic: {
+      connect: {
+        id: topicTwo.topic.id,
+      },
+    },
+  })
+
+  voteThree.vote = await prisma.createVote({
+    type: voteThree.input.type,
+    membership: {
+      connect: {
+        id: userFive.membership.id,
+      },
+    },
+
+    user: {
+      connect: {
+        id: userFive.user.id,
+      },
+    },
+    station: {
+      connect: {
+        id: stationOne.station.id,
+      },
+    },
+
+    topic: {
+      connect: {
+        id: topicThree.topic.id,
+      },
+    },
+  })
+
+  voteFour.vote = await prisma.createVote({
+    type: voteFour.input.type,
+    membership: {
+      connect: {
+        id: userSix.membership.id,
+      },
+    },
+
+    user: {
+      connect: {
+        id: userSix.user.id,
+      },
+    },
+    station: {
+      connect: {
+        id: stationTwo.station.id,
+      },
+    },
+
+    topic: {
+      connect: {
+        id: topicFour.topic.id,
+      },
+    },
+  })
+
+  voteFour.vote = await prisma.createVote({
+    type: voteFour.input.type,
+    membership: {
+      connect: {
+        id: userSix.membership.id,
+      },
+    },
+
+    user: {
+      connect: {
+        id: userSix.user.id,
+      },
+    },
+    station: {
+      connect: {
+        id: stationTwo.station.id,
+      },
+    },
+
+    topic: {
+      connect: {
+        id: topicFour.topic.id,
+      },
+    },
+  })
+
+  voteFive.vote = await prisma.createVote({
+    type: voteFive.input.type,
+    membership: {
+      connect: {
+        id: userTwo.membership.id,
+      },
+    },
+
+    user: {
+      connect: {
+        id: userTwo.user.id,
+      },
+    },
+    station: {
+      connect: {
+        id: stationTwo.station.id,
+      },
+    },
+
+    topic: {
+      connect: {
+        id: topicFour.topic.id,
+      },
+    },
+  })
+
+  voteSix.vote = await prisma.createVote({
+    type: voteSix.input.type,
+    membership: {
+      connect: {
+        id: userThree.membership.id,
+      },
+    },
+
+    user: {
+      connect: {
+        id: userThree.user.id,
+      },
+    },
+    station: {
+      connect: {
+        id: stationTwo.station.id,
+      },
+    },
+
+    topic: {
+      connect: {
+        id: topicFour.topic.id,
+      },
+    },
+  })
+
   // Comment One on Topic Two by User Six
   commentOne.comment = await prisma.createComment({
     ...commentOne.input,
+    station: {
+      connect: {
+        id: stationTwo.station.id,
+      },
+    },
+    user: {
+      connect: {
+        id: userSix.user.id,
+      },
+    },
     topic: {
       connect: {
         id: topicTwo.topic.id,
@@ -454,6 +741,16 @@ const seed = async () => {
   // Comment Two on Topic One by User Five
   commentTwo.comment = await prisma.createComment({
     ...commentTwo.input,
+    station: {
+      connect: {
+        id: stationOne.station.id,
+      },
+    },
+    user: {
+      connect: {
+        id: userFive.user.id,
+      },
+    },
     topic: {
       connect: {
         id: topicOne.topic.id,
@@ -470,6 +767,16 @@ const seed = async () => {
   // Comment Three on Topic Four by User Four
   commentThree.comment = await prisma.createComment({
     ...commentThree.input,
+    station: {
+      connect: {
+        id: stationTwo.station.id,
+      },
+    },
+    user: {
+      connect: {
+        id: userFour.user.id,
+      },
+    },
     topic: {
       connect: {
         id: topicFour.topic.id,
@@ -486,6 +793,16 @@ const seed = async () => {
   // Comment Four on Topic Three by User One
   commentFour.comment = await prisma.createComment({
     ...commentFour.input,
+    station: {
+      connect: {
+        id: stationOne.station.id,
+      },
+    },
+    user: {
+      connect: {
+        id: userOne.user.id,
+      },
+    },
     topic: {
       connect: {
         id: topicThree.topic.id,
