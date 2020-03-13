@@ -4,8 +4,7 @@ import {
   StationCreateInput,
   StationUpdateInput,
 } from '../../generated/prisma-client'
-import getUserId from '../../utils/getUserId'
-import sanitizer from '../../utils/sanitizer'
+import { getUserId, sanitizer } from '../../utils'
 
 export default {
   /**

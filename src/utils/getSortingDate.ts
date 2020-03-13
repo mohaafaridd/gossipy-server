@@ -1,7 +1,7 @@
 import * as moment from 'moment'
 import { DateRange } from '../constants/time'
 
-export default (dateRange: DateRange) => {
+const getSortingDate = (dateRange: DateRange) => {
   switch (dateRange) {
     case 'TODAY':
       return moment()
@@ -41,3 +41,5 @@ export default (dateRange: DateRange) => {
       return moment.unix(0).toISOString()
   }
 }
+
+export default getSortingDate

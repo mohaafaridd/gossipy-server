@@ -4,7 +4,7 @@ import {
   VoteUpdateInput,
   VoteType,
 } from '../../generated/prisma-client'
-import getUserId from '../../utils/getUserId'
+import { getUserId } from '../../utils'
 export default {
   createVote: async (
     parent,

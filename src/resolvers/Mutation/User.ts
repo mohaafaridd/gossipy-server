@@ -13,10 +13,7 @@ import {
   Topic,
   TopicCreateInput,
 } from '../../generated/prisma-client'
-import hashPasswords from '../../utils/hashPasswords'
-import generateToken from '../../utils/generateToken'
-import getUserId from '../../utils/getUserId'
-import sanitizer from '../../utils/sanitizer'
+import { hashPasswords, generateToken, getUserId, sanitizer } from '../../utils'
 
 export default {
   /**

@@ -10,7 +10,7 @@ interface VoteCollection extends Vote {
   topic: Topic
 }
 
-export default async (
+const getTopics = async (
   sortType: SortType,
   finalDate: string,
   filter: Filter
@@ -61,3 +61,5 @@ export default async (
     }
   }
 }
+
+export default getTopics

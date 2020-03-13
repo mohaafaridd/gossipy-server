@@ -4,7 +4,7 @@ import {
   Membership,
   MembershipUpdateInput,
 } from '../../generated/prisma-client'
-import getUserId from '../../utils/getUserId'
+import { getUserId } from '../../utils'
 
 export default {
   /**

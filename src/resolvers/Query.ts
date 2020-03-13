@@ -8,10 +8,9 @@ import {
   Topic,
 } from '../generated/prisma-client'
 import { DateRange, SortType } from '../constants'
-import getSortingDate from '../utils/getSortingDate'
-import { sortTopics } from '../utils/sortMethods'
-import getUserId from '../utils/getUserId'
-import getTopics from '../utils/getTopics'
+
+import { getSortingDate, getUserId, getTopics, sortMethods } from '../utils'
+const { sortTopics } = sortMethods
 
 export default {
   users: async (parent, args, { prisma }: { prisma: Prisma }) => {
