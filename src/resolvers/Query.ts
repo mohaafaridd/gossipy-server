@@ -1,16 +1,7 @@
-import {
-  Prisma,
-  User,
-  Station,
-  Membership,
-  Vote,
-  VoteType,
-  Topic,
-} from '../generated/prisma-client'
+import { Prisma, Station, Membership } from '../generated/prisma-client'
 import { DateRange, SortType } from '../constants'
 
-import { getSortingDate, getUserId, getTopics, sortMethods } from '../utils'
-const { sortTopics } = sortMethods
+import { getSortingDate, getTopics } from '../utils'
 
 export default {
   users: async (parent, args, { prisma }: { prisma: Prisma }) => {
@@ -25,7 +16,7 @@ export default {
     return prisma.user({ identifier })
   },
 
-  stations: async (parent, args, { prisma }: { prisma: Prisma }, info) => {
+  stations: async (parent, args, { prisma }: { prisma: Prisma }) => {
     const stations: Station[] = await prisma.stations()
     return stations
   },
@@ -38,7 +29,7 @@ export default {
     return prisma.station({ identifier })
   },
 
-  memberships: async (parent, args, { prisma }: { prisma: Prisma }, info) => {
+  memberships: async (parent, args, { prisma }: { prisma: Prisma }) => {
     const memberships: Membership[] = await prisma.memberships()
     return memberships
   },
@@ -55,8 +46,7 @@ export default {
       dateRange: DateRange
       user: string
       station: string
-    },
-    { prisma, request }: { prisma: Prisma; request: any }
+    }
   ) => {
     const finalDate = getSortingDate(dateRange)
 
@@ -68,11 +58,11 @@ export default {
     return getTopics(sortType, finalDate, filter)
   },
 
-  comments: (parent, args, { prisma }: { prisma: Prisma }, info) => {
+  comments: (parent, args, { prisma }: { prisma: Prisma }) => {
     return prisma.comments()
   },
 
-  votes: (parent, args, { prisma }: { prisma: Prisma }, info) => {
+  votes: (parent, args, { prisma }: { prisma: Prisma }) => {
     return prisma.votes()
   },
 }
