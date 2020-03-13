@@ -39,13 +39,13 @@ export default {
     {
       sortType,
       dateRange,
-      publicStation,
+      subscribed,
       user,
       station,
     }: {
       sortType: SortType
       dateRange: DateRange
-      publicStation: boolean
+      subscribed: boolean
       user: string
       station: string
     },
@@ -56,6 +56,7 @@ export default {
     const filter = {
       user,
       station,
+      subscribed,
     }
 
     return getTopics(sortType, finalDate, filter, request)

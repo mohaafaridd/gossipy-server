@@ -85,6 +85,7 @@ type Query {
   topics(
     dateRange: DateRange!
     sortType: SortType!
+    subscribed: Boolean
     user: ID
     station: ID
   ): [Topic!]!

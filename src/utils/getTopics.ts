@@ -1,11 +1,12 @@
 import { SortType } from '../constants'
-import { prisma, Topic, Vote } from '../generated/prisma-client'
+import { prisma, Topic, Vote, VoteWhereInput } from '../generated/prisma-client'
 import { sortTopics } from './sortMethods'
 import getUserId from './getUserId'
 
 interface Filter {
   user: string
   station: string
+  subscribed: boolean
 }
 
 interface VoteCollection extends Vote {
@@ -25,6 +26,27 @@ const getTopics = async (
   switch (sortType) {
     case 'TOP':
     case 'HOT': {
+      const { subscribed } = filter
+      const stationConditions: VoteWhereInput = {
+        station: {
+          id: filter.station,
+          public: true,
+        },
+      }
+
+      if (subscribed) {
+        delete stationConditions.station.public
+
+        stationConditions.station = {
+          members_some: {
+            state: 'ACTIVE',
+            user: {
+              id: userId,
+            },
+          },
+        }
+      }
+
       const votes: VoteCollection[] = await prisma
         .votes({
           where: {
@@ -34,21 +56,7 @@ const getTopics = async (
               id: filter.user,
             },
 
-            station: {
-              id: filter.station,
-              OR: [
-                {
-                  public: true,
-                },
-                {
-                  members_some: {
-                    user: {
-                      id: userId,
-                    },
-                  },
-                },
-              ],
-            },
+            ...stationConditions,
           },
         })
         .$fragment(fragment)
