@@ -39,14 +39,17 @@ export default {
     {
       sortType,
       dateRange,
+      publicStation,
       user,
       station,
     }: {
       sortType: SortType
       dateRange: DateRange
+      publicStation: boolean
       user: string
       station: string
-    }
+    },
+    { request }: { request: any }
   ) => {
     const finalDate = getSortingDate(dateRange)
 
@@ -55,7 +58,7 @@ export default {
       station,
     }
 
-    return getTopics(sortType, finalDate, filter)
+    return getTopics(sortType, finalDate, filter, request)
   },
 
   comments: (parent, args, { prisma }: { prisma: Prisma }) => {

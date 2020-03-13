@@ -1,6 +1,8 @@
 import { SortType } from '../constants'
 import { prisma, Topic, Vote } from '../generated/prisma-client'
 import { sortTopics } from './sortMethods'
+import getUserId from './getUserId'
+
 interface Filter {
   user: string
   station: string
@@ -13,8 +15,10 @@ interface VoteCollection extends Vote {
 const getTopics = async (
   sortType: SortType,
   finalDate: string,
-  filter: Filter
+  filter: Filter,
+  request: any
 ): Promise<Topic[]> => {
+  const userId = getUserId(request, false)
   const fragment =
     'fragment TopicToVotes on Vote { id type topic { id title createdAt } }'
 
@@ -32,6 +36,18 @@ const getTopics = async (
 
             station: {
               id: filter.station,
+              OR: [
+                {
+                  public: true,
+                },
+                {
+                  members_some: {
+                    user: {
+                      id: userId,
+                    },
+                  },
+                },
+              ],
             },
           },
         })
@@ -53,6 +69,18 @@ const getTopics = async (
 
           station: {
             id: filter.station,
+            OR: [
+              {
+                public: true,
+              },
+              {
+                members_some: {
+                  user: {
+                    id: userId,
+                  },
+                },
+              },
+            ],
           },
         },
       })
