@@ -5,6 +5,9 @@ type User {
   password: String!
   email: String!
   memberships: [Membership!]!
+  topics: [Topic!]!
+  comments: [Comment!]!
+  votes: [Vote!]!
   createdAt: String!
   updatedAt: String!
 }
@@ -40,6 +43,7 @@ type Topic {
   id: ID!
   title: String!
   content: String!
+  user: User!
   membership: Membership!
   station: Station!
   comments: [Comment!]!
@@ -51,6 +55,7 @@ type Topic {
 type Comment {
   id: ID!
   content: String!
+  user: User!
   membership: Membership!
   station: Station!
   topic: Topic!
@@ -62,6 +67,7 @@ type Comment {
 type Vote {
   id: ID!
   type: VoteType!
+  user: User!
   topic: Topic!
   comment: Comment
   membership: Membership!

@@ -1,12 +1,12 @@
 import { Prisma } from '../generated/prisma-client'
 
 export default {
-  title: async ({ id }, args, { prisma }: { prisma: Prisma }) => {
-    return prisma.topic({ id }).title()
+  user: async ({ id }, args, { prisma }: { prisma: Prisma }) => {
+    return prisma.topic({ id }).user()
   },
 
-  content: async ({ id }, args, { prisma }: { prisma: Prisma }) => {
-    return prisma.topic({ id }).content()
+  station: async ({ id }, args, { prisma }: { prisma: Prisma }) => {
+    return prisma.topic({ id }).station()
   },
 
   membership: async ({ id }, args, { prisma }: { prisma: Prisma }) => {
@@ -19,13 +19,5 @@ export default {
 
   votes: async ({ id }, args, { prisma }: { prisma: Prisma }) => {
     return prisma.topic({ id }).votes()
-  },
-
-  createdAt: async ({ id }, args, { prisma }: { prisma: Prisma }) => {
-    return prisma.topic({ id }).createdAt()
-  },
-
-  updatedAt: async ({ id }, args, { prisma }: { prisma: Prisma }) => {
-    return prisma.topic({ id }).updatedAt()
   },
 }
