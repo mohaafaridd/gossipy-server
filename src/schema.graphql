@@ -2,8 +2,8 @@ type User {
   id: ID!
   name: String!
   identifier: String
-  password: String!
-  email: String!
+  password: String
+  email: String
   memberships: [Membership!]!
   topics: [Topic!]!
   comments: [Comment!]!
@@ -77,7 +77,7 @@ type Vote {
 }
 
 type Query {
-  profile(identifier: ID!): UserProfile!
+  profile(identifier: ID!): User!
   users: [User!]!
   station(identifier: ID!): Station!
   stations: [Station!]!
@@ -123,11 +123,6 @@ type Mutation {
 type AuthPayload {
   token: String!
   user: User!
-}
-
-type UserProfile {
-  user: User!
-  stations: [Station!]!
 }
 
 input CreateUserInput {

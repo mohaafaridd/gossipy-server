@@ -22,17 +22,7 @@ export default {
     { identifier }: { identifier: string },
     { prisma }: { prisma: Prisma }
   ) => {
-    const user = await prisma.user({ identifier })
-    const stations = await prisma.stations({
-      where: {
-        members_some: {
-          user: {
-            identifier,
-          },
-        },
-      },
-    })
-    return { user, stations }
+    return prisma.user({ identifier })
   },
 
   stations: async (parent, args, { prisma }: { prisma: Prisma }, info) => {
