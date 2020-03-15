@@ -8,6 +8,7 @@ type User {
   topics: [Topic!]!
   comments: [Comment!]!
   votes: [Vote!]!
+  karma: [Vote!]!
   createdAt: String!
   updatedAt: String!
 }

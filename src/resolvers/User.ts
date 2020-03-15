@@ -31,4 +31,12 @@ export default {
   votes: async ({ id }, args, { prisma }: { prisma: Prisma }) => {
     return prisma.user({ id }).votes()
   },
+
+  karma: async ({ id }, args, { prisma }: { prisma: Prisma }) => {
+    return prisma.votes({
+      where: {
+        OR: [{ topic: { user: { id } } }, { comment: { user: { id } } }],
+      },
+    })
+  },
 }
