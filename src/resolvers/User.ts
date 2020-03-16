@@ -20,16 +20,88 @@ export default {
     return prisma.user({ id }).memberships()
   },
 
-  topics: async ({ id }, args, { prisma }: { prisma: Prisma }) => {
-    return prisma.user({ id }).topics()
+  topics: async (
+    { id },
+    args,
+    { prisma, request }: { prisma: Prisma; request }
+  ) => {
+    const userId = getUserId(request, false)
+
+    return prisma.user({ id }).topics({
+      where: {
+        station: {
+          OR: [
+            {
+              public: false,
+              members_some: {
+                user: {
+                  id: userId,
+                },
+              },
+            },
+            {
+              public: true,
+            },
+          ],
+        },
+      },
+    })
   },
 
-  comments: async ({ id }, args, { prisma }: { prisma: Prisma }) => {
-    return prisma.user({ id }).comments()
+  comments: async (
+    { id },
+    args,
+    { prisma, request }: { prisma: Prisma; request }
+  ) => {
+    const userId = getUserId(request, false)
+
+    return prisma.user({ id }).comments({
+      where: {
+        station: {
+          OR: [
+            {
+              public: false,
+              members_some: {
+                user: {
+                  id: userId,
+                },
+              },
+            },
+            {
+              public: true,
+            },
+          ],
+        },
+      },
+    })
   },
 
-  votes: async ({ id }, args, { prisma }: { prisma: Prisma }) => {
-    return prisma.user({ id }).votes()
+  votes: async (
+    { id },
+    args,
+    { prisma, request }: { prisma: Prisma; request }
+  ) => {
+    const userId = getUserId(request, false)
+
+    return prisma.user({ id }).votes({
+      where: {
+        station: {
+          OR: [
+            {
+              public: false,
+              members_some: {
+                user: {
+                  id: userId,
+                },
+              },
+            },
+            {
+              public: true,
+            },
+          ],
+        },
+      },
+    })
   },
 
   karma: async ({ id }, args, { prisma }: { prisma: Prisma }) => {
