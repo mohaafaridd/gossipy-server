@@ -123,7 +123,7 @@ export default async () => {
     creators.createVote(seeds.votes[0], topics[6], stations[1], users[8]),
     creators.createVote(seeds.votes[0], topics[6], stations[1], users[10]),
     // Group 2 - Shallow Topic [8]
-    creators.createVote(seeds.votes[1], topics[8], stations[0], users[7]),
-    creators.createVote(seeds.votes[1], topics[8], stations[0], users[11]),
+    creators.createVote(seeds.votes[1], topics[8], stations[1], users[7]),
+    creators.createVote(seeds.votes[1], topics[8], stations[1], users[11]),
   ])
 }
