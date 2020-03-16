@@ -1,5 +1,11 @@
 import { SortType } from '../constants'
-import { prisma, Topic, Vote, VoteWhereInput } from '../generated/prisma-client'
+import {
+  prisma,
+  Topic,
+  Vote,
+  VoteWhereInput,
+  TopicWhereInput,
+} from '../generated/prisma-client'
 import { sortTopics } from './sortMethods'
 import getUserId from './getUserId'
 
@@ -65,6 +71,19 @@ const getTopics = async (
     }
 
     default: {
+      const { subscribed } = filter
+      const stationConditions: TopicWhereInput = {
+        station: {
+          id: filter.station,
+          public: true,
+        },
+      }
+
+      if (subscribed) {
+        delete stationConditions.station.public
+        stationConditions.station.members_some.user.id = userId
+      }
+
       const topics = await prisma.topics({
         orderBy: 'createdAt_DESC',
 
@@ -75,21 +94,7 @@ const getTopics = async (
             id: filter.user,
           },
 
-          station: {
-            id: filter.station,
-            OR: [
-              {
-                public: true,
-              },
-              {
-                members_some: {
-                  user: {
-                    id: userId,
-                  },
-                },
-              },
-            ],
-          },
+          ...stationConditions,
         },
       })
 
