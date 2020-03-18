@@ -16,6 +16,7 @@ export default {
     { prisma, request }: { prisma: Prisma; request: any }
   ) => {
     const userId = getUserId(request)
+    const station = await prisma.station({ id: stationId })
     const [membership]: Membership[] = await prisma.memberships({
       where: {
         user: {
@@ -47,6 +48,8 @@ export default {
             id: stationId,
           },
         },
+
+        state: station.public ? 'ACTIVE' : 'PENDING',
       },
       update: {
         state: 'PENDING',
