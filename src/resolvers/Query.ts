@@ -1,6 +1,6 @@
+import { AuthenticationError } from 'apollo-server'
 import { Prisma, Station, Membership, prisma } from '../generated/prisma-client'
 import { DateRange, SortType } from '../constants'
-
 import { getSortingDate, getTopics, getUserId } from '../utils'
 import { Filter, checkAuthorization, getConditions } from '../utils/getTopics'
 
@@ -28,6 +28,28 @@ export default {
     { prisma }: { prisma: Prisma }
   ) => {
     return prisma.station({ identifier })
+  },
+
+  userMembership: async (
+    parent,
+    { station }: { station: string },
+    { prisma, request }: { prisma: Prisma; request: any }
+  ) => {
+    const userId = getUserId(request)
+
+    const [membership] = await prisma.memberships({
+      where: {
+        station: {
+          id: station,
+        },
+
+        user: {
+          id: userId,
+        },
+      },
+    })
+
+    return membership
   },
 
   memberships: async (parent, args, { prisma }: { prisma: Prisma }) => {
@@ -63,7 +85,8 @@ export default {
         ? await checkAuthorization(userId, station)
         : true
 
-    if (!isAuthorized) throw new Error('Authorization Required')
+    if (!isAuthorized)
+      throw new AuthenticationError('You must be a member to view topics.')
 
     const finalDate = getSortingDate(dateRange)
 
