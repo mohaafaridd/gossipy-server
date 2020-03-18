@@ -18,7 +18,13 @@ export default {
     const userId = getUserId(request)
 
     const name = sanitizer.alphanumeric(data.name)
+
+    if (name.length < 2 || name.length > 16)
+      throw new Error('Station name length error')
+
     const identifier = name.toLowerCase()
+
+    if (identifier === 'create') throw new Error('Station name is not valid')
 
     const station: Station = await prisma.createStation({
       ...data,

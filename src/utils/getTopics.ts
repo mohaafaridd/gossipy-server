@@ -35,7 +35,7 @@ const getTopics = async (
       const { subscribed } = filter
       const stationConditions: VoteWhereInput = {
         station: {
-          id: filter.station,
+          identifier: filter.station,
           public: true,
         },
       }
@@ -59,7 +59,7 @@ const getTopics = async (
             createdAt_gte: finalDate,
 
             user: {
-              id: filter.user,
+              identifier: filter.user,
             },
 
             ...stationConditions,
@@ -74,7 +74,7 @@ const getTopics = async (
       const { subscribed } = filter
       const stationConditions: TopicWhereInput = {
         station: {
-          id: filter.station,
+          identifier: filter.station,
           public: true,
         },
       }
@@ -91,7 +91,7 @@ const getTopics = async (
           createdAt_gte: finalDate,
 
           user: {
-            id: filter.user,
+            identifier: filter.user,
           },
 
           ...stationConditions,

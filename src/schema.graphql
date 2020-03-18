@@ -44,6 +44,7 @@ type Topic {
   id: ID!
   title: String!
   content: String!
+
   user: User!
   membership: Membership!
   station: Station!
@@ -69,10 +70,10 @@ type Vote {
   id: ID!
   type: VoteType!
   user: User!
+  station: Station!
   topic: Topic!
   comment: Comment
   membership: Membership!
-  station: Station!
   createdAt: String!
   updatedAt: String!
 }
