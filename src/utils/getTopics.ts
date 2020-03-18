@@ -9,60 +9,75 @@ import {
 import { sortTopics } from './sortMethods'
 import getUserId from './getUserId'
 
-interface Filter {
-  user: string
-  station: string
-  subscribed: boolean
-}
+// interface Filter {
+//   user: string
+//   station: string
+//   subscribed: boolean
+// }
 
 interface VoteCollection extends Vote {
   topic: Topic
 }
 
+export type Filter = 'STATION' | 'USER' | 'HOME' | 'EXPLORE'
+
+export const checkAuthorization = async (
+  userId: string,
+  stationIdentifier: string
+) => {
+  const isAuthorized = await prisma.$exists.membership({
+    station: { identifier: stationIdentifier },
+    user: { id: userId },
+    state: 'ACTIVE',
+  })
+
+  return isAuthorized
+}
+
+export const getConditions = (
+  filter: Filter,
+  userId: string,
+  identifier?: string
+) => {
+  const conditions: VoteWhereInput & TopicWhereInput = {
+    station: {
+      identifier: filter === 'STATION' ? identifier : undefined,
+
+      public: filter === 'EXPLORE' ? true : undefined,
+
+      members_some: {
+        user: {
+          id: filter === 'HOME' ? userId : undefined,
+        },
+
+        state: filter === 'HOME' ? 'ACTIVE' : undefined,
+      },
+    },
+
+    user: {
+      identifier: filter === 'USER' ? identifier : undefined,
+    },
+  }
+
+  return conditions
+}
+
 const getTopics = async (
   sortType: SortType,
   finalDate: string,
-  filter: Filter,
-  request: any
+  conditions: VoteWhereInput & TopicWhereInput
 ): Promise<Topic[]> => {
-  const userId = getUserId(request, false)
   const fragment =
     'fragment TopicToVotes on Vote { id type topic { id title createdAt } }'
 
   switch (sortType) {
     case 'TOP':
     case 'HOT': {
-      const { subscribed } = filter
-      const stationConditions: VoteWhereInput = {
-        station: {
-          identifier: filter.station,
-          public: true,
-        },
-      }
-
-      if (subscribed) {
-        delete stationConditions.station.public
-
-        stationConditions.station = {
-          members_some: {
-            state: 'ACTIVE',
-            user: {
-              id: userId,
-            },
-          },
-        }
-      }
-
       const votes: VoteCollection[] = await prisma
         .votes({
           where: {
             createdAt_gte: finalDate,
-
-            user: {
-              identifier: filter.user,
-            },
-
-            ...stationConditions,
+            ...conditions,
           },
         })
         .$fragment(fragment)
@@ -71,30 +86,12 @@ const getTopics = async (
     }
 
     default: {
-      const { subscribed } = filter
-      const stationConditions: TopicWhereInput = {
-        station: {
-          identifier: filter.station,
-          public: true,
-        },
-      }
-
-      if (subscribed) {
-        delete stationConditions.station.public
-        stationConditions.station.members_some.user.id = userId
-      }
-
       const topics = await prisma.topics({
         orderBy: 'createdAt_DESC',
 
         where: {
           createdAt_gte: finalDate,
-
-          user: {
-            identifier: filter.user,
-          },
-
-          ...stationConditions,
+          ...conditions,
         },
       })
 

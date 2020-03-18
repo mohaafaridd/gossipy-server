@@ -1,7 +1,8 @@
-import { Prisma, Station, Membership } from '../generated/prisma-client'
+import { Prisma, Station, Membership, prisma } from '../generated/prisma-client'
 import { DateRange, SortType } from '../constants'
 
-import { getSortingDate, getTopics } from '../utils'
+import { getSortingDate, getTopics, getUserId } from '../utils'
+import { Filter, checkAuthorization, getConditions } from '../utils/getTopics'
 
 export default {
   users: async (parent, args, { prisma }: { prisma: Prisma }) => {
@@ -51,15 +52,34 @@ export default {
     },
     { request }: { request: any }
   ) => {
+    const userId = getUserId(request, false)
+    const pStation = station
+      ? await prisma.station({ identifier: station })
+      : undefined
+
+    // Authorization
+    const isAuthorized =
+      pStation?.public === false
+        ? await checkAuthorization(userId, station)
+        : true
+
+    if (!isAuthorized) throw new Error('Authorization Required')
+
     const finalDate = getSortingDate(dateRange)
 
-    const filter = {
-      user,
-      station,
-      subscribed,
-    }
+    const filter: Filter = subscribed
+      ? 'HOME'
+      : user
+      ? 'USER'
+      : station
+      ? 'STATION'
+      : 'EXPLORE'
 
-    return getTopics(sortType, finalDate, filter, request)
+    const targetIdentifier = user ? user : station
+
+    const conditions = getConditions(filter, userId, targetIdentifier)
+
+    return getTopics(sortType, finalDate, conditions)
   },
 
   comments: (parent, args, { prisma }: { prisma: Prisma }) => {
