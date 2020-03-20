@@ -51,6 +51,26 @@ export default {
     return membership
   },
 
+  userMemberships: async (
+    parent,
+    args,
+    { prisma, request }: { prisma: Prisma; request: any }
+  ) => {
+    const userId = getUserId(request)
+
+    const memberships = await prisma.memberships({
+      where: {
+        user: {
+          id: userId,
+        },
+
+        state: 'ACTIVE',
+      },
+    })
+
+    return memberships
+  },
+
   memberships: async (parent, args, { prisma }: { prisma: Prisma }) => {
     const memberships: Membership[] = await prisma.memberships()
     return memberships

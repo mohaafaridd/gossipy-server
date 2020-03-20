@@ -84,6 +84,7 @@ type Query {
   station(identifier: ID!): Station!
   stations: [Station!]!
   userMembership(station: ID!): Membership
+  userMemberships: [Membership!]!
   memberships: [Membership!]!
   topics(
     dateRange: DateRange!
