@@ -31,7 +31,7 @@ export default {
 
   userMembership: async (
     parent,
-    { station }: { station: string },
+    { stationIdentifier }: { stationIdentifier: string },
     { prisma, request }: { prisma: Prisma; request: any }
   ) => {
     const userId = getUserId(request)
@@ -39,7 +39,7 @@ export default {
     const [membership] = await prisma.memberships({
       where: {
         station: {
-          id: station,
+          identifier: stationIdentifier,
         },
 
         user: {
