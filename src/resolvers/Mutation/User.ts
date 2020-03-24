@@ -25,9 +25,11 @@ export default {
     { prisma }: { prisma: Prisma },
     info
   ) => {
+    const { name } = data
+    if (name.length > 16)
+      throw new Error('Name has maximum length of 16 characters')
+    const identifier = sanitizer.alphanumeric(name).toLowerCase()
     const password = await hashPasswords(data.password)
-    const name = sanitizer.alphanumeric(data.name)
-    const identifier = name.toLowerCase()
 
     const user: User = await prisma.createUser({
       ...data,

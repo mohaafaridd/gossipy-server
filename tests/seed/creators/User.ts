@@ -8,7 +8,7 @@ import { IUser } from '../interfaces'
 export const createUser = async (data: IUser): Promise<IUser> => {
   data.user = await prisma.createUser({
     ...data.input,
-    name: alphanumeric(data.input.name),
+    name: data.input.name,
     identifier: alphanumeric(data.input.name).toLowerCase(),
     password: bcrypt.hashSync(data.input.password),
   })
