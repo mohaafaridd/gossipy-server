@@ -81,13 +81,16 @@ export default {
   memberships: async (
     parent,
     {
+      page,
       station,
       role,
       state,
-    }: { station: string; role: Role; state: MembershipState },
+    }: { page: number; station: string; role: Role; state: MembershipState },
     { prisma }: { prisma: Prisma }
   ) => {
+    const skip = (page > 0 ? page : 1) * 10 - 10
     return prisma.memberships({
+      skip,
       where: {
         station: {
           id: station,

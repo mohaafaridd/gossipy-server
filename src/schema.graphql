@@ -85,7 +85,12 @@ type Query {
   stations: [Station!]!
   userMembership(stationIdentifier: ID!): Membership
   userMemberships: [Membership!]!
-  memberships(station: ID, role: Role, state: MembershipState): [Membership!]!
+  memberships(
+    page: Int!
+    station: ID
+    role: Role
+    state: MembershipState
+  ): [Membership!]!
   topics(
     dateRange: DateRange!
     sortType: SortType!
