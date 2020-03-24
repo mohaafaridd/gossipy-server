@@ -1,4 +1,11 @@
-import { Prisma, Station, Membership, prisma } from '../generated/prisma-client'
+import {
+  Prisma,
+  Station,
+  Membership,
+  prisma,
+  Role,
+  MembershipState,
+} from '../generated/prisma-client'
 import { DateRange, SortType } from '../constants'
 import { getSortingDate, getTopics, getUserId } from '../utils'
 import { Filter, checkAuthorization, getConditions } from '../utils/getTopics'
@@ -71,9 +78,25 @@ export default {
     return memberships
   },
 
-  memberships: async (parent, args, { prisma }: { prisma: Prisma }) => {
-    const memberships: Membership[] = await prisma.memberships()
-    return memberships
+  memberships: async (
+    parent,
+    {
+      station,
+      role,
+      state,
+    }: { station: string; role: Role; state: MembershipState },
+    { prisma }: { prisma: Prisma }
+  ) => {
+    return prisma.memberships({
+      where: {
+        station: {
+          id: station,
+        },
+
+        role,
+        state,
+      },
+    })
   },
 
   topics: async (
