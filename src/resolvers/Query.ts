@@ -5,6 +5,7 @@ import {
   prisma,
   Role,
   MembershipState,
+  MembershipWhereInput,
 } from '../generated/prisma-client'
 import { DateRange, SortType } from '../constants'
 import { getSortingDate, getTopics, getUserId } from '../utils'
@@ -84,20 +85,30 @@ export default {
       page,
       station,
       role,
+      roles,
       state,
-    }: { page: number; station: string; role: Role; state: MembershipState },
+    }: {
+      page: number
+      station: string
+      role: Role
+      roles: Role[]
+      state: MembershipState
+    },
     { prisma }: { prisma: Prisma }
   ) => {
     const skip = (page > 0 ? page : 1) * 10 - 10
+    const condition: MembershipWhereInput = { state }
+
+    if (roles.length > 0) condition.role_in = roles
+    else if (role) condition.role = role
+
     return prisma.memberships({
       skip,
       where: {
         station: {
           id: station,
         },
-
-        role,
-        state,
+        ...condition,
       },
     })
   },

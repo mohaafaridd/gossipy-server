@@ -89,6 +89,7 @@ type Query {
     page: Int!
     station: ID
     role: Role
+    roles: [Role!]
     state: MembershipState
   ): [Membership!]!
   topics(
