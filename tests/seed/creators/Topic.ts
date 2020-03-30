@@ -1,4 +1,5 @@
 import { prisma } from '../../../src/generated/prisma-client'
+import { alphanumeric } from '../../../src/utils/sanitizer'
 import { ITopic, IStation, IUser } from '../interfaces'
 
 export const createTopic = async (
@@ -8,6 +9,7 @@ export const createTopic = async (
 ): Promise<ITopic> => {
   topic.topic = await prisma.createTopic({
     ...topic.input,
+    identifier: alphanumeric(topic.input.title, '_').toLowerCase(),
     station: {
       connect: {
         id: station.station.id,

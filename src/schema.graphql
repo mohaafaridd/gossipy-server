@@ -43,6 +43,7 @@ type Membership {
 type Topic {
   id: ID!
   title: String!
+  identifier: String!
   content: String!
 
   user: User!

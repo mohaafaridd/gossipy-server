@@ -1,5 +1,6 @@
 import { Prisma, Membership } from '../../generated/prisma-client'
 import { getUserId } from '../../utils'
+import { alphanumeric } from '../../utils/sanitizer'
 
 export default {
   /**
@@ -36,6 +37,7 @@ export default {
 
     const topic = await prisma.createTopic({
       ...data,
+      identifier: alphanumeric(data.title, '_').toLowerCase(),
       user: {
         connect: {
           id: userId,

@@ -1309,6 +1309,7 @@ type Subscription {
 type Topic {
   id: ID!
   title: String!
+  identifier: String!
   content: String!
   user: User!
   station: Station!
@@ -1328,6 +1329,7 @@ type TopicConnection {
 input TopicCreateInput {
   id: ID
   title: String!
+  identifier: String!
   content: String!
   user: UserCreateOneWithoutTopicsInput!
   station: StationCreateOneWithoutTopicsInput!
@@ -1364,6 +1366,7 @@ input TopicCreateOneWithoutVotesInput {
 input TopicCreateWithoutCommentsInput {
   id: ID
   title: String!
+  identifier: String!
   content: String!
   user: UserCreateOneWithoutTopicsInput!
   station: StationCreateOneWithoutTopicsInput!
@@ -1374,6 +1377,7 @@ input TopicCreateWithoutCommentsInput {
 input TopicCreateWithoutMembershipInput {
   id: ID
   title: String!
+  identifier: String!
   content: String!
   user: UserCreateOneWithoutTopicsInput!
   station: StationCreateOneWithoutTopicsInput!
@@ -1384,6 +1388,7 @@ input TopicCreateWithoutMembershipInput {
 input TopicCreateWithoutStationInput {
   id: ID
   title: String!
+  identifier: String!
   content: String!
   user: UserCreateOneWithoutTopicsInput!
   membership: MembershipCreateOneWithoutTopicsInput!
@@ -1394,6 +1399,7 @@ input TopicCreateWithoutStationInput {
 input TopicCreateWithoutUserInput {
   id: ID
   title: String!
+  identifier: String!
   content: String!
   station: StationCreateOneWithoutTopicsInput!
   membership: MembershipCreateOneWithoutTopicsInput!
@@ -1404,6 +1410,7 @@ input TopicCreateWithoutUserInput {
 input TopicCreateWithoutVotesInput {
   id: ID
   title: String!
+  identifier: String!
   content: String!
   user: UserCreateOneWithoutTopicsInput!
   station: StationCreateOneWithoutTopicsInput!
@@ -1421,6 +1428,8 @@ enum TopicOrderByInput {
   id_DESC
   title_ASC
   title_DESC
+  identifier_ASC
+  identifier_DESC
   content_ASC
   content_DESC
   createdAt_ASC
@@ -1432,6 +1441,7 @@ enum TopicOrderByInput {
 type TopicPreviousValues {
   id: ID!
   title: String!
+  identifier: String!
   content: String!
   createdAt: DateTime!
   updatedAt: DateTime!
@@ -1466,6 +1476,20 @@ input TopicScalarWhereInput {
   title_not_starts_with: String
   title_ends_with: String
   title_not_ends_with: String
+  identifier: String
+  identifier_not: String
+  identifier_in: [String!]
+  identifier_not_in: [String!]
+  identifier_lt: String
+  identifier_lte: String
+  identifier_gt: String
+  identifier_gte: String
+  identifier_contains: String
+  identifier_not_contains: String
+  identifier_starts_with: String
+  identifier_not_starts_with: String
+  identifier_ends_with: String
+  identifier_not_ends_with: String
   content: String
   content_not: String
   content_in: [String!]
@@ -1521,6 +1545,7 @@ input TopicSubscriptionWhereInput {
 
 input TopicUpdateInput {
   title: String
+  identifier: String
   content: String
   user: UserUpdateOneRequiredWithoutTopicsInput
   station: StationUpdateOneRequiredWithoutTopicsInput
@@ -1531,11 +1556,13 @@ input TopicUpdateInput {
 
 input TopicUpdateManyDataInput {
   title: String
+  identifier: String
   content: String
 }
 
 input TopicUpdateManyMutationInput {
   title: String
+  identifier: String
   content: String
 }
 
@@ -1596,6 +1623,7 @@ input TopicUpdateOneRequiredWithoutVotesInput {
 
 input TopicUpdateWithoutCommentsDataInput {
   title: String
+  identifier: String
   content: String
   user: UserUpdateOneRequiredWithoutTopicsInput
   station: StationUpdateOneRequiredWithoutTopicsInput
@@ -1605,6 +1633,7 @@ input TopicUpdateWithoutCommentsDataInput {
 
 input TopicUpdateWithoutMembershipDataInput {
   title: String
+  identifier: String
   content: String
   user: UserUpdateOneRequiredWithoutTopicsInput
   station: StationUpdateOneRequiredWithoutTopicsInput
@@ -1614,6 +1643,7 @@ input TopicUpdateWithoutMembershipDataInput {
 
 input TopicUpdateWithoutStationDataInput {
   title: String
+  identifier: String
   content: String
   user: UserUpdateOneRequiredWithoutTopicsInput
   membership: MembershipUpdateOneRequiredWithoutTopicsInput
@@ -1623,6 +1653,7 @@ input TopicUpdateWithoutStationDataInput {
 
 input TopicUpdateWithoutUserDataInput {
   title: String
+  identifier: String
   content: String
   station: StationUpdateOneRequiredWithoutTopicsInput
   membership: MembershipUpdateOneRequiredWithoutTopicsInput
@@ -1632,6 +1663,7 @@ input TopicUpdateWithoutUserDataInput {
 
 input TopicUpdateWithoutVotesDataInput {
   title: String
+  identifier: String
   content: String
   user: UserUpdateOneRequiredWithoutTopicsInput
   station: StationUpdateOneRequiredWithoutTopicsInput
@@ -1711,6 +1743,20 @@ input TopicWhereInput {
   title_not_starts_with: String
   title_ends_with: String
   title_not_ends_with: String
+  identifier: String
+  identifier_not: String
+  identifier_in: [String!]
+  identifier_not_in: [String!]
+  identifier_lt: String
+  identifier_lte: String
+  identifier_gt: String
+  identifier_gte: String
+  identifier_contains: String
+  identifier_not_contains: String
+  identifier_starts_with: String
+  identifier_not_starts_with: String
+  identifier_ends_with: String
+  identifier_not_ends_with: String
   content: String
   content_not: String
   content_in: [String!]
@@ -1757,6 +1803,7 @@ input TopicWhereInput {
 
 input TopicWhereUniqueInput {
   id: ID
+  identifier: String
 }
 
 type User {

@@ -319,6 +319,8 @@ export type TopicOrderByInput =
   | "id_DESC"
   | "title_ASC"
   | "title_DESC"
+  | "identifier_ASC"
+  | "identifier_DESC"
   | "content_ASC"
   | "content_DESC"
   | "createdAt_ASC"
@@ -572,6 +574,20 @@ export interface TopicWhereInput {
   title_not_starts_with?: Maybe<String>;
   title_ends_with?: Maybe<String>;
   title_not_ends_with?: Maybe<String>;
+  identifier?: Maybe<String>;
+  identifier_not?: Maybe<String>;
+  identifier_in?: Maybe<String[] | String>;
+  identifier_not_in?: Maybe<String[] | String>;
+  identifier_lt?: Maybe<String>;
+  identifier_lte?: Maybe<String>;
+  identifier_gt?: Maybe<String>;
+  identifier_gte?: Maybe<String>;
+  identifier_contains?: Maybe<String>;
+  identifier_not_contains?: Maybe<String>;
+  identifier_starts_with?: Maybe<String>;
+  identifier_not_starts_with?: Maybe<String>;
+  identifier_ends_with?: Maybe<String>;
+  identifier_not_ends_with?: Maybe<String>;
   content?: Maybe<String>;
   content_not?: Maybe<String>;
   content_in?: Maybe<String[] | String>;
@@ -821,6 +837,7 @@ export type StationWhereUniqueInput = AtLeastOne<{
 
 export type TopicWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
+  identifier?: Maybe<String>;
 }>;
 
 export type UserWhereUniqueInput = AtLeastOne<{
@@ -902,6 +919,7 @@ export interface TopicCreateManyWithoutStationInput {
 export interface TopicCreateWithoutStationInput {
   id?: Maybe<ID_Input>;
   title: String;
+  identifier: String;
   content: String;
   user: UserCreateOneWithoutTopicsInput;
   membership: MembershipCreateOneWithoutTopicsInput;
@@ -998,6 +1016,7 @@ export interface TopicCreateManyWithoutUserInput {
 export interface TopicCreateWithoutUserInput {
   id?: Maybe<ID_Input>;
   title: String;
+  identifier: String;
   content: String;
   station: StationCreateOneWithoutTopicsInput;
   membership: MembershipCreateOneWithoutTopicsInput;
@@ -1062,6 +1081,7 @@ export interface TopicCreateManyWithoutMembershipInput {
 export interface TopicCreateWithoutMembershipInput {
   id?: Maybe<ID_Input>;
   title: String;
+  identifier: String;
   content: String;
   user: UserCreateOneWithoutTopicsInput;
   station: StationCreateOneWithoutTopicsInput;
@@ -1141,6 +1161,7 @@ export interface TopicCreateOneWithoutVotesInput {
 export interface TopicCreateWithoutVotesInput {
   id?: Maybe<ID_Input>;
   title: String;
+  identifier: String;
   content: String;
   user: UserCreateOneWithoutTopicsInput;
   station: StationCreateOneWithoutTopicsInput;
@@ -1187,6 +1208,7 @@ export interface TopicCreateOneWithoutCommentsInput {
 export interface TopicCreateWithoutCommentsInput {
   id?: Maybe<ID_Input>;
   title: String;
+  identifier: String;
   content: String;
   user: UserCreateOneWithoutTopicsInput;
   station: StationCreateOneWithoutTopicsInput;
@@ -1392,6 +1414,7 @@ export interface TopicUpdateWithWhereUniqueWithoutStationInput {
 
 export interface TopicUpdateWithoutStationDataInput {
   title?: Maybe<String>;
+  identifier?: Maybe<String>;
   content?: Maybe<String>;
   user?: Maybe<UserUpdateOneRequiredWithoutTopicsInput>;
   membership?: Maybe<MembershipUpdateOneRequiredWithoutTopicsInput>;
@@ -1550,6 +1573,7 @@ export interface TopicUpdateWithWhereUniqueWithoutUserInput {
 
 export interface TopicUpdateWithoutUserDataInput {
   title?: Maybe<String>;
+  identifier?: Maybe<String>;
   content?: Maybe<String>;
   station?: Maybe<StationUpdateOneRequiredWithoutTopicsInput>;
   membership?: Maybe<MembershipUpdateOneRequiredWithoutTopicsInput>;
@@ -1655,6 +1679,7 @@ export interface TopicUpdateWithWhereUniqueWithoutMembershipInput {
 
 export interface TopicUpdateWithoutMembershipDataInput {
   title?: Maybe<String>;
+  identifier?: Maybe<String>;
   content?: Maybe<String>;
   user?: Maybe<UserUpdateOneRequiredWithoutTopicsInput>;
   station?: Maybe<StationUpdateOneRequiredWithoutTopicsInput>;
@@ -1786,6 +1811,7 @@ export interface TopicUpdateOneRequiredWithoutVotesInput {
 
 export interface TopicUpdateWithoutVotesDataInput {
   title?: Maybe<String>;
+  identifier?: Maybe<String>;
   content?: Maybe<String>;
   user?: Maybe<UserUpdateOneRequiredWithoutTopicsInput>;
   station?: Maybe<StationUpdateOneRequiredWithoutTopicsInput>;
@@ -1854,6 +1880,7 @@ export interface TopicUpdateOneRequiredWithoutCommentsInput {
 
 export interface TopicUpdateWithoutCommentsDataInput {
   title?: Maybe<String>;
+  identifier?: Maybe<String>;
   content?: Maybe<String>;
   user?: Maybe<UserUpdateOneRequiredWithoutTopicsInput>;
   station?: Maybe<StationUpdateOneRequiredWithoutTopicsInput>;
@@ -2160,6 +2187,20 @@ export interface TopicScalarWhereInput {
   title_not_starts_with?: Maybe<String>;
   title_ends_with?: Maybe<String>;
   title_not_ends_with?: Maybe<String>;
+  identifier?: Maybe<String>;
+  identifier_not?: Maybe<String>;
+  identifier_in?: Maybe<String[] | String>;
+  identifier_not_in?: Maybe<String[] | String>;
+  identifier_lt?: Maybe<String>;
+  identifier_lte?: Maybe<String>;
+  identifier_gt?: Maybe<String>;
+  identifier_gte?: Maybe<String>;
+  identifier_contains?: Maybe<String>;
+  identifier_not_contains?: Maybe<String>;
+  identifier_starts_with?: Maybe<String>;
+  identifier_not_starts_with?: Maybe<String>;
+  identifier_ends_with?: Maybe<String>;
+  identifier_not_ends_with?: Maybe<String>;
   content?: Maybe<String>;
   content_not?: Maybe<String>;
   content_in?: Maybe<String[] | String>;
@@ -2202,6 +2243,7 @@ export interface TopicUpdateManyWithWhereNestedInput {
 
 export interface TopicUpdateManyDataInput {
   title?: Maybe<String>;
+  identifier?: Maybe<String>;
   content?: Maybe<String>;
 }
 
@@ -2473,6 +2515,7 @@ export interface StationUpdateManyMutationInput {
 export interface TopicCreateInput {
   id?: Maybe<ID_Input>;
   title: String;
+  identifier: String;
   content: String;
   user: UserCreateOneWithoutTopicsInput;
   station: StationCreateOneWithoutTopicsInput;
@@ -2483,6 +2526,7 @@ export interface TopicCreateInput {
 
 export interface TopicUpdateInput {
   title?: Maybe<String>;
+  identifier?: Maybe<String>;
   content?: Maybe<String>;
   user?: Maybe<UserUpdateOneRequiredWithoutTopicsInput>;
   station?: Maybe<StationUpdateOneRequiredWithoutTopicsInput>;
@@ -2493,6 +2537,7 @@ export interface TopicUpdateInput {
 
 export interface TopicUpdateManyMutationInput {
   title?: Maybe<String>;
+  identifier?: Maybe<String>;
   content?: Maybe<String>;
 }
 
@@ -3126,6 +3171,7 @@ export interface StationNullablePromise
 export interface Topic {
   id: ID_Output;
   title: String;
+  identifier: String;
   content: String;
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
@@ -3134,6 +3180,7 @@ export interface Topic {
 export interface TopicPromise extends Promise<Topic>, Fragmentable {
   id: () => Promise<ID_Output>;
   title: () => Promise<String>;
+  identifier: () => Promise<String>;
   content: () => Promise<String>;
   user: <T = UserPromise>() => T;
   station: <T = StationPromise>() => T;
@@ -3165,6 +3212,7 @@ export interface TopicSubscription
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   title: () => Promise<AsyncIterator<String>>;
+  identifier: () => Promise<AsyncIterator<String>>;
   content: () => Promise<AsyncIterator<String>>;
   user: <T = UserSubscription>() => T;
   station: <T = StationSubscription>() => T;
@@ -3196,6 +3244,7 @@ export interface TopicNullablePromise
     Fragmentable {
   id: () => Promise<ID_Output>;
   title: () => Promise<String>;
+  identifier: () => Promise<String>;
   content: () => Promise<String>;
   user: <T = UserPromise>() => T;
   station: <T = StationPromise>() => T;
@@ -3824,6 +3873,7 @@ export interface TopicSubscriptionPayloadSubscription
 export interface TopicPreviousValues {
   id: ID_Output;
   title: String;
+  identifier: String;
   content: String;
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
@@ -3834,6 +3884,7 @@ export interface TopicPreviousValuesPromise
     Fragmentable {
   id: () => Promise<ID_Output>;
   title: () => Promise<String>;
+  identifier: () => Promise<String>;
   content: () => Promise<String>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
@@ -3844,6 +3895,7 @@ export interface TopicPreviousValuesSubscription
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   title: () => Promise<AsyncIterator<String>>;
+  identifier: () => Promise<AsyncIterator<String>>;
   content: () => Promise<AsyncIterator<String>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
