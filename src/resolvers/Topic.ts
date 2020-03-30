@@ -1,6 +1,10 @@
 import { Prisma } from '../generated/prisma-client'
 
 export default {
+  identifier: async ({ id }, args, { prisma }: { prisma: Prisma }) => {
+    return prisma.topic({ id }).identifier()
+  },
+
   content: async ({ id }, args, { prisma }: { prisma: Prisma }) => {
     return prisma.topic({ id }).content()
   },
