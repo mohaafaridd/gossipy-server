@@ -45,7 +45,7 @@ type Membership {
 type Topic {
   id: ID! @id
   title: String!
-  identifier: String! @unique
+  identifier: String!
   content: String!
   user: User! @relation(name: "UsersToTopics", onDelete: SET_NULL)
   station: Station! @relation(name: "StationToTopics", onDelete: SET_NULL)

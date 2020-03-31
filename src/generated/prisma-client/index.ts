@@ -837,7 +837,6 @@ export type StationWhereUniqueInput = AtLeastOne<{
 
 export type TopicWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
-  identifier?: Maybe<String>;
 }>;
 
 export type UserWhereUniqueInput = AtLeastOne<{

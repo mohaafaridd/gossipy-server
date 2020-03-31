@@ -35,9 +35,21 @@ export default {
 
     if (!membership) throw new Error('Authorization Required')
 
+    const identifier = alphanumeric(data.title, '_').toLowerCase()
+
+    const isValid = await prisma.$exists.topic({
+      station: {
+        id: data.station,
+      },
+
+      identifier_not: identifier,
+    })
+
+    if (!isValid) throw new Error('Topic title is used before')
+
     const topic = await prisma.createTopic({
       ...data,
-      identifier: alphanumeric(data.title, '_').toLowerCase(),
+      identifier,
       user: {
         connect: {
           id: userId,
@@ -110,6 +122,24 @@ export default {
     })
 
     if (!isAuthorized) throw new Error('Authorization Required')
+
+    if (data.title) {
+      const identifier = alphanumeric(data.title, '_').toLowerCase()
+
+      const [station] = await prisma.stations({
+        where: { topics_some: { id } },
+      })
+
+      const isValid = await prisma.$exists.topic({
+        id_not: id,
+        station: {
+          id: station.id,
+        },
+        identifier,
+      })
+
+      if (!isValid) throw new Error('Topic title is used before')
+    }
 
     return prisma.updateTopic({
       where: { id },

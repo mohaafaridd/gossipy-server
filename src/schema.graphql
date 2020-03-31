@@ -100,7 +100,7 @@ type Query {
     user: ID
     station: ID
   ): [Topic!]!
-  topic(identifier: String!): Topic!
+  topic(topicIdentifier: String!, stationIdentifier: String!): Topic!
   comments: [Comment!]!
   votes: [Vote!]!
 }

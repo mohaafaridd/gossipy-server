@@ -162,7 +162,10 @@ export default {
 
   topic: async (
     parent,
-    { identifier }: { identifier: string },
+    {
+      topicIdentifier,
+      stationIdentifier,
+    }: { topicIdentifier: string; stationIdentifier: string },
     { prisma, request }: { prisma: Prisma; request: any }
   ) => {
     const userId = getUserId(request, false)
@@ -170,15 +173,17 @@ export default {
     const isAuthorized = await prisma.$exists.topic({
       OR: [
         {
-          identifier,
+          identifier: topicIdentifier,
           station: {
+            identifier: stationIdentifier,
             public: true,
           },
         },
 
         {
-          identifier,
+          identifier: topicIdentifier,
           station: {
+            identifier: stationIdentifier,
             public: false,
             members_some: {
               user: {
@@ -193,7 +198,16 @@ export default {
 
     if (!isAuthorized) throw new Error('Topic was not found')
 
-    return prisma.topic({ identifier })
+    const [topic] = await prisma.topics({
+      where: {
+        identifier: topicIdentifier,
+        station: {
+          identifier: stationIdentifier,
+        },
+      },
+    })
+
+    return topic
   },
 
   comments: (parent, args, { prisma }: { prisma: Prisma }) => {

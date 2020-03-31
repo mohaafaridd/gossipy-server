@@ -1803,7 +1803,6 @@ input TopicWhereInput {
 
 input TopicWhereUniqueInput {
   id: ID
-  identifier: String
 }
 
 type User {
