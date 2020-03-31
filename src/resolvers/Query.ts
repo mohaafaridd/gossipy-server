@@ -160,6 +160,42 @@ export default {
     return getTopics(sortType, finalDate, conditions)
   },
 
+  topic: async (
+    parent,
+    { identifier }: { identifier: string },
+    { prisma, request }: { prisma: Prisma; request: any }
+  ) => {
+    const userId = getUserId(request, false)
+
+    const isAuthorized = await prisma.$exists.topic({
+      OR: [
+        {
+          identifier,
+          station: {
+            public: true,
+          },
+        },
+
+        {
+          identifier,
+          station: {
+            public: false,
+            members_some: {
+              user: {
+                id: userId,
+              },
+              state: 'ACTIVE',
+            },
+          },
+        },
+      ],
+    })
+
+    if (!isAuthorized) throw new Error('Topic was not found')
+
+    return prisma.topic({ identifier })
+  },
+
   comments: (parent, args, { prisma }: { prisma: Prisma }) => {
     return prisma.comments()
   },
