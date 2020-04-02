@@ -42,7 +42,7 @@ export default {
     { stationIdentifier }: { stationIdentifier: string },
     { prisma, request }: { prisma: Prisma; request: any }
   ) => {
-    const userId = getUserId(request)
+    const userId = getUserId(request, false)
 
     const [membership] = await prisma.memberships({
       where: {
