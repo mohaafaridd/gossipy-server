@@ -108,13 +108,44 @@ export default {
   ) => {
     const userId = getUserId(request)
     const isAuthorized = await prisma.$exists.comment({
-      id,
-      membership: {
-        user: {
-          id: userId,
+      OR: [
+        {
+          id,
+          membership: {
+            user: {
+              id: userId,
+            },
+            state: 'ACTIVE',
+          },
         },
-        state: 'ACTIVE',
-      },
+
+        {
+          id,
+          topic: {
+            membership: {
+              user: {
+                id: userId,
+              },
+
+              state: 'ACTIVE',
+            },
+          },
+        },
+
+        {
+          id,
+          station: {
+            members_some: {
+              user: {
+                id: userId,
+              },
+
+              role_in: ['FOUNDER', 'ADMIN', 'MODERATOR'],
+              state: 'ACTIVE',
+            },
+          },
+        },
+      ],
     })
 
     if (!isAuthorized) throw new Error('Authorization Required')
