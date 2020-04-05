@@ -13,7 +13,10 @@ export const createUser = async (data: IUser): Promise<IUser> => {
     password: bcrypt.hashSync(data.input.password),
   })
 
-  data.jwt = jwt.sign({ userId: data.user.id }, process.env.JWT_SECRET)
+  data.jwt = jwt.sign(
+    { userId: data.user.id },
+    process.env.JWT_SECRET || 'DummyKey'
+  )
 
   return data
 }

@@ -12,17 +12,17 @@ export const createTopic = async (
     identifier: alphanumeric(topic.input.title, '_').toLowerCase(),
     station: {
       connect: {
-        id: station.station.id,
+        id: station.station?.id,
       },
     },
     user: {
       connect: {
-        id: user.user.id,
+        id: user.user?.id,
       },
     },
     membership: {
       connect: {
-        id: user.membership.id,
+        id: user.membership?.id,
       },
     },
   })

@@ -1,23 +1,43 @@
 import { Prisma } from '../generated/prisma-client'
 
 export default {
-  user: async ({ id }, args, { prisma }: { prisma: Prisma }) => {
+  user: async (
+    { id }: { id: string },
+    _args: any,
+    { prisma }: { prisma: Prisma }
+  ) => {
     return prisma.vote({ id }).user()
   },
 
-  station: async ({ id }, args, { prisma }: { prisma: Prisma }) => {
+  station: async (
+    { id }: { id: string },
+    _args: any,
+    { prisma }: { prisma: Prisma }
+  ) => {
     return prisma.vote({ id }).station()
   },
 
-  topic: async ({ id }, args, { prisma }: { prisma: Prisma }) => {
+  topic: async (
+    { id }: { id: string },
+    _args: any,
+    { prisma }: { prisma: Prisma }
+  ) => {
     return prisma.vote({ id }).topic()
   },
 
-  membership: async ({ id }, args, { prisma }: { prisma: Prisma }) => {
+  membership: async (
+    { id }: { id: string },
+    _args: any,
+    { prisma }: { prisma: Prisma }
+  ) => {
     return prisma.vote({ id }).membership()
   },
 
-  comment: async ({ id }, args, { prisma }: { prisma: Prisma }) => {
+  comment: async (
+    { id }: { id: string },
+    _args: any,
+    { prisma }: { prisma: Prisma }
+  ) => {
     return prisma.vote({ id }).comment()
   },
 }

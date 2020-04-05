@@ -12,25 +12,29 @@ import { getSortingDate, getTopics, getUserId } from '../utils'
 import { Filter, checkAuthorization, getConditions } from '../utils/getTopics'
 
 export default {
-  users: async (parent, args, { prisma }: { prisma: Prisma }) => {
+  users: async (_parent: any, _args: any, { prisma }: { prisma: Prisma }) => {
     return prisma.users()
   },
 
   profile: async (
-    parent,
+    _parent: any,
     { identifier }: { identifier: string },
     { prisma }: { prisma: Prisma }
   ) => {
     return prisma.user({ identifier })
   },
 
-  stations: async (parent, args, { prisma }: { prisma: Prisma }) => {
+  stations: async (
+    _parent: any,
+    _args: any,
+    { prisma }: { prisma: Prisma }
+  ) => {
     const stations: Station[] = await prisma.stations()
     return stations
   },
 
   station: async (
-    parent,
+    _parent: any,
     { identifier }: { identifier: string },
     { prisma }: { prisma: Prisma }
   ) => {
@@ -38,7 +42,7 @@ export default {
   },
 
   userMembership: async (
-    parent,
+    _parent: any,
     { stationIdentifier }: { stationIdentifier: string },
     { prisma, request }: { prisma: Prisma; request: any }
   ) => {
@@ -60,8 +64,8 @@ export default {
   },
 
   userMemberships: async (
-    parent,
-    args,
+    _parent: any,
+    _args: any,
     { prisma, request }: { prisma: Prisma; request: any }
   ) => {
     const userId = getUserId(request)
@@ -80,7 +84,7 @@ export default {
   },
 
   memberships: async (
-    parent,
+    _parent: any,
     {
       page,
       station,
@@ -114,7 +118,7 @@ export default {
   },
 
   topics: async (
-    parent,
+    _parent: any,
     {
       sortType,
       dateRange,
@@ -161,7 +165,7 @@ export default {
   },
 
   topic: async (
-    parent,
+    _parent: any,
     {
       topicIdentifier,
       stationIdentifier,
@@ -210,11 +214,11 @@ export default {
     return topic
   },
 
-  comments: (parent, args, { prisma }: { prisma: Prisma }) => {
+  comments: (_parent: any, _args: any, { prisma }: { prisma: Prisma }) => {
     return prisma.comments()
   },
 
-  votes: (parent, args, { prisma }: { prisma: Prisma }) => {
+  votes: (_parent: any, _args: any, { prisma }: { prisma: Prisma }) => {
     return prisma.votes()
   },
 }

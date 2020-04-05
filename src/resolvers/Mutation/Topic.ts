@@ -7,7 +7,7 @@ export default {
    * This mutation is dedicated to enable active station members to post topics
    */
   createTopic: async (
-    parent,
+    _parent: any,
     {
       data,
     }: {
@@ -94,7 +94,7 @@ export default {
    * This mutation is dedicated to enable users to update their own topics
    */
   updateTopic: async (
-    parent,
+    _parent: any,
     {
       id,
       data,
@@ -151,7 +151,7 @@ export default {
    * This mutation is dedicated to enable users to delete their topics
    */
   deleteTopic: async (
-    parent,
+    _parent: any,
     { id }: { id: string },
     { prisma, request }: { prisma: Prisma; request: any }
   ) => {

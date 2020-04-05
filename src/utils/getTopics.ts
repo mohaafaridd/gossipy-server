@@ -7,13 +7,6 @@ import {
   TopicWhereInput,
 } from '../generated/prisma-client'
 import { sortTopics } from './sortMethods'
-import getUserId from './getUserId'
-
-// interface Filter {
-//   user: string
-//   station: string
-//   subscribed: boolean
-// }
 
 interface VoteCollection extends Vote {
   topic: Topic

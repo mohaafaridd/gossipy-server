@@ -14,13 +14,13 @@ export const createMembership = async (
   user.membership = await prisma.createMembership({
     user: {
       connect: {
-        id: user.user.id,
+        id: user.user?.id,
       },
     },
 
     station: {
       connect: {
-        id: station.station.id,
+        id: station.station?.id,
       },
     },
 

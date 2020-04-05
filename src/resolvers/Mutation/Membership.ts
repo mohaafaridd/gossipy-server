@@ -11,7 +11,7 @@ export default {
    * This mutation is dedicated to enable users to join to a station
    */
   createMembership: async (
-    parent,
+    _parent: any,
     { stationId }: { stationId: string },
     { prisma, request }: { prisma: Prisma; request: any }
   ) => {
@@ -49,7 +49,7 @@ export default {
           },
         },
 
-        state: station.public ? 'ACTIVE' : 'PENDING',
+        state: station?.public ? 'ACTIVE' : 'PENDING',
       },
       update: {
         state: 'PENDING',
@@ -61,7 +61,7 @@ export default {
    * This mutation is dedicated to enable admins and founder to change members state/role
    */
   updateMembership: async (
-    parent,
+    _parent: any,
     { id, data }: { id: string; data: MembershipUpdateInput },
     { prisma, request }: { prisma: Prisma; request: any }
   ) => {
@@ -72,7 +72,7 @@ export default {
 
     // Immune founder membership
     const target = await prisma.membership({ id })
-    if (target.role === 'FOUNDER') throw new Error('Founder cannot be updated')
+    if (target?.role === 'FOUNDER') throw new Error('Founder cannot be updated')
 
     // Ensure authorization level (only admins and founder) able to update membership role/state
     const station: Station = await prisma.membership({ id }).station()
@@ -105,7 +105,7 @@ export default {
    * This mutation is dedicated to enable users to get out of a station without removing their posts and comments
    */
   unsubscribeMembership: async (
-    parent,
+    _parent: any,
     { id }: { id: string },
     { prisma, request }: { prisma: Prisma; request: any }
   ) => {
@@ -134,7 +134,7 @@ export default {
    * This mutation is dedicated to enable admins and founder to remove a membership (Cascading their Topics and Comments)
    */
   deleteMembership: async (
-    parent,
+    _parent: any,
     { id }: { id: string },
     { prisma, request }: { prisma: Prisma; request: any }
   ) => {
@@ -159,10 +159,10 @@ export default {
 
     if (!isUser && !isAuthorized) throw new Error('Authorization Required')
 
-    if (membership.role === 'FOUNDER')
+    if (membership?.role === 'FOUNDER')
       throw new Error('This membership is the founder')
 
-    if (membership.state === 'BANNED')
+    if (membership?.state === 'BANNED')
       throw new Error('This membership is banned')
 
     const deleted = await prisma.deleteMembership({ id })

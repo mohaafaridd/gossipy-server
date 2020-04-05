@@ -11,25 +11,25 @@ export const createVote = async (
     ...vote.input,
     station: {
       connect: {
-        id: station.station.id,
+        id: station.station?.id,
       },
     },
 
     user: {
       connect: {
-        id: user.user.id,
+        id: user.user?.id,
       },
     },
 
     membership: {
       connect: {
-        id: user.membership.id,
+        id: user.membership?.id,
       },
     },
 
     topic: {
       connect: {
-        id: topic.topic.id,
+        id: topic.topic?.id,
       },
     },
   })

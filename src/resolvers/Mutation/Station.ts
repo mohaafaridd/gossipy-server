@@ -11,7 +11,7 @@ export default {
    * This mutation is dedicated to enable authenticated users to create their own stations
    */
   createStation: async (
-    parent,
+    _parent: any,
     { data }: { data: StationCreateInput },
     { prisma, request }: { prisma: Prisma; request: any }
   ) => {
@@ -50,7 +50,7 @@ export default {
    * This mutation is dedicated to modify station's description and public flag
    */
   updateStation: async (
-    parent,
+    _parent: any,
     { id, data }: { id: string; data: StationUpdateInput },
     { prisma, request }: { prisma: Prisma; request: any }
   ) => {
@@ -82,7 +82,7 @@ export default {
    * This mutation is dedicated to enable the station founder to delete it
    */
   deleteStation: async (
-    parent,
+    _parent: any,
     { id }: { id: string },
     { prisma, request }: { prisma: Prisma; request: any }
   ) => {

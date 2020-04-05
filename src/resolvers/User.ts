@@ -2,13 +2,17 @@ import { Prisma, Membership } from '../generated/prisma-client'
 import { getUserId } from '../utils'
 
 export default {
-  password: async ({ id }, args, { prisma }: { prisma: Prisma }) => {
+  password: async (
+    { id }: { id: string },
+    _args: any,
+    { prisma }: { prisma: Prisma }
+  ) => {
     return null
   },
 
   email: async (
-    { id },
-    args,
+    { id }: { id: string },
+    _args: any,
     { prisma, request }: { prisma: Prisma; request: any }
   ) => {
     const userId = getUserId(request, false)
@@ -16,14 +20,18 @@ export default {
     return prisma.user({ id }).email()
   },
 
-  memberships: async ({ id }, args, { prisma }: { prisma: Prisma }) => {
+  memberships: async (
+    { id }: { id: string },
+    _args: any,
+    { prisma }: { prisma: Prisma }
+  ) => {
     return prisma.user({ id }).memberships()
   },
 
   topics: async (
-    { id },
-    args,
-    { prisma, request }: { prisma: Prisma; request }
+    { id }: { id: string },
+    _args: any,
+    { prisma, request }: { prisma: Prisma; request: any }
   ) => {
     const userId = getUserId(request, false)
 
@@ -49,9 +57,9 @@ export default {
   },
 
   comments: async (
-    { id },
-    args,
-    { prisma, request }: { prisma: Prisma; request }
+    { id }: { id: string },
+    _args: any,
+    { prisma, request }: { prisma: Prisma; request: any }
   ) => {
     const userId = getUserId(request, false)
 
@@ -77,9 +85,9 @@ export default {
   },
 
   votes: async (
-    { id },
-    args,
-    { prisma, request }: { prisma: Prisma; request }
+    { id }: { id: string },
+    _args: any,
+    { prisma, request }: { prisma: Prisma; request: any }
   ) => {
     const userId = getUserId(request, false)
 
@@ -104,7 +112,11 @@ export default {
     })
   },
 
-  karma: async ({ id }, args, { prisma }: { prisma: Prisma }) => {
+  karma: async (
+    { id }: { id: string },
+    _args: any,
+    { prisma }: { prisma: Prisma }
+  ) => {
     return prisma.votes({
       where: {
         OR: [{ topic: { user: { id } } }, { comment: { user: { id } } }],

@@ -6,7 +6,7 @@ export default {
    * This mutation is dedicated to enable members to create comments
    */
   createComment: async (
-    parent,
+    _parent: any,
     {
       data,
     }: {
@@ -66,7 +66,7 @@ export default {
    * This mutation is dedicated to enable members to update their own comments
    */
   updateComment: async (
-    parent,
+    _parent: any,
     {
       id,
       data,
@@ -102,7 +102,7 @@ export default {
    * This mutation is dedicated to enable members to delete their own comments
    */
   deleteComment: async (
-    parent,
+    _parent: any,
     { id }: { id: string },
     { prisma, request }: { prisma: Prisma; request: any }
   ) => {

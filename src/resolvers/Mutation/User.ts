@@ -20,10 +20,9 @@ export default {
    * This mutation is dedicated to sign a user up and return his information and an available token
    */
   signUp: async (
-    parent,
+    _parent: any,
     { data }: { data: UserCreateInput },
-    { prisma }: { prisma: Prisma },
-    info
+    { prisma }: { prisma: Prisma }
   ) => {
     const { name } = data
     if (name.length > 16)
@@ -47,12 +46,11 @@ export default {
    * This mutation is dedicated to sign user in and return his information and an available token
    */
   signIn: async (
-    parent,
+    _parent: any,
     { data }: { data: { email: string; password: string } },
-    { prisma }: { prisma: Prisma },
-    info
+    { prisma }: { prisma: Prisma }
   ) => {
-    const user: User = await prisma.user({ email: data.email })
+    const user = await prisma.user({ email: data.email })
     if (!user) throw new Error('Login failed')
 
     const isMatch = await bcrypt.compare(data.password, user.password)
@@ -68,10 +66,9 @@ export default {
    * This mutation is dedicated to enable user to update his own data (other than identifier)
    */
   updateUser: async (
-    parent,
+    _parent: any,
     { data }: { data: UserUpdateInput },
-    { prisma, request }: { prisma: Prisma; request: any },
-    info
+    { prisma, request }: { prisma: Prisma; request: any }
   ) => {
     const userId = getUserId(request)
     if (typeof data.password === 'string') {

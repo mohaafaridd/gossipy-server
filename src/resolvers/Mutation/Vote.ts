@@ -7,7 +7,7 @@ import {
 import { getUserId } from '../../utils'
 export default {
   createVote: async (
-    parent,
+    _parent: any,
     {
       data,
     }: {
@@ -81,7 +81,7 @@ export default {
   },
 
   updateVote: async (
-    parent,
+    _parent: any,
     {
       id,
       data,
@@ -113,7 +113,7 @@ export default {
   },
 
   deleteVote: async (
-    parent,
+    _parent: any,
     { id }: { id: string },
     { prisma, request }: { prisma: Prisma; request: any }
   ) => {

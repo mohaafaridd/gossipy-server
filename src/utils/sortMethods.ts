@@ -1,4 +1,4 @@
-import * as moment from 'moment'
+import moment from 'moment'
 import { Vote, Topic } from '../generated/prisma-client'
 import { SortType } from '../constants'
 
@@ -7,8 +7,8 @@ interface VoteCollection extends Vote {
 }
 
 const extractVotes = (votes: Vote[]) => {
-  const ups = votes.filter(vote => vote.type === 'UPVOTE').length
-  const downs = votes.filter(vote => vote.type === 'DOWNVOTE').length
+  const ups = votes.filter((vote) => vote.type === 'UPVOTE').length
+  const downs = votes.filter((vote) => vote.type === 'DOWNVOTE').length
   return [ups, downs]
 }
 
@@ -30,7 +30,8 @@ export const getTopScore = (votes: Vote[], topic: Topic) => {
 }
 
 export const sortTopics = (sortType: SortType, votes: VoteCollection[]) => {
-  const reduced = votes.reduce((acc, current) => {
+  // TODO: acc must have a certain type
+  const reduced = votes.reduce((acc: any, current) => {
     if (current.topic.id in acc) {
       acc[current.topic.id].push({ id: current.id, type: current.type })
     } else {
@@ -53,13 +54,13 @@ export const sortTopics = (sortType: SortType, votes: VoteCollection[]) => {
           : getTopScore(bVotes, b.topic)
       return aScore > bScore ? -1 : aScore < bScore ? 1 : 0
     })
-    .map(vote => vote.topic)
+    .map((vote) => vote.topic)
 
   // Convert Objects to strings (To ease the removal)
-  const unique = new Set(sorted.map(e => JSON.stringify(e)))
+  const unique = new Set(sorted.map((e) => JSON.stringify(e)))
 
   // Converting back to Objects
-  const result = Array.from(unique).map(e => JSON.parse(e))
+  const result = Array.from(unique).map((e) => JSON.parse(e))
 
   return result
 }
