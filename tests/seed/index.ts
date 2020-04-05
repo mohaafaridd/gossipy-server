@@ -1,8 +1,8 @@
 import { prisma } from '../../src/generated/prisma-client'
 
 import creators from './creators'
+
 import seeds from './seeds'
-import seed from '../utils/seed'
 
 const reset = [
   prisma.deleteManyUsers(),
