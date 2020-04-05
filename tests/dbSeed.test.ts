@@ -1,5 +1,7 @@
+import '@types/jest'
+
 import seed from './seed'
 
-beforeEach(seed, 10000)
+beforeEach(seed, 30000)
 
 test('should seed the production database', () => {})

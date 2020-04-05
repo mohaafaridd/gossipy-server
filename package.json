@@ -7,7 +7,7 @@
   "scripts": {
     "heroku-postbuild": "prisma generate && npm run tsc",
     "tsc": "tsc",
-    "start": "node ./dist/index.js",
+    "start": "node ./lib/index.js",
     "dev": "env-cmd -f ./config/prod.env ts-node-dev ./src/index.ts",
     "seed": "env-cmd -f ./config/prod.env jest seedProd.test.ts",
     "test": "env-cmd -f ./config/test.env jest --watch --runInBand",
@@ -20,18 +20,21 @@
   },
   "license": "ISC",
   "devDependencies": {
+    "@types/ws": "^7.2.3",
+    "@types/bcryptjs": "^2.4.2",
+    "@types/jsonwebtoken": "^8.3.6",
     "@babel/cli": "^7.8.4",
     "@babel/core": "^7.9.0",
     "@babel/plugin-proposal-class-properties": "^7.8.3",
     "@babel/preset-env": "^7.9.0",
     "@babel/preset-typescript": "^7.9.0",
-    "@types/ws": "^7.2.3",
+    "@types/jest": "^25.2.1",
+    "jest": "^25.2.7",
+    "ts-jest": "^25.3.1",
     "ts-node-dev": "^1.0.0-pre.44",
     "typescript": "^3.8.3"
   },
   "dependencies": {
-    "@types/bcryptjs": "^2.4.2",
-    "@types/jsonwebtoken": "^8.3.6",
     "bcryptjs": "^2.4.3",
     "chalk": "^3.0.0",
     "env-cmd": "^10.0.1",
