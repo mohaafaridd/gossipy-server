@@ -41,7 +41,7 @@ model Station {
 model Topic {
   id           Int        @default(autoincrement()) @id
   title        String
-  identifier   String     @unique
+  identifier   String
   content      String
   sealed       Boolean    @default(false)
   membershipId Int

@@ -8,7 +8,7 @@
     "heroku-postbuild": "prisma generate && npm run tsc",
     "tsc": "tsc",
     "start": "node ./lib/index.js",
-    "dev": "env-cmd -f ./config/prod.env ts-node-dev ./src/index.ts",
+    "dev": "env-cmd -f ./config/prod.env ts-node-dev -r tsconfig-paths/register ./src/index.ts",
     "seed": "env-cmd -f ./config/prod.env jest seedProd.test.ts",
     "test": "env-cmd -f ./config/test.env jest --watch --runInBand",
     "prod:gene": "prisma generate -e ./config/prod.env",
@@ -33,6 +33,7 @@
     "jest": "^25.2.7",
     "ts-jest": "^25.3.1",
     "ts-node-dev": "^1.0.0-pre.44",
+    "tsconfig-paths": "^3.9.0",
     "typescript": "^3.8.3"
   },
   "dependencies": {

@@ -1,9 +1,10 @@
 type User {
   id: ID!
   name: String!
-  identifier: String
+  identifier: String!
   password: String
   email: String
+  stations: [Station!]!
   memberships: [Membership!]!
   topics: [Topic!]!
   comments: [Comment!]!
@@ -16,9 +17,10 @@ type User {
 type Station {
   id: ID!
   name: String!
-  identifier: String
+  identifier: String!
   description: String!
   public: Boolean!
+  users: [User!]!
   members: [Membership!]!
   topics: [Topic!]!
   comments: [Comment!]!
@@ -29,13 +31,15 @@ type Station {
 
 type Membership {
   id: ID!
+  userId: Int!
   user: User!
+  stationId: Int!
   station: Station!
   role: Role!
   topics: [Topic!]!
   comments: [Comment!]!
   votes: [Vote!]!
-  state: MembershipState!
+  state: State!
   createdAt: String!
   updatedAt: String!
 }
@@ -45,7 +49,10 @@ type Topic {
   title: String!
   identifier: String!
   content: String!
-
+  sealed: Boolean!
+  userId: Int!
+  membershipId: Int!
+  stationId: Int!
   user: User!
   membership: Membership!
   station: Station!
@@ -58,11 +65,14 @@ type Topic {
 type Comment {
   id: ID!
   content: String!
+  membershipId: Int!
+  userId: Int!
+  topicId: Int!
+  stationId: Int!
   user: User!
   membership: Membership!
   station: Station!
   topic: Topic!
-  votes: [Vote!]!
   createdAt: String!
   updatedAt: String!
 }
@@ -70,6 +80,11 @@ type Comment {
 type Vote {
   id: ID!
   type: VoteType!
+  membershipId: Int!
+  userId: Int!
+  topicId: Int!
+  stationId: Int!
+
   user: User!
   station: Station!
   topic: Topic!
@@ -80,29 +95,50 @@ type Vote {
 }
 
 type Query {
-  profile(identifier: ID!): User!
-  users: [User!]!
-  station(identifier: ID!): Station!
-  stations: [Station!]!
-  userMembership(stationIdentifier: ID!): Membership
-  userMemberships: [Membership!]!
-  memberships(
-    page: Int!
-    station: ID
-    role: Role
-    roles: [Role!]
-    state: MembershipState
-  ): [Membership!]!
+  comments(topicId: ID, user: ID): [Comment!]!
+  comment(commentId: ID!): Comment!
+
+  memberships(user: ID, station: ID, page: Int): [Membership!]!
+  membership(stationId: Int!): Membership!
+
+  stations(query: String!): [Station!]!
+  station(identifier: String!): Station!
+
   topics(
-    dateRange: DateRange!
     sortType: SortType!
-    subscribed: Boolean
+    dateRange: DateRange!
+    explore: Boolean!
     user: ID
     station: ID
   ): [Topic!]!
-  topic(topicIdentifier: String!, stationIdentifier: String!): Topic!
-  comments: [Comment!]!
-  votes: [Vote!]!
+  topic(identifier: ID!, stationId: ID!): Topic!
+
+  users: [User!]!
+  profile(identifier: ID!): User!
+
+  # profile(identifier: ID!): User!
+  # users: [User!]!
+  # station(identifier: ID!): Station!
+  # stations: [Station!]!
+  # userMembership(stationIdentifier: ID!): Membership
+  # userMemberships: [Membership!]!
+  # memberships(
+  #   page: Int!
+  #   station: ID
+  #   role: Role
+  #   roles: [Role!]
+  #   state: State
+  # ): [Membership!]!
+  # topics(
+  #   dateRange: DateRange!
+  #   sortType: SortType!
+  #   subscribed: Boolean
+  #   user: ID
+  #   station: ID
+  # ): [Topic!]!
+  # topic(topicIdentifier: String!, stationIdentifier: String!): Topic!
+  # comments: [Comment!]!
+  # votes: [Vote!]!
 }
 
 type DeleteMembership {
@@ -167,13 +203,13 @@ input UpdateStationInput {
 
 input MembershipUpdateInput {
   role: Role
-  state: MembershipState
+  state: State
 }
 
 input CreateTopicInput {
   title: String!
   content: String!
-  station: ID!
+  station: Int!
 }
 
 input UpdateTopicInput {
@@ -207,7 +243,7 @@ enum Role {
   MEMBER
 }
 
-enum MembershipState {
+enum State {
   PENDING
   ACTIVE
   DETACHED
