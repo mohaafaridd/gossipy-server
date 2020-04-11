@@ -1,9 +1,4 @@
-import {
-  Prisma,
-  VoteCreateInput,
-  VoteUpdateInput,
-  VoteType,
-} from '../../generated/prisma-client'
+import { PrismaClient, VoteType } from '@prisma/client'
 import { getUserId } from '../../utils'
 export default {
   createVote: async (
@@ -12,23 +7,23 @@ export default {
       data,
     }: {
       data: {
-        topic: string
+        topic: number
         type: VoteType
       }
     },
-    { prisma, request }: { prisma: Prisma; request: any }
+    { prisma, request }: { prisma: PrismaClient; request: any }
   ) => {
     const userId = getUserId(request)
 
-    const [membership] = await prisma.memberships({
+    const [membership] = await prisma.membership.findMany({
       where: {
         state: 'ACTIVE',
-        user: {
-          id: userId,
-        },
+        userId,
         station: {
-          topics_some: {
-            id: data.topic,
+          topics: {
+            some: {
+              id: data.topic,
+            },
           },
         },
       },
@@ -36,100 +31,77 @@ export default {
 
     if (!membership) throw new Error('Authorization Required')
 
-    const hasVoted = await prisma.$exists.vote({
-      membership: {
+    const [vote] = await prisma.vote.findMany({
+      where: {
+        userId,
+        topicId: data.topic,
+        membershipId: membership.id,
+      },
+    })
+
+    const station = await prisma.membership
+      .findOne({ where: { id: membership.id } })
+      .station()
+
+    const upsert = await prisma.vote.upsert({
+      where: {
+        id: vote?.id,
+      },
+
+      create: {
+        type: data.type,
         user: {
-          id: userId,
+          connect: {
+            id: userId,
+          },
         },
-      },
-      topic: {
-        id: data.topic,
-      },
-    })
 
-    if (hasVoted) throw new Error('User already voted')
-
-    const station = await prisma.membership({ id: membership.id }).station()
-
-    return prisma.createVote({
-      user: {
-        connect: {
-          id: userId,
+        station: {
+          connect: {
+            id: station?.id,
+          },
         },
-      },
 
-      station: {
-        connect: {
-          id: station.id,
+        membership: {
+          connect: {
+            id: membership.id,
+          },
         },
-      },
 
-      membership: {
-        connect: {
-          id: membership.id,
+        topic: {
+          connect: {
+            id: data.topic,
+          },
         },
       },
 
-      topic: {
-        connect: {
-          id: data.topic,
-        },
-      },
-
-      type: data.type,
-    })
-  },
-
-  updateVote: async (
-    _parent: any,
-    {
-      id,
-      data,
-    }: {
-      id: string
-      data: VoteUpdateInput
-    },
-    { prisma, request }: { prisma: Prisma; request: any }
-  ) => {
-    const userId = getUserId(request)
-
-    const isAuthorized = await prisma.$exists.vote({
-      id,
-      membership: {
-        user: {
-          id: userId,
-        },
-      },
-    })
-
-    if (!isAuthorized) throw new Error('Authorization Required')
-
-    return prisma.updateVote({
-      where: { id },
-      data: {
+      update: {
         type: data.type,
       },
     })
+
+    return upsert
   },
 
   deleteVote: async (
     _parent: any,
-    { id }: { id: string },
-    { prisma, request }: { prisma: Prisma; request: any }
+    { id }: { id: number },
+    { prisma, request }: { prisma: PrismaClient; request: any }
   ) => {
     const userId = getUserId(request)
 
-    const isAuthorized = await prisma.$exists.vote({
-      id,
-      membership: {
-        user: {
-          id: userId,
+    const isAuthorized = await prisma.vote.findMany({
+      where: {
+        id,
+        membership: {
+          userId,
         },
       },
     })
 
     if (!isAuthorized) throw new Error('Authorization Required')
 
-    return prisma.deleteVote({ id })
+    const vote = await prisma.vote.delete({ where: { id } })
+    return vote
   },
 }

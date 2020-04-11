@@ -1,61 +1,56 @@
-import {
-  Prisma,
-  Station,
-  Membership,
-  prisma,
-  Role,
-  MembershipState,
-  MembershipWhereInput,
-} from '../generated/prisma-client'
+import { PrismaClient, Role, State, MembershipWhereInput } from '@prisma/client'
+
 import { DateRange, SortType } from '../constants'
-import { getSortingDate, getTopics, getUserId } from '../utils'
-import { Filter, checkAuthorization, getConditions } from '../utils/getTopics'
+import { getUserId } from '../utils'
 
 export default {
-  users: async (_parent: any, _args: any, { prisma }: { prisma: Prisma }) => {
-    return prisma.users()
+  users: async (
+    _parent: any,
+    _args: any,
+    { prisma }: { prisma: PrismaClient }
+  ) => {
+    const user = await prisma.user.findMany()
+    return user
   },
 
   profile: async (
     _parent: any,
     { identifier }: { identifier: string },
-    { prisma }: { prisma: Prisma }
+    { prisma }: { prisma: PrismaClient }
   ) => {
-    return prisma.user({ identifier })
+    const user = await prisma.user.findOne({ where: { identifier } })
+    return user
   },
 
   stations: async (
     _parent: any,
     _args: any,
-    { prisma }: { prisma: Prisma }
+    { prisma }: { prisma: PrismaClient }
   ) => {
-    const stations: Station[] = await prisma.stations()
+    const stations = await prisma.station.findMany()
     return stations
   },
 
   station: async (
     _parent: any,
     { identifier }: { identifier: string },
-    { prisma }: { prisma: Prisma }
+    { prisma }: { prisma: PrismaClient }
   ) => {
-    return prisma.station({ identifier })
+    return prisma.station.findOne({ where: { identifier } })
   },
 
   userMembership: async (
     _parent: any,
     { stationIdentifier }: { stationIdentifier: string },
-    { prisma, request }: { prisma: Prisma; request: any }
+    { prisma, request }: { prisma: PrismaClient; request: any }
   ) => {
     const userId = getUserId(request, false)
 
-    const [membership] = await prisma.memberships({
+    const [membership] = await prisma.membership.findMany({
       where: {
+        userId,
         station: {
           identifier: stationIdentifier,
-        },
-
-        user: {
-          id: userId,
         },
       },
     })
@@ -66,16 +61,13 @@ export default {
   userMemberships: async (
     _parent: any,
     _args: any,
-    { prisma, request }: { prisma: Prisma; request: any }
+    { prisma, request }: { prisma: PrismaClient; request: any }
   ) => {
     const userId = getUserId(request)
 
-    const memberships = await prisma.memberships({
+    const memberships = await prisma.membership.findMany({
       where: {
-        user: {
-          id: userId,
-        },
-
+        userId,
         state: 'ACTIVE',
       },
     })
@@ -93,25 +85,26 @@ export default {
       state,
     }: {
       page: number
-      station: string
+      station: number
       role: Role
       roles: Role[]
-      state: MembershipState
+      state: State
     },
-    { prisma }: { prisma: Prisma }
+    { prisma }: { prisma: PrismaClient }
   ) => {
     const skip = (page > 0 ? page : 1) * 10 - 10
-    const condition: MembershipWhereInput = { state }
+    const condition: MembershipWhereInput = {
+      state,
+      role: {
+        equals: role,
+        in: roles,
+      },
+    }
 
-    if (roles.length > 0) condition.role_in = roles
-    else if (role) condition.role = role
-
-    return prisma.memberships({
+    return prisma.membership.findMany({
       skip,
       where: {
-        station: {
-          id: station,
-        },
+        stationId: station,
         ...condition,
       },
     })
@@ -129,39 +122,13 @@ export default {
       sortType: SortType
       dateRange: DateRange
       subscribed: boolean
-      user: string
-      station: string
+      user: number
+      station: number
     },
-    { request }: { request: any }
+    { prisma, request }: { prisma: PrismaClient; request: any }
   ) => {
-    const userId = getUserId(request, false)
-    const pStation = station
-      ? await prisma.station({ identifier: station })
-      : undefined
-
-    // Authorization
-    const isAuthorized =
-      pStation?.public === false
-        ? await checkAuthorization(userId, station)
-        : true
-
-    if (!isAuthorized) throw new Error('You must be a member to view topics.')
-
-    const finalDate = getSortingDate(dateRange)
-
-    const filter: Filter = subscribed
-      ? 'HOME'
-      : user
-      ? 'USER'
-      : station
-      ? 'STATION'
-      : 'EXPLORE'
-
-    const targetIdentifier = user ? user : station
-
-    const conditions = getConditions(filter, userId, targetIdentifier)
-
-    return getTopics(sortType, finalDate, conditions)
+    const topics = await prisma.topic.findMany()
+    return topics
   },
 
   topic: async (
@@ -170,39 +137,9 @@ export default {
       topicIdentifier,
       stationIdentifier,
     }: { topicIdentifier: string; stationIdentifier: string },
-    { prisma, request }: { prisma: Prisma; request: any }
+    { prisma, request }: { prisma: PrismaClient; request: any }
   ) => {
-    const userId = getUserId(request, false)
-
-    const isAuthorized = await prisma.$exists.topic({
-      OR: [
-        {
-          identifier: topicIdentifier,
-          station: {
-            identifier: stationIdentifier,
-            public: true,
-          },
-        },
-
-        {
-          identifier: topicIdentifier,
-          station: {
-            identifier: stationIdentifier,
-            public: false,
-            members_some: {
-              user: {
-                id: userId,
-              },
-              state: 'ACTIVE',
-            },
-          },
-        },
-      ],
-    })
-
-    if (!isAuthorized) throw new Error('Topic was not found')
-
-    const [topic] = await prisma.topics({
+    const [topic] = await prisma.topic.findMany({
       where: {
         identifier: topicIdentifier,
         station: {
@@ -210,15 +147,24 @@ export default {
         },
       },
     })
-
     return topic
   },
 
-  comments: (_parent: any, _args: any, { prisma }: { prisma: Prisma }) => {
-    return prisma.comments()
+  comments: async (
+    _parent: any,
+    _args: any,
+    { prisma }: { prisma: PrismaClient }
+  ) => {
+    const comments = await prisma.comment.findMany()
+    return comments
   },
 
-  votes: (_parent: any, _args: any, { prisma }: { prisma: Prisma }) => {
-    return prisma.votes()
+  votes: async (
+    _parent: any,
+    _args: any,
+    { prisma }: { prisma: PrismaClient }
+  ) => {
+    const votes = await prisma.vote.findMany()
+    return votes
   },
 }

@@ -1,49 +1,57 @@
-import { Prisma, Membership } from '../generated/prisma-client'
+import { PrismaClient } from '@prisma/client'
 import { getUserId } from '../utils'
 
 export default {
   password: async (
-    { id }: { id: string },
+    { id }: { id: number },
     _args: any,
-    { prisma }: { prisma: Prisma }
+    { prisma }: { prisma: PrismaClient }
   ) => {
     return null
   },
 
   email: async (
-    { id }: { id: string },
+    { id }: { id: number },
     _args: any,
-    { prisma, request }: { prisma: Prisma; request: any }
+    { prisma, request }: { prisma: PrismaClient; request: any }
   ) => {
     const userId = getUserId(request, false)
     if (userId !== id) return null
-    return prisma.user({ id }).email()
+    const user = await prisma.user.findOne({ where: { id } })
+    return user?.email
   },
 
   memberships: async (
-    { id }: { id: string },
+    { id }: { id: number },
     _args: any,
-    { prisma }: { prisma: Prisma }
+    { prisma }: { prisma: PrismaClient }
   ) => {
-    return prisma.user({ id }).memberships()
+    const memberships = await prisma.user
+      .findOne({ where: { id } })
+      .memberships()
+    return memberships
   },
 
   topics: async (
-    { id }: { id: string },
+    { id }: { id: number },
     _args: any,
-    { prisma, request }: { prisma: Prisma; request: any }
+    { prisma, request }: { prisma: PrismaClient; request: any }
   ) => {
     const userId = getUserId(request, false)
 
-    return prisma.user({ id }).topics({
+    const topics = await prisma.topic.findMany({
       where: {
+        userId: id,
         station: {
           OR: [
             {
               public: false,
-              members_some: {
-                user: {
-                  id: userId,
+              memberships: {
+                some: {
+                  user: {
+                    id: userId,
+                  },
+                  state: 'ACTIVE',
                 },
               },
             },
@@ -54,24 +62,30 @@ export default {
         },
       },
     })
+
+    return topics
   },
 
   comments: async (
-    { id }: { id: string },
+    { id }: { id: number },
     _args: any,
-    { prisma, request }: { prisma: Prisma; request: any }
+    { prisma, request }: { prisma: PrismaClient; request: any }
   ) => {
     const userId = getUserId(request, false)
 
-    return prisma.user({ id }).comments({
+    const comments = await prisma.comment.findMany({
       where: {
+        userId: id,
         station: {
           OR: [
             {
               public: false,
-              members_some: {
-                user: {
-                  id: userId,
+              memberships: {
+                some: {
+                  user: {
+                    id: userId,
+                  },
+                  state: 'ACTIVE',
                 },
               },
             },
@@ -82,24 +96,30 @@ export default {
         },
       },
     })
+
+    return comments
   },
 
   votes: async (
-    { id }: { id: string },
+    { id }: { id: number },
     _args: any,
-    { prisma, request }: { prisma: Prisma; request: any }
+    { prisma, request }: { prisma: PrismaClient; request: any }
   ) => {
     const userId = getUserId(request, false)
 
-    return prisma.user({ id }).votes({
+    const votes = await prisma.vote.findMany({
       where: {
+        userId: id,
         station: {
           OR: [
             {
               public: false,
-              members_some: {
-                user: {
-                  id: userId,
+              memberships: {
+                some: {
+                  user: {
+                    id: userId,
+                  },
+                  state: 'ACTIVE',
                 },
               },
             },
@@ -110,17 +130,23 @@ export default {
         },
       },
     })
+
+    return votes
   },
 
   karma: async (
-    { id }: { id: string },
+    { id }: { id: number },
     _args: any,
-    { prisma }: { prisma: Prisma }
+    { prisma }: { prisma: PrismaClient }
   ) => {
-    return prisma.votes({
+    const karma = prisma.vote.findMany({
       where: {
-        OR: [{ topic: { user: { id } } }, { comment: { user: { id } } }],
+        topic: {
+          userId: id,
+        },
       },
     })
+
+    return karma
   },
 }

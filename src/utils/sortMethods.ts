@@ -1,5 +1,5 @@
 import moment from 'moment'
-import { Vote, Topic } from '../generated/prisma-client'
+import { Vote, Topic } from '@prisma/client'
 import { SortType } from '../constants'
 
 interface VoteCollection extends Vote {

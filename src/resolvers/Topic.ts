@@ -1,59 +1,50 @@
-import { Prisma } from '../generated/prisma-client'
+import { PrismaClient } from '@prisma/client'
 
 export default {
-  identifier: async (
-    { id }: { id: string },
-    _args: any,
-    { prisma }: { prisma: Prisma }
-  ) => {
-    return prisma.topic({ id }).identifier()
-  },
-
-  content: async (
-    { id }: { id: string },
-    _args: any,
-    { prisma }: { prisma: Prisma }
-  ) => {
-    return prisma.topic({ id }).content()
-  },
-
   user: async (
-    { id }: { id: string },
+    { id }: { id: number },
     _args: any,
-    { prisma }: { prisma: Prisma }
+    { prisma }: { prisma: PrismaClient }
   ) => {
-    return prisma.topic({ id }).user()
+    const user = await prisma.topic.findOne({ where: { id } }).user()
+    return user
   },
 
   station: async (
-    { id }: { id: string },
+    { id }: { id: number },
     _args: any,
-    { prisma }: { prisma: Prisma }
+    { prisma }: { prisma: PrismaClient }
   ) => {
-    return prisma.topic({ id }).station()
+    const station = await prisma.topic.findOne({ where: { id } }).station()
+    return station
   },
 
   membership: async (
-    { id }: { id: string },
+    { id }: { id: number },
     _args: any,
-    { prisma }: { prisma: Prisma }
+    { prisma }: { prisma: PrismaClient }
   ) => {
-    return prisma.topic({ id }).membership()
+    const membership = await prisma.topic
+      .findOne({ where: { id } })
+      .membership()
+    return membership
   },
 
   comments: async (
-    { id }: { id: string },
+    { id }: { id: number },
     _args: any,
-    { prisma }: { prisma: Prisma }
+    { prisma }: { prisma: PrismaClient }
   ) => {
-    return prisma.topic({ id }).comments()
+    const comments = await prisma.topic.findOne({ where: { id } }).comments()
+    return comments
   },
 
   votes: async (
-    { id }: { id: string },
+    { id }: { id: number },
     _args: any,
-    { prisma }: { prisma: Prisma }
+    { prisma }: { prisma: PrismaClient }
   ) => {
-    return prisma.topic({ id }).votes()
+    const votes = await prisma.topic.findOne({ where: { id } }).votes()
+    return votes
   },
 }

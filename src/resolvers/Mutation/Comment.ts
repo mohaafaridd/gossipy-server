@@ -1,4 +1,4 @@
-import { Prisma } from '../../generated/prisma-client'
+import { PrismaClient } from '@prisma/client'
 import { getUserId } from '../../utils'
 
 export default {
@@ -12,18 +12,20 @@ export default {
     }: {
       data: {
         content: string
-        topic: string
+        topic: number
       }
     },
-    { prisma, request }: { prisma: Prisma; request: any }
+    { prisma, request }: { prisma: PrismaClient; request: any }
   ) => {
     const userId = getUserId(request)
 
-    const [membership] = await prisma.memberships({
+    const [membership] = await prisma.membership.findMany({
       where: {
         station: {
-          topics_some: {
-            id: data.topic,
+          topics: {
+            some: {
+              id: data.topic,
+            },
           },
         },
         user: {
@@ -35,31 +37,41 @@ export default {
 
     if (!membership) throw new Error('Authorization Required')
 
-    const station = await prisma.membership({ id: membership.id }).station()
+    const station = await prisma.membership
+      .findOne({ where: { id: membership.id } })
+      .station()
 
-    return prisma.createComment({
-      content: data.content,
-      user: {
-        connect: {
-          id: userId,
+    const comment = await prisma.comment.create({
+      data: {
+        content: data.content,
+
+        user: {
+          connect: {
+            id: userId,
+          },
         },
-      },
-      station: {
-        connect: {
-          id: station.id,
+
+        station: {
+          connect: {
+            id: station?.id,
+          },
         },
-      },
-      membership: {
-        connect: {
-          id: membership.id,
+
+        membership: {
+          connect: {
+            id: membership.id,
+          },
         },
-      },
-      topic: {
-        connect: {
-          id: data.topic,
+
+        topic: {
+          connect: {
+            id: data.topic,
+          },
         },
       },
     })
+
+    return comment
   },
 
   /**
@@ -71,31 +83,32 @@ export default {
       id,
       data,
     }: {
-      id: string
+      id: number
       data: {
         content: string
       }
     },
-    { prisma, request }: { prisma: Prisma; request: any }
+    { prisma, request }: { prisma: PrismaClient; request: any }
   ) => {
     const userId = getUserId(request)
 
-    const isAuthorized = await prisma.$exists.comment({
-      id,
-      membership: {
-        user: {
-          id: userId,
+    const [isAuthorized] = await prisma.comment.findMany({
+      where: {
+        id,
+        membership: {
+          userId,
+          state: 'ACTIVE',
         },
-        state: 'ACTIVE',
       },
     })
-
     if (!isAuthorized) throw new Error('Authorization Required')
 
-    return prisma.updateComment({
+    const comment = prisma.comment.update({
       where: { id },
       data,
     })
+
+    return comment
   },
 
   /**
@@ -103,53 +116,49 @@ export default {
    */
   deleteComment: async (
     _parent: any,
-    { id }: { id: string },
-    { prisma, request }: { prisma: Prisma; request: any }
+    { id }: { id: number },
+    { prisma, request }: { prisma: PrismaClient; request: any }
   ) => {
     const userId = getUserId(request)
-    const isAuthorized = await prisma.$exists.comment({
-      OR: [
-        {
-          id,
-          membership: {
-            user: {
-              id: userId,
-            },
-            state: 'ACTIVE',
-          },
-        },
-
-        {
-          id,
-          topic: {
+    const [isAuthorized] = await prisma.comment.findMany({
+      where: {
+        id,
+        OR: [
+          {
             membership: {
-              user: {
-                id: userId,
-              },
-
+              userId,
               state: 'ACTIVE',
             },
           },
-        },
 
-        {
-          id,
-          station: {
-            members_some: {
-              user: {
-                id: userId,
+          {
+            topic: {
+              membership: {
+                userId,
+                state: 'ACTIVE',
               },
-
-              role_in: ['FOUNDER', 'ADMIN', 'MODERATOR'],
-              state: 'ACTIVE',
             },
           },
-        },
-      ],
+
+          {
+            station: {
+              memberships: {
+                some: {
+                  userId,
+                  role: {
+                    notIn: ['MEMBER'],
+                  },
+                },
+              },
+            },
+          },
+        ],
+      },
     })
 
     if (!isAuthorized) throw new Error('Authorization Required')
 
-    return prisma.deleteComment({ id })
+    const comment = await prisma.comment.delete({ where: { id } })
+    return comment
   },
 }

@@ -1,4 +1,4 @@
-import { Prisma, Membership } from '../../generated/prisma-client'
+import { PrismaClient, TopicUpdateInput } from '@prisma/client'
 import { getUserId } from '../../utils'
 import { alphanumeric } from '../../utils/sanitizer'
 
@@ -14,21 +14,17 @@ export default {
       data: {
         title: string
         content: string
-        station: string
+        station: number
       }
     },
-    { prisma, request }: { prisma: Prisma; request: any }
+    { prisma, request }: { prisma: PrismaClient; request: any }
   ) => {
     const userId = getUserId(request)
 
-    const [membership] = await prisma.memberships({
+    const [membership] = await prisma.membership.findMany({
       where: {
-        station: {
-          id: data.station,
-        },
-        user: {
-          id: userId,
-        },
+        userId,
+        stationId: data.station,
         state: 'ACTIVE',
       },
     })
@@ -37,52 +33,61 @@ export default {
 
     const identifier = alphanumeric(data.title, '_').toLowerCase()
 
-    const isValid = await prisma.$exists.topic({
-      station: {
-        id: data.station,
+    const [isValid] = await prisma.topic.findMany({
+      where: {
+        stationId: data.station,
+        identifier: {
+          not: identifier,
+        },
       },
-
-      identifier_not: identifier,
     })
 
     if (!isValid) throw new Error('Topic title is used before')
 
-    const topic = await prisma.createTopic({
-      ...data,
-      identifier,
-      user: {
-        connect: {
-          id: userId,
-        },
-      },
-      station: {
-        connect: {
-          id: data.station,
-        },
-      },
-      membership: {
-        connect: {
-          id: membership.id,
-        },
-      },
-      votes: {
-        create: {
-          user: {
-            connect: {
-              id: userId,
-            },
+    const topic = await prisma.topic.create({
+      data: {
+        title: data.title,
+        identifier,
+        content: data.content,
+        sealed: false,
+
+        membership: {
+          connect: {
+            id: membership.id,
           },
-          station: {
-            connect: {
-              id: data.station,
-            },
+        },
+
+        user: {
+          connect: {
+            id: userId,
           },
-          membership: {
-            connect: {
-              id: membership.id,
-            },
+        },
+
+        station: {
+          connect: {
+            id: data.station,
           },
-          type: 'UPVOTE',
+        },
+
+        votes: {
+          create: {
+            user: {
+              connect: {
+                id: userId,
+              },
+            },
+            membership: {
+              connect: {
+                id: membership.id,
+              },
+            },
+            station: {
+              connect: {
+                id: data.station,
+              },
+            },
+            type: 'UPVOTE',
+          },
         },
       },
     })
@@ -99,23 +104,18 @@ export default {
       id,
       data,
     }: {
-      id: string
-      data: {
-        title: string
-        content: string
-      }
+      id: number
+      data: TopicUpdateInput
     },
-    { prisma, request }: { prisma: Prisma; request: any }
+    { prisma, request }: { prisma: PrismaClient; request: any }
   ) => {
     const userId = getUserId(request)
 
-    const isAuthorized = await prisma.$exists.topic({
-      AND: {
+    const [isAuthorized] = await prisma.topic.findMany({
+      where: {
         id,
         membership: {
-          user: {
-            id: userId,
-          },
+          userId,
           state: 'ACTIVE',
         },
       },
@@ -126,25 +126,29 @@ export default {
     if (data.title) {
       const identifier = alphanumeric(data.title, '_').toLowerCase()
 
-      const [station] = await prisma.stations({
-        where: { topics_some: { id } },
+      const [station] = await prisma.station.findMany({
+        where: { topics: { some: { id } } },
       })
 
-      const isValid = await prisma.$exists.topic({
-        id_not: id,
-        station: {
-          id: station.id,
+      const [isValid] = await prisma.topic.findMany({
+        where: {
+          id: {
+            not: id,
+          },
+          stationId: station.id,
+          identifier,
         },
-        identifier,
       })
 
       if (!isValid) throw new Error('Topic title is used before')
     }
 
-    return prisma.updateTopic({
+    const topic = await prisma.topic.update({
       where: { id },
       data,
     })
+
+    return topic
   },
 
   /**
@@ -152,40 +156,43 @@ export default {
    */
   deleteTopic: async (
     _parent: any,
-    { id }: { id: string },
-    { prisma, request }: { prisma: Prisma; request: any }
+    { id }: { id: number },
+    { prisma, request }: { prisma: PrismaClient; request: any }
   ) => {
     const userId = getUserId(request)
 
-    const isAuthorized = await prisma.$exists.topic({
-      OR: [
-        {
-          id,
-          membership: {
-            user: {
-              id: userId,
+    const [isAuthorized] = await prisma.topic.findMany({
+      where: {
+        OR: [
+          {
+            id,
+            membership: {
+              userId,
+              state: 'ACTIVE',
             },
-            state: 'ACTIVE',
           },
-        },
-        {
-          id,
-          membership: {
-            station: {
-              members_some: {
-                user: {
-                  id: userId,
+          {
+            id,
+            membership: {
+              station: {
+                memberships: {
+                  some: {
+                    userId,
+                    role: {
+                      in: ['FOUNDER', 'ADMIN'],
+                    },
+                  },
                 },
-                role_in: ['ADMIN', 'FOUNDER'],
               },
             },
           },
-        },
-      ],
+        ],
+      },
     })
 
     if (!isAuthorized) throw new Error('Authorization Required')
 
-    return prisma.deleteTopic({ id })
+    const topic = await prisma.topic.delete({ where: { id } })
+    return topic
   },
 }

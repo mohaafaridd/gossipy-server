@@ -1,6 +1,9 @@
 import { GraphQLServer } from 'graphql-yoga'
 import { PrismaClient } from '@prisma/client'
-import { resolvers, fragmentReplacements } from './resolvers'
+import {
+  resolvers,
+  // fragmentReplacements
+} from './resolvers'
 
 const prisma = new PrismaClient()
 const server = new GraphQLServer({
@@ -13,7 +16,7 @@ const server = new GraphQLServer({
     }
   },
   //@ts-ignore
-  fragmentReplacements,
+  // fragmentReplacements,
 })
 
 export default server

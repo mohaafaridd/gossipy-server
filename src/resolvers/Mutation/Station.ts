@@ -1,9 +1,8 @@
 import {
-  Prisma,
-  Station,
+  PrismaClient,
   StationCreateInput,
   StationUpdateInput,
-} from '../../generated/prisma-client'
+} from '@prisma/client'
 import { getUserId, sanitizer } from '../../utils'
 
 export default {
@@ -13,7 +12,7 @@ export default {
   createStation: async (
     _parent: any,
     { data }: { data: StationCreateInput },
-    { prisma, request }: { prisma: Prisma; request: any }
+    { prisma, request }: { prisma: PrismaClient; request: any }
   ) => {
     const userId = getUserId(request)
 
@@ -24,21 +23,27 @@ export default {
 
     const identifier = name.toLowerCase()
 
-    if (identifier === 'create') throw new Error('Station name is not valid')
+    const invalid = ['create']
 
-    const station: Station = await prisma.createStation({
-      ...data,
-      name,
-      identifier,
-      members: {
-        create: {
-          user: {
-            connect: {
-              id: userId,
+    if (invalid.includes(identifier))
+      throw new Error('Station name is not valid')
+
+    const station = await prisma.station.create({
+      data: {
+        name,
+        identifier,
+        description: data.description,
+        public: data.public,
+        memberships: {
+          create: {
+            role: 'FOUNDER',
+            state: 'ACTIVE',
+            user: {
+              connect: {
+                id: userId,
+              },
             },
           },
-          role: 'FOUNDER',
-          state: 'ACTIVE',
         },
       },
     })
@@ -51,26 +56,22 @@ export default {
    */
   updateStation: async (
     _parent: any,
-    { id, data }: { id: string; data: StationUpdateInput },
-    { prisma, request }: { prisma: Prisma; request: any }
+    { id, data }: { id: number; data: StationUpdateInput },
+    { prisma, request }: { prisma: PrismaClient; request: any }
   ) => {
     const userId = getUserId(request)
 
-    const isAuthorized = await prisma.$exists.membership({
-      AND: {
-        station: {
-          id,
-        },
-        user: {
-          id: userId,
-        },
-        role_in: ['FOUNDER', 'ADMIN'],
+    const [isAuthorized] = await prisma.membership.findMany({
+      where: {
+        userId,
+        stationId: id,
+        role: 'FOUNDER',
       },
     })
 
     if (!isAuthorized) throw new Error('Authorization Required')
 
-    const station = await prisma.updateStation({
+    const station = await prisma.station.update({
       where: { id },
       data,
     })
@@ -83,26 +84,22 @@ export default {
    */
   deleteStation: async (
     _parent: any,
-    { id }: { id: string },
-    { prisma, request }: { prisma: Prisma; request: any }
+    { id }: { id: number },
+    { prisma, request }: { prisma: PrismaClient; request: any }
   ) => {
     const userId = getUserId(request)
 
-    const isAuthorized = await prisma.$exists.membership({
-      AND: {
-        station: {
-          id,
-        },
-        user: {
-          id: userId,
-        },
-        role_in: ['FOUNDER'],
+    const [isAuthorized] = await prisma.membership.findMany({
+      where: {
+        userId,
+        stationId: id,
+        role: 'FOUNDER',
       },
     })
 
     if (!isAuthorized) throw new Error('Authorization Required')
 
-    const station = await prisma.deleteStation({ id })
+    const station = await prisma.station.delete({ where: { id } })
     return station
   },
 }

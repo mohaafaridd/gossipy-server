@@ -1,43 +1,39 @@
-import { Prisma } from '../generated/prisma-client'
+import { PrismaClient } from '@prisma/client'
 
 export default {
   user: async (
-    { id }: { id: string },
+    { id }: { id: number },
     _args: any,
-    { prisma }: { prisma: Prisma }
+    { prisma }: { prisma: PrismaClient }
   ) => {
-    return prisma.vote({ id }).user()
+    const user = await prisma.vote.findOne({ where: { id } }).user()
+    return user
   },
 
   station: async (
-    { id }: { id: string },
+    { id }: { id: number },
     _args: any,
-    { prisma }: { prisma: Prisma }
+    { prisma }: { prisma: PrismaClient }
   ) => {
-    return prisma.vote({ id }).station()
+    const station = await prisma.vote.findOne({ where: { id } }).station()
+    return station
   },
 
   topic: async (
-    { id }: { id: string },
+    { id }: { id: number },
     _args: any,
-    { prisma }: { prisma: Prisma }
+    { prisma }: { prisma: PrismaClient }
   ) => {
-    return prisma.vote({ id }).topic()
+    const topic = await prisma.vote.findOne({ where: { id } }).topic()
+    return topic
   },
 
   membership: async (
-    { id }: { id: string },
+    { id }: { id: number },
     _args: any,
-    { prisma }: { prisma: Prisma }
+    { prisma }: { prisma: PrismaClient }
   ) => {
-    return prisma.vote({ id }).membership()
-  },
-
-  comment: async (
-    { id }: { id: string },
-    _args: any,
-    { prisma }: { prisma: Prisma }
-  ) => {
-    return prisma.vote({ id }).comment()
+    const membership = await prisma.vote.findOne({ where: { id } }).membership()
+    return membership
   },
 }
