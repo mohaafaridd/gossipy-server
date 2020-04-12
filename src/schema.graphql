@@ -1,5 +1,5 @@
 type User {
-  id: ID!
+  id: Int!
   name: String!
   identifier: String!
   password: String
@@ -15,7 +15,7 @@ type User {
 }
 
 type Station {
-  id: ID!
+  id: Int!
   name: String!
   identifier: String!
   description: String!
@@ -30,7 +30,7 @@ type Station {
 }
 
 type Membership {
-  id: ID!
+  id: Int!
   userId: Int!
   user: User!
   stationId: Int!
@@ -45,7 +45,7 @@ type Membership {
 }
 
 type Topic {
-  id: ID!
+  id: Int!
   title: String!
   identifier: String!
   content: String!
@@ -63,7 +63,7 @@ type Topic {
 }
 
 type Comment {
-  id: ID!
+  id: Int!
   content: String!
   membershipId: Int!
   userId: Int!
@@ -78,7 +78,7 @@ type Comment {
 }
 
 type Vote {
-  id: ID!
+  id: Int!
   type: VoteType!
   membershipId: Int!
   userId: Int!
@@ -95,10 +95,10 @@ type Vote {
 }
 
 type Query {
-  comments(topicId: ID, user: ID): [Comment!]!
-  comment(commentId: ID!): Comment!
+  comments(topicId: Int, user: Int): [Comment!]!
+  comment(commentId: Int!): Comment!
 
-  memberships(user: ID, station: ID, page: Int): [Membership!]!
+  memberships(user: Int, station: Int, page: Int): [Membership!]!
   membership(stationId: Int!): Membership!
 
   stations(query: String!): [Station!]!
@@ -108,37 +108,13 @@ type Query {
     sortType: SortType!
     dateRange: DateRange!
     explore: Boolean!
-    user: ID
-    station: ID
+    user: Int
+    station: Int
   ): [Topic!]!
-  topic(identifier: ID!, stationId: ID!): Topic!
+  topic(identifier: String!, stationId: Int!): Topic!
 
   users: [User!]!
-  profile(identifier: ID!): User!
-
-  # profile(identifier: ID!): User!
-  # users: [User!]!
-  # station(identifier: ID!): Station!
-  # stations: [Station!]!
-  # userMembership(stationIdentifier: ID!): Membership
-  # userMemberships: [Membership!]!
-  # memberships(
-  #   page: Int!
-  #   station: ID
-  #   role: Role
-  #   roles: [Role!]
-  #   state: State
-  # ): [Membership!]!
-  # topics(
-  #   dateRange: DateRange!
-  #   sortType: SortType!
-  #   subscribed: Boolean
-  #   user: ID
-  #   station: ID
-  # ): [Topic!]!
-  # topic(topicIdentifier: String!, stationIdentifier: String!): Topic!
-  # comments: [Comment!]!
-  # votes: [Vote!]!
+  profile(identifier: String!): User!
 }
 
 type DeleteMembership {
@@ -152,21 +128,21 @@ type Mutation {
   signIn(data: LoginUserInput!): AuthPayload!
   updateUser(data: UpdateUserInput!): User!
   createStation(data: CreateStationInput!): Station!
-  updateStation(id: ID!, data: UpdateStationInput!): Station!
-  deleteStation(id: ID!): Station!
-  createMembership(stationId: ID!): Membership!
-  updateMembership(id: ID!, data: MembershipUpdateInput): Membership!
-  unsubscribeMembership(id: ID!): Membership!
-  deleteMembership(id: ID!): DeleteMembership!
+  updateStation(id: Int!, data: UpdateStationInput!): Station!
+  deleteStation(id: Int!): Station!
+  createMembership(stationId: Int!): Membership!
+  updateMembership(id: Int!, data: MembershipUpdateInput): Membership!
+  unsubscribeMembership(id: Int!): Membership!
+  deleteMembership(id: Int!): DeleteMembership!
   createTopic(data: CreateTopicInput!): Topic!
-  updateTopic(id: ID!, data: UpdateTopicInput): Topic!
-  deleteTopic(id: ID!): Topic!
+  updateTopic(id: Int!, data: UpdateTopicInput): Topic!
+  deleteTopic(id: Int!): Topic!
   createComment(data: CreateCommentInput!): Comment!
-  updateComment(id: ID!, data: UpdateCommentInput!): Comment!
-  deleteComment(id: ID!): Comment!
+  updateComment(id: Int!, data: UpdateCommentInput!): Comment!
+  deleteComment(id: Int!): Comment!
   createVote(data: CreateVoteInput): Vote!
-  updateVote(id: ID!, data: UpdateVoteInput!): Vote!
-  deleteVote(id: ID!): Vote!
+  updateVote(id: Int!, data: UpdateVoteInput!): Vote!
+  deleteVote(id: Int!): Vote!
 }
 
 type AuthPayload {
@@ -227,8 +203,8 @@ input UpdateCommentInput {
 }
 
 input CreateVoteInput {
-  topic: ID!
-  comment: ID
+  topic: Int!
+  comment: Int
   type: VoteType
 }
 

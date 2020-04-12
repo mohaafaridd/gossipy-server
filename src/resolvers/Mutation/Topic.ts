@@ -33,7 +33,7 @@ export default {
 
     const identifier = alphanumeric(data.title, '_').toLowerCase()
 
-    const [isValid] = await prisma.topic.findMany({
+    const [topicExist] = await prisma.topic.findMany({
       where: {
         stationId: data.station,
         identifier: {
@@ -42,7 +42,7 @@ export default {
       },
     })
 
-    if (!isValid) throw new Error('Topic title is used before')
+    if (topicExist) throw new Error('Topic title is used before')
 
     const topic = await prisma.topic.create({
       data: {
