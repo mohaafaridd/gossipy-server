@@ -1,6 +1,6 @@
 import { PrismaClient, FindManyTopicArgs } from '@prisma/client'
 import { SortType, DateRange } from '@constants'
-import { getSortingDate, getUserId } from '@utils'
+import { getSortingDate, getUserId, sortTopics } from '@utils'
 
 export default {
   async topics(
@@ -90,7 +90,7 @@ export default {
     const topics = await dependency()
     const count = await prisma.topic.count(conditions)
     return {
-      data: topics,
+      data: sortTopics(topics, sortType),
       count,
     }
   },

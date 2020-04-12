@@ -3,7 +3,8 @@ import getSortingDate from './getSortingDate'
 import getUserId from './getUserId'
 import hashPasswords from './hashPasswords'
 import sanitizer from './sanitizer'
-import * as sortMethods from './sortMethods'
+import { getHotScore, getTopScore } from './sortMethods'
+import sortTopics from './sortTopics'
 
 export {
   generateToken,
@@ -11,5 +12,7 @@ export {
   getUserId,
   hashPasswords,
   sanitizer,
-  sortMethods,
+  getHotScore,
+  getTopScore,
+  sortTopics,
 }
