@@ -3,10 +3,13 @@ import { PrismaClient } from '@prisma/client'
 export default {
   async stations(
     _parent: any,
-    { query }: { query: string },
+    { query, page = 1 }: { query: string; page?: number },
     { prisma }: { prisma: PrismaClient }
   ) {
+    const skip = (page > 0 ? page : 1) * 10 - 10
+
     const stations = await prisma.station.findMany({
+      skip,
       where: {
         identifier: {
           contains: query.toLowerCase(),

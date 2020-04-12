@@ -8,12 +8,14 @@ export default {
     {
       sortType,
       dateRange,
+      page = 1,
       user,
       station,
       explore,
     }: {
       sortType: SortType
       dateRange: DateRange
+      page?: number
       user: number
       station: number
       explore: boolean
@@ -22,11 +24,13 @@ export default {
   ) {
     const userId = getUserId(request, false)
     const date = getSortingDate(dateRange)
+    const skip = (page > 0 ? page : 1) * 10 - 10
 
     const dependency =
       sortType !== 'NEW'
         ? async () => {
             const topics = await prisma.topic.findMany({
+              skip,
               where: {
                 userId: user,
                 station: {
@@ -68,6 +72,7 @@ export default {
           }
         : async () => {
             const topics = prisma.topic.findMany({
+              skip,
               orderBy: {
                 createdAt: 'desc',
               },

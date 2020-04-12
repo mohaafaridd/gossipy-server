@@ -23,13 +23,13 @@ export default {
     {
       user,
       station = 1,
-      page,
+      page = 1,
       roles,
       states,
     }: {
       user?: number
       station?: number
-      page: number
+      page?: number
       roles: Role[]
       states: State[]
     },

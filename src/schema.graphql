@@ -95,7 +95,7 @@ type Vote {
 }
 
 type Query {
-  comments(topicId: Int, user: Int): [Comment!]!
+  comments(topicId: Int, user: Int, page: Int): [Comment!]!
   comment(commentId: Int!): Comment!
 
   memberships(
@@ -107,13 +107,14 @@ type Query {
   ): [Membership!]!
   membership(stationId: Int!): Membership!
 
-  stations(query: String!): [Station!]!
+  stations(query: String!, page: Int): [Station!]!
   station(identifier: String!): Station!
 
   topics(
     sortType: SortType!
     dateRange: DateRange!
     explore: Boolean!
+    page: Int
     user: Int
     station: Int
   ): [Topic!]!
