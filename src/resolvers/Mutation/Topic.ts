@@ -121,7 +121,7 @@ export default {
 
     if (!isAuthorized) throw new Error('Authorization Required')
 
-    if (data.title) {
+    if (typeof data.title === 'string') {
       const identifier = alphanumeric(data.title, '_').toLowerCase()
 
       const [station] = await prisma.station.findMany({

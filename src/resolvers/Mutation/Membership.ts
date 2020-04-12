@@ -1,9 +1,3 @@
-// import {
-//   Prisma,
-//   Station,
-//   Membership,
-//   MembershipUpdateInput,
-// } from '../../generated/prisma-client'
 import { PrismaClient, MembershipUpdateInput } from '@prisma/client'
 
 import { getUserId } from '../../utils'
@@ -133,39 +127,5 @@ export default {
     })
 
     return membership
-  },
-  /**
-   * This mutation is dedicated to enable admins and founder to remove a membership (Cascading their Topics and Comments)
-   */
-  deleteMembership: async (
-    _parent: any,
-    { id }: { id: number },
-    { prisma, request }: { prisma: PrismaClient; request: any }
-  ) => {
-    const userId = getUserId(request)
-
-    const station = await prisma.membership.findOne({ where: { id } }).station()
-
-    const [membership] = await prisma.membership.findMany({
-      where: {
-        userId,
-        stationId: station?.id,
-        role: {
-          in: ['FOUNDER', 'ADMIN'],
-        },
-      },
-    })
-
-    if (!membership) throw new Error('Authorization Required')
-
-    if (membership?.role === 'FOUNDER')
-      throw new Error('This membership is the founder')
-
-    if (membership?.state === 'BANNED')
-      throw new Error('This membership is banned')
-
-    const deleted = await prisma.membership.delete({ where: { id } })
-
-    return deleted
   },
 }

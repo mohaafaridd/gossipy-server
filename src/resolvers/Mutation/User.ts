@@ -1,18 +1,4 @@
 import * as bcrypt from 'bcryptjs'
-// import {
-//   PrismaClient,
-//   User,
-//   UserCreateInput,
-//   UserUpdateInput,
-//   Station,
-//   StationCreateInput,
-//   StationUpdateInput,
-//   Membership,
-//   MembershipCreateInput,
-//   MembershipUpdateInput,
-//   Topic,
-//   TopicCreateInput,
-// } from '../../generated/prisma-client'
 import { PrismaClient, UserCreateInput, UserUpdateInput } from '@prisma/client'
 import { hashPasswords, generateToken, getUserId, sanitizer } from '../../utils'
 
@@ -25,7 +11,6 @@ export default {
     { data }: { data: UserCreateInput },
     { prisma }: { prisma: PrismaClient }
   ) => {
-    console.log('here')
     const { name } = data
     if (name.length > 16)
       throw new Error('Name has maximum length of 16 characters')
@@ -76,13 +61,20 @@ export default {
     { prisma, request }: { prisma: PrismaClient; request: any }
   ) => {
     const userId = getUserId(request)
+    const updates: UserUpdateInput = {}
+
     if (typeof data.password === 'string') {
       data.password = await hashPasswords(data.password)
+      updates.password = data.password
+    }
+
+    if (typeof data.email === 'string') {
+      updates.email = data.password
     }
 
     return prisma.user.update({
       where: { id: userId },
-      data,
+      data: updates,
     })
   },
 }

@@ -143,31 +143,28 @@ type Query {
   profile(identifier: String!): User!
 }
 
-type DeleteMembership {
-  membership: Membership!
-  user: User!
-  station: Station!
-}
-
 type Mutation {
-  signUp(data: CreateUserInput!): AuthPayload!
-  signIn(data: LoginUserInput!): AuthPayload!
-  updateUser(data: UpdateUserInput!): User!
-  createStation(data: CreateStationInput!): Station!
-  updateStation(id: Int!, data: UpdateStationInput!): Station!
+  signUp(data: UserCreateInput!): AuthPayload!
+  signIn(data: UserLoginInput!): AuthPayload!
+  updateUser(data: UserUpdateInput!): User!
+
+  createStation(data: StationCreateInput!): Station!
+  updateStation(id: Int!, data: StationUpdateInput!): Station!
   deleteStation(id: Int!): Station!
+
   createMembership(stationId: Int!): Membership!
   updateMembership(id: Int!, data: MembershipUpdateInput): Membership!
   unsubscribeMembership(id: Int!): Membership!
-  deleteMembership(id: Int!): DeleteMembership!
-  createTopic(data: CreateTopicInput!): Topic!
-  updateTopic(id: Int!, data: UpdateTopicInput): Topic!
+
+  createTopic(data: TopicCreateInput!): Topic!
+  updateTopic(id: Int!, data: TopicUpdateInput): Topic!
   deleteTopic(id: Int!): Topic!
-  createComment(data: CreateCommentInput!): Comment!
-  updateComment(id: Int!, data: UpdateCommentInput!): Comment!
+
+  createComment(data: CommentCreateInput!): Comment!
+  updateComment(id: Int!, data: CommentUpdateInput!): Comment!
   deleteComment(id: Int!): Comment!
-  createVote(data: CreateVoteInput): Vote!
-  updateVote(id: Int!, data: UpdateVoteInput!): Vote!
+
+  createVote(data: VoteCreateInput): Vote!
   deleteVote(id: Int!): Vote!
 }
 
@@ -176,65 +173,68 @@ type AuthPayload {
   user: User!
 }
 
-input CreateUserInput {
+# User Inputs
+input UserCreateInput {
   name: String!
   email: String!
   password: String!
 }
 
-input LoginUserInput {
+input UserLoginInput {
   email: String!
   password: String!
 }
 
-input UpdateUserInput {
+input UserUpdateInput {
   email: String
   password: String
 }
 
-input CreateStationInput {
+# Station Inputs
+input StationCreateInput {
   name: String!
   description: String!
   public: Boolean!
 }
 
-input UpdateStationInput {
+input StationUpdateInput {
   description: String
   public: Boolean
 }
 
+# Membership Input
 input MembershipUpdateInput {
   role: Role
   state: State
 }
 
-input CreateTopicInput {
+# Topic Inputs
+input TopicCreateInput {
   title: String!
   content: String!
   station: Int!
 }
 
-input UpdateTopicInput {
+input TopicUpdateInput {
   title: String
   content: String
+  sealed: Boolean
 }
 
-input CreateCommentInput {
+# Comment Inputs
+input CommentCreateInput {
   content: String!
   topic: Int!
 }
 
-input UpdateCommentInput {
+input CommentUpdateInput {
   content: String!
 }
 
-input CreateVoteInput {
+# Vote Inputs
+input VoteCreateInput {
   topic: Int!
   comment: Int
-  type: VoteType
-}
-
-input UpdateVoteInput {
   type: VoteType
 }
 
