@@ -36,9 +36,7 @@ export default {
     const [topicExist] = await prisma.topic.findMany({
       where: {
         stationId: data.station,
-        identifier: {
-          not: identifier,
-        },
+        identifier: identifier,
       },
     })
 
@@ -140,7 +138,7 @@ export default {
         },
       })
 
-      if (!isValid) throw new Error('Topic title is used before')
+      if (!isValid) throw new Error('Topic title is used before da')
     }
 
     const topic = await prisma.topic.update({

@@ -26,44 +26,41 @@ export default {
     const date = getSortingDate(dateRange)
     const skip = (page > 0 ? page : 1) * 10 - 10
 
-    let conditions: FindManyTopicArgs = {}
+    let conditions: FindManyTopicArgs = {
+      where: {
+        userId: user,
+        station: {
+          public: explore ? true : undefined,
+          memberships: {
+            some: {
+              userId: {
+                not: explore ? userId : undefined,
+                equals: explore ? undefined : userId,
+              },
+
+              state: explore ? undefined : 'ACTIVE',
+            },
+          },
+        },
+
+        votes: {
+          some: {
+            createdAt: {
+              gte: sortType === 'NEW' ? undefined : date,
+            },
+          },
+        },
+
+        createdAt: {
+          gte: sortType === 'NEW' ? date : undefined,
+        },
+      },
+    }
 
     const dependency =
       sortType !== 'NEW'
         ? async () => {
-            conditions = {
-              where: {
-                userId: user,
-                station: {
-                  public: !!explore,
-                },
-                votes: {
-                  some: {
-                    createdAt: {
-                      gte: date,
-                    },
-
-                    station: {
-                      id: station,
-                      OR: [
-                        {
-                          public: true,
-                        },
-                        {
-                          public: false,
-                          memberships: {
-                            some: {
-                              userId,
-                              state: 'ACTIVE',
-                            },
-                          },
-                        },
-                      ],
-                    },
-                  },
-                },
-              },
-            }
+            delete conditions.where?.createdAt
             const topics = await prisma.topic.findMany({
               skip,
               ...conditions,
@@ -75,33 +72,7 @@ export default {
             return topics
           }
         : async () => {
-            conditions = {
-              where: {
-                userId: user,
-
-                createdAt: {
-                  gte: date,
-                },
-
-                station: {
-                  id: station,
-                  OR: [
-                    {
-                      public: true,
-                    },
-                    {
-                      public: false,
-                      memberships: {
-                        some: {
-                          userId,
-                          state: 'ACTIVE',
-                        },
-                      },
-                    },
-                  ],
-                },
-              },
-            }
+            delete conditions.where?.votes
             const topics = prisma.topic.findMany({
               skip,
               orderBy: {
