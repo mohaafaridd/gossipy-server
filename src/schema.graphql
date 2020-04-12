@@ -98,7 +98,13 @@ type Query {
   comments(topicId: Int, user: Int): [Comment!]!
   comment(commentId: Int!): Comment!
 
-  memberships(user: Int, station: Int, page: Int): [Membership!]!
+  memberships(
+    user: Int
+    station: Int
+    page: Int
+    roles: [Role!]
+    states: [State!]
+  ): [Membership!]!
   membership(stationId: Int!): Membership!
 
   stations(query: String!): [Station!]!

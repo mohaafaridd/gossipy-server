@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient, Role, State } from '@prisma/client'
 import { getUserId } from '@utils'
 
 export default {
@@ -24,7 +24,15 @@ export default {
       user,
       station = 1,
       page,
-    }: { user?: number; station?: number; page: number },
+      roles,
+      states,
+    }: {
+      user?: number
+      station?: number
+      page: number
+      roles: Role[]
+      states: State[]
+    },
     { prisma, request }: { prisma: PrismaClient; request: any }
   ) {
     const userId = getUserId(request)
@@ -35,6 +43,12 @@ export default {
         skip,
         where: {
           userId: user,
+          role: {
+            in: roles,
+          },
+          state: {
+            in: states,
+          },
         },
       })
 
@@ -54,6 +68,12 @@ export default {
       skip,
       where: {
         stationId: station,
+        role: {
+          in: roles,
+        },
+        state: {
+          in: states,
+        },
       },
     })
 
