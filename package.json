@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "heroku-postbuild": "prisma generate && npm run tsc",
-    "tsc": "tsc -r tsconfig-paths/register",
+    "tsc": "tsc",
     "start": "ts-node -r tsconfig-paths/register ./src/index.ts",
     "dev": "env-cmd -f ./config/prod.env ts-node-dev -r tsconfig-paths/register ./src/index.ts",
     "seed": "env-cmd -f ./config/prod.env jest seedProd.test.ts",
