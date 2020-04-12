@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient, FindManyCommentArgs } from '@prisma/client'
 import { getUserId } from '@utils'
 
 export default {
@@ -13,8 +13,7 @@ export default {
   ) {
     const userId = getUserId(request, false)
     const skip = (page > 0 ? page : 1) * 10 - 10
-    const comments = await prisma.comment.findMany({
-      skip,
+    const conditions: FindManyCommentArgs = {
       where: {
         topicId,
         userId: user,
@@ -34,9 +33,18 @@ export default {
           ],
         },
       },
+    }
+    const comments = await prisma.comment.findMany({
+      skip,
+      ...conditions,
     })
 
-    return comments
+    const count = await prisma.comment.count(conditions)
+
+    return {
+      data: comments,
+      count,
+    }
   },
 
   async comment(

@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient, FindManyStationArgs } from '@prisma/client'
 
 export default {
   async stations(
@@ -7,17 +7,24 @@ export default {
     { prisma }: { prisma: PrismaClient }
   ) {
     const skip = (page > 0 ? page : 1) * 10 - 10
-
-    const stations = await prisma.station.findMany({
-      skip,
+    const conditions: FindManyStationArgs = {
       where: {
         identifier: {
           contains: query.toLowerCase(),
         },
       },
+    }
+    const stations = await prisma.station.findMany({
+      skip,
+      ...conditions,
     })
 
-    return stations
+    const count = await prisma.station.count(conditions)
+
+    return {
+      data: stations,
+      count,
+    }
   },
 
   async station(

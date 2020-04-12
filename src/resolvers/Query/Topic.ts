@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient, FindManyTopicArgs } from '@prisma/client'
 import { SortType, DateRange } from '@constants'
 import { getSortingDate, getUserId } from '@utils'
 
@@ -26,11 +26,12 @@ export default {
     const date = getSortingDate(dateRange)
     const skip = (page > 0 ? page : 1) * 10 - 10
 
+    let conditions: FindManyTopicArgs = {}
+
     const dependency =
       sortType !== 'NEW'
         ? async () => {
-            const topics = await prisma.topic.findMany({
-              skip,
+            conditions = {
               where: {
                 userId: user,
                 station: {
@@ -62,7 +63,10 @@ export default {
                   },
                 },
               },
-
+            }
+            const topics = await prisma.topic.findMany({
+              skip,
+              ...conditions,
               include: {
                 votes: true,
               },
@@ -71,11 +75,7 @@ export default {
             return topics
           }
         : async () => {
-            const topics = prisma.topic.findMany({
-              skip,
-              orderBy: {
-                createdAt: 'desc',
-              },
+            conditions = {
               where: {
                 userId: user,
 
@@ -101,6 +101,13 @@ export default {
                   ],
                 },
               },
+            }
+            const topics = prisma.topic.findMany({
+              skip,
+              orderBy: {
+                createdAt: 'desc',
+              },
+              ...conditions,
               include: {
                 votes: true,
               },
@@ -110,7 +117,11 @@ export default {
           }
 
     const topics = await dependency()
-    return topics
+    const count = await prisma.topic.count(conditions)
+    return {
+      data: topics,
+      count,
+    }
   },
 
   async topic(

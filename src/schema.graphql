@@ -29,6 +29,11 @@ type Station {
   updatedAt: String!
 }
 
+type Stations {
+  data: [Station!]!
+  count: Int!
+}
+
 type Membership {
   id: Int!
   userId: Int!
@@ -42,6 +47,11 @@ type Membership {
   state: State!
   createdAt: String!
   updatedAt: String!
+}
+
+type Memberships {
+  data: [Membership!]!
+  count: Int!
 }
 
 type Topic {
@@ -62,6 +72,11 @@ type Topic {
   updatedAt: String!
 }
 
+type Topics {
+  data: [Topic!]!
+  count: Int!
+}
+
 type Comment {
   id: Int!
   content: String!
@@ -77,6 +92,11 @@ type Comment {
   updatedAt: String!
 }
 
+type Comments {
+  data: [Comment!]!
+  count: Int!
+}
+
 type Vote {
   id: Int!
   type: VoteType!
@@ -84,7 +104,6 @@ type Vote {
   userId: Int!
   topicId: Int!
   stationId: Int!
-
   user: User!
   station: Station!
   topic: Topic!
@@ -95,7 +114,7 @@ type Vote {
 }
 
 type Query {
-  comments(topicId: Int, user: Int, page: Int): [Comment!]!
+  comments(topicId: Int, user: Int, page: Int): Comments!
   comment(commentId: Int!): Comment!
 
   memberships(
@@ -104,10 +123,10 @@ type Query {
     page: Int
     roles: [Role!]
     states: [State!]
-  ): [Membership!]!
+  ): Memberships!
   membership(stationId: Int!): Membership!
 
-  stations(query: String!, page: Int): [Station!]!
+  stations(query: String!, page: Int): Stations!
   station(identifier: String!): Station!
 
   topics(
@@ -117,7 +136,7 @@ type Query {
     page: Int
     user: Int
     station: Int
-  ): [Topic!]!
+  ): Topics!
   topic(identifier: String!, stationId: Int!): Topic!
 
   users: [User!]!
@@ -202,7 +221,7 @@ input UpdateTopicInput {
 
 input CreateCommentInput {
   content: String!
-  topic: String!
+  topic: Int!
 }
 
 input UpdateCommentInput {

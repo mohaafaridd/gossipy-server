@@ -1,4 +1,9 @@
-import { PrismaClient, Role, State } from '@prisma/client'
+import {
+  PrismaClient,
+  Role,
+  State,
+  FindManyMembershipArgs,
+} from '@prisma/client'
 import { getUserId } from '@utils'
 
 export default {
@@ -39,8 +44,7 @@ export default {
     const skip = (page > 0 ? page : 1) * 10 - 10
 
     if (user) {
-      const memberships = await prisma.membership.findMany({
-        skip,
+      const conditions: FindManyMembershipArgs = {
         where: {
           userId: user,
           role: {
@@ -50,9 +54,19 @@ export default {
             in: states,
           },
         },
+      }
+
+      const memberships = await prisma.membership.findMany({
+        skip,
+        ...conditions,
       })
 
-      return memberships
+      const count = await prisma.membership.count(conditions)
+
+      return {
+        data: memberships,
+        count,
+      }
     }
 
     const [membership] = await prisma.membership.findMany({
@@ -64,8 +78,7 @@ export default {
 
     if (!membership) throw new Error('Authorization Required')
 
-    const memberships = await prisma.membership.findMany({
-      skip,
+    const conditions: FindManyMembershipArgs = {
       where: {
         stationId: station,
         role: {
@@ -75,8 +88,18 @@ export default {
           in: states,
         },
       },
+    }
+
+    const memberships = await prisma.membership.findMany({
+      skip,
+      ...conditions,
     })
 
-    return memberships
+    const count = await prisma.membership.count(conditions)
+
+    return {
+      data: memberships,
+      count,
+    }
   },
 }
