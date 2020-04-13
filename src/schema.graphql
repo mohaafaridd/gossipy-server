@@ -126,7 +126,7 @@ type Query {
     roles: [Role!]
     states: [State!]
   ): Memberships!
-  membership(stationId: Int!): Membership!
+  membership(stationId: Int!): Membership
 
   stations(query: String!, page: Int): Stations!
   station(identifier: String!): Station!
@@ -134,7 +134,7 @@ type Query {
   topics(
     sortType: SortType!
     dateRange: DateRange!
-    explore: Boolean!
+    explore: Boolean
     page: Int
     user: Int
     station: Int
