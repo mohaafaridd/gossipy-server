@@ -69,7 +69,7 @@ export default {
     }
 
     if (typeof data.email === 'string') {
-      updates.email = data.password
+      updates.email = data.email
     }
 
     return prisma.user.update({
