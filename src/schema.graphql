@@ -1,3 +1,5 @@
+scalar DateTime
+
 type User {
   id: Int!
   name: String!
@@ -68,8 +70,8 @@ type Topic {
   station: Station!
   comments: [Comment!]!
   votes: [Vote!]!
-  createdAt: String!
-  updatedAt: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 type Topics {

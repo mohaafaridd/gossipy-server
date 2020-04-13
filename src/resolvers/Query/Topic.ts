@@ -89,6 +89,7 @@ export default {
 
     const topics = await dependency()
     const count = await prisma.topic.count(conditions)
+
     return {
       data: sortTopics(topics, sortType),
       count,
