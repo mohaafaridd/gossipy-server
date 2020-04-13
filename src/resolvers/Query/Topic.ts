@@ -16,9 +16,9 @@ export default {
       sortType: SortType
       dateRange: DateRange
       page?: number
-      user: number
-      station: number
-      explore: boolean
+      user?: number
+      station?: number
+      explore?: boolean
     },
     { prisma, request }: { prisma: PrismaClient; request: any }
   ) {
@@ -30,17 +30,25 @@ export default {
       where: {
         userId: user,
         station: {
-          public: explore ? true : undefined,
-          memberships: {
-            some: {
-              userId: {
-                not: explore ? userId : undefined,
-                equals: explore ? undefined : userId,
-              },
-
-              state: explore ? undefined : 'ACTIVE',
+          id: station,
+          OR: [
+            {
+              public: true,
             },
-          },
+            {
+              public: explore ? true : undefined,
+              memberships: {
+                some: {
+                  userId: {
+                    not: explore ? userId : undefined,
+                    equals: explore ? undefined : userId,
+                  },
+
+                  state: explore ? undefined : 'ACTIVE',
+                },
+              },
+            },
+          ],
         },
 
         votes: {
