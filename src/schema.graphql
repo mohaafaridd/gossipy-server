@@ -12,8 +12,8 @@ type User {
   comments: [Comment!]!
   votes: [Vote!]!
   karma: [Vote!]!
-  createdAt: String!
-  updatedAt: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 type Station {
@@ -27,8 +27,8 @@ type Station {
   topics: [Topic!]!
   comments: [Comment!]!
   votes: [Vote!]!
-  createdAt: String!
-  updatedAt: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 type Stations {
@@ -47,8 +47,8 @@ type Membership {
   comments: [Comment!]!
   votes: [Vote!]!
   state: State!
-  createdAt: String!
-  updatedAt: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 type Memberships {
@@ -90,8 +90,8 @@ type Comment {
   membership: Membership!
   station: Station!
   topic: Topic!
-  createdAt: String!
-  updatedAt: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 type Comments {
@@ -111,8 +111,8 @@ type Vote {
   topic: Topic!
   comment: Comment
   membership: Membership!
-  createdAt: String!
-  updatedAt: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 type Query {
