@@ -9,14 +9,23 @@ import { getUserId } from '@utils'
 export default {
   async membership(
     _parent: any,
-    { stationId }: { stationId: number },
+    {
+      stationId,
+      stationIdentifier,
+    }: { stationId?: number; stationIdentifier?: string },
     { prisma, request }: { prisma: PrismaClient; request: any }
   ) {
+    if (!stationId && !stationIdentifier)
+      throw new Error('No station id or identifier was passed')
+
     const userId = getUserId(request, false)
     const [membership] = await prisma.membership.findMany({
       where: {
         userId,
-        stationId,
+        station: {
+          id: stationId,
+          identifier: stationIdentifier,
+        },
       },
     })
 

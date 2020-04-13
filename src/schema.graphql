@@ -126,7 +126,7 @@ type Query {
     roles: [Role!]
     states: [State!]
   ): Memberships!
-  membership(stationId: Int!): Membership
+  membership(stationId: Int, stationIdentifier: String): Membership
 
   stations(query: String!, page: Int): Stations!
   station(identifier: String!): Station!
