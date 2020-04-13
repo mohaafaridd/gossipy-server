@@ -26,29 +26,36 @@ export default {
     const date = getSortingDate(dateRange)
     const skip = (page > 0 ? page : 1) * 10 - 10
 
-    let conditions: FindManyTopicArgs = {
+    const conditions: FindManyTopicArgs = {
       where: {
         userId: user,
         station: {
           id: station,
-          OR: [
-            {
-              public: true,
-            },
-            {
-              public: explore ? true : undefined,
-              memberships: {
+          memberships: explore
+            ? {
                 some: {
-                  userId: {
-                    not: explore ? userId : undefined,
-                    equals: explore ? undefined : userId,
-                  },
-
-                  state: explore ? undefined : 'ACTIVE',
+                  OR: [
+                    {
+                      station: {
+                        public: true,
+                      },
+                    },
+                    {
+                      station: {
+                        public: false,
+                      },
+                      userId,
+                      state: 'ACTIVE',
+                    },
+                  ],
+                },
+              }
+            : {
+                some: {
+                  userId,
+                  state: 'ACTIVE',
                 },
               },
-            },
-          ],
         },
 
         votes: {
