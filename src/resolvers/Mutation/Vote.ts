@@ -45,7 +45,7 @@ export default {
 
     const upsert = await prisma.vote.upsert({
       where: {
-        id: vote.id,
+        id: vote?.id || 0,
       },
 
       create: {
