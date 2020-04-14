@@ -1,8 +1,8 @@
-import { User, Membership } from '../../../src/generated/prisma-client'
+import { User, Membership } from '@prisma/client'
 
 interface IUserInput {
   name: string
-  identifier?: string
+  identifier: string
   email: string
   password: string
 }

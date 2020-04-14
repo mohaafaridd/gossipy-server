@@ -1,7 +1,7 @@
 import { PrismaClient, VoteType } from '@prisma/client'
 import { getUserId } from '../../utils'
 export default {
-  createVote: async (
+  upsertVote: async (
     _parent: any,
     {
       data,
@@ -45,7 +45,7 @@ export default {
 
     const upsert = await prisma.vote.upsert({
       where: {
-        id: vote?.id,
+        id: vote.id,
       },
 
       create: {

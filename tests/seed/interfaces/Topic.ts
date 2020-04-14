@@ -1,4 +1,4 @@
-import { Topic } from '../../../src/generated/prisma-client'
+import { Topic } from '@prisma/client'
 
 interface ITopicInput {
   title: string

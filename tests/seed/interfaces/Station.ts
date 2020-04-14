@@ -1,4 +1,4 @@
-import { Station } from '../../../src/generated/prisma-client'
+import { Station } from '@prisma/client'
 
 interface IStationInput {
   name: string

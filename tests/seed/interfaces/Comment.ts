@@ -1,4 +1,4 @@
-import { Comment } from '../../../src/generated/prisma-client'
+import { Comment } from '@prisma/client'
 
 interface ICommentInput {
   content: string

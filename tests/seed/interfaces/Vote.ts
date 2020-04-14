@@ -1,4 +1,4 @@
-import { VoteType, Vote } from '../../../src/generated/prisma-client'
+import { VoteType, Vote } from '@prisma/client'
 
 interface IVoteInput {
   type: VoteType

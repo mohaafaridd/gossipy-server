@@ -166,7 +166,7 @@ type Mutation {
   updateComment(id: Int!, data: CommentUpdateInput!): Comment!
   deleteComment(id: Int!): Comment!
 
-  createVote(data: VoteCreateInput): Vote!
+  upsertVote(data: VoteUpsertInput): Vote!
   deleteVote(id: Int!): Vote!
 }
 
@@ -234,7 +234,7 @@ input CommentUpdateInput {
 }
 
 # Vote Inputs
-input VoteCreateInput {
+input VoteUpsertInput {
   topic: Int!
   comment: Int
   type: VoteType
