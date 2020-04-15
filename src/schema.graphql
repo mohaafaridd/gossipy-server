@@ -115,6 +115,12 @@ type Vote {
   updatedAt: DateTime!
 }
 
+type Search {
+  users: [User!]!
+  stations: [Station!]!
+  topics: [Topic!]!
+}
+
 type Query {
   comments(
     topicIdentifier: String!
@@ -148,6 +154,8 @@ type Query {
 
   users: [User!]!
   profile(identifier: String!): User!
+
+  search(query: String!, page: Int): Search!
 }
 
 type Mutation {
