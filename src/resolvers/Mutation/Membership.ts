@@ -24,7 +24,7 @@ export default {
 
     const upsert = await prisma.membership.upsert({
       where: {
-        id: membership.id,
+        id: membership?.id || 0,
       },
 
       create: {
