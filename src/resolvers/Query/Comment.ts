@@ -5,19 +5,28 @@ export default {
   async comments(
     _parent: any,
     {
-      topicId,
+      topicIdentifier,
+      stationIdentifier,
       user,
       page = 1,
-    }: { topicId: number; user: number; page?: number },
+    }: {
+      topicIdentifier: string
+      stationIdentifier: string
+      user: number
+      page?: number
+    },
     { prisma, request }: { prisma: PrismaClient; request: any }
   ) {
     const userId = getUserId(request, false)
     const skip = (page > 0 ? page : 1) * 10 - 10
     const conditions: FindManyCommentArgs = {
       where: {
-        topicId,
+        topic: {
+          identifier: topicIdentifier,
+        },
         userId: user,
         station: {
+          identifier: stationIdentifier,
           OR: [
             {
               public: true,
@@ -27,6 +36,7 @@ export default {
               memberships: {
                 some: {
                   userId,
+                  state: 'ACTIVE',
                 },
               },
             },
@@ -34,6 +44,7 @@ export default {
         },
       },
     }
+
     const comments = await prisma.comment.findMany({
       skip,
       ...conditions,

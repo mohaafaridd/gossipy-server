@@ -116,7 +116,12 @@ type Vote {
 }
 
 type Query {
-  comments(topicId: Int, user: Int, page: Int): Comments!
+  comments(
+    topicIdentifier: String!
+    stationIdentifier: String!
+    user: Int
+    page: Int
+  ): Comments!
   comment(commentId: Int!): Comment!
 
   memberships(

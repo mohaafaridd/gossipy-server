@@ -61,6 +61,9 @@ export default {
           ],
         },
       },
+      orderBy: {
+        createdAt: 'desc',
+      },
     })
 
     return topics
