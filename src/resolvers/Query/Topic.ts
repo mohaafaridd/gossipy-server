@@ -113,15 +113,18 @@ export default {
 
   async topic(
     _parent: any,
-    { identifier, stationId }: { identifier: string; stationId: number },
+    {
+      identifier,
+      stationIdentifier,
+    }: { identifier: string; stationIdentifier: string },
     { prisma, request }: { prisma: PrismaClient; request: any }
   ) {
     const userId = getUserId(request, false)
     const [topic] = await prisma.topic.findMany({
       where: {
         identifier,
-        stationId,
         station: {
+          identifier: stationIdentifier,
           OR: [
             {
               public: true,

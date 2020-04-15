@@ -139,7 +139,7 @@ type Query {
     user: Int
     station: Int
   ): Topics!
-  topic(identifier: String!, stationId: Int!): Topic!
+  topic(identifier: String!, stationIdentifier: String!): Topic!
 
   users: [User!]!
   profile(identifier: String!): User!
