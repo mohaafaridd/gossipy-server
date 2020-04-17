@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client'
-import { getUserId } from '../../utils'
+import { getUserId, IFile, uploadImage } from '@utils'
 
 export default {
   /**
@@ -9,11 +9,13 @@ export default {
     _parent: any,
     {
       data,
+      image,
     }: {
       data: {
         content: string
         topic: number
       }
+      image: IFile
     },
     { prisma, request }: { prisma: PrismaClient; request: any }
   ) => {
@@ -41,9 +43,12 @@ export default {
       .findOne({ where: { id: membership.id } })
       .station()
 
+    const imagePath = image ? await uploadImage(image, 'stations') : ''
+
     const comment = await prisma.comment.create({
       data: {
         content: data.content,
+        image: imagePath,
 
         user: {
           connect: {
@@ -82,11 +87,14 @@ export default {
     {
       id,
       data,
+      image,
     }: {
       id: number
       data: {
         content: string
+        image?: string
       }
+      image: IFile
     },
     { prisma, request }: { prisma: PrismaClient; request: any }
   ) => {
@@ -102,6 +110,11 @@ export default {
       },
     })
     if (!isAuthorized) throw new Error('Authorization Required')
+
+    if (image) {
+      const imagePath = await uploadImage(image, 'stations')
+      data.image = imagePath
+    }
 
     const comment = prisma.comment.update({
       where: { id },

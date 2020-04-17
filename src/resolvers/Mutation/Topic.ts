@@ -1,7 +1,7 @@
 import { PrismaClient, TopicUpdateInput } from '@prisma/client'
-import { getUserId } from '../../utils'
-import { alphanumeric } from '../../utils/sanitizer'
-
+// import { getUserId } from '../../utils'
+// import { alphanumeric } from '../../utils/sanitizer'
+import { getUserId, sanitizer, IFile, uploadImage } from '@utils'
 export default {
   /**
    * This mutation is dedicated to enable active station members to post topics
@@ -10,12 +10,14 @@ export default {
     _parent: any,
     {
       data,
+      image,
     }: {
       data: {
         title: string
         content: string
         station: number
       }
+      image: IFile
     },
     { prisma, request }: { prisma: PrismaClient; request: any }
   ) => {
@@ -31,7 +33,7 @@ export default {
 
     if (!membership) throw new Error('Authorization Required')
 
-    const identifier = alphanumeric(data.title, '_').toLowerCase()
+    const identifier = sanitizer.alphanumeric(data.title, '_').toLowerCase()
 
     const [topicExist] = await prisma.topic.findMany({
       where: {
@@ -42,11 +44,14 @@ export default {
 
     if (topicExist) throw new Error('Topic title is used before')
 
+    const imagePath = image ? await uploadImage(image, 'stations') : ''
+
     const topic = await prisma.topic.create({
       data: {
         title: data.title,
         identifier,
         content: data.content,
+        image: imagePath,
         sealed: false,
 
         membership: {
@@ -101,9 +106,11 @@ export default {
     {
       id,
       data,
+      image,
     }: {
       id: number
       data: TopicUpdateInput
+      image: IFile
     },
     { prisma, request }: { prisma: PrismaClient; request: any }
   ) => {
@@ -122,7 +129,7 @@ export default {
     if (!isAuthorized) throw new Error('Authorization Required')
 
     if (typeof data.title === 'string') {
-      const identifier = alphanumeric(data.title, '_').toLowerCase()
+      const identifier = sanitizer.alphanumeric(data.title, '_').toLowerCase()
 
       const [station] = await prisma.station.findMany({
         where: { topics: { some: { id } } },
@@ -139,6 +146,11 @@ export default {
       })
 
       if (!isValid) throw new Error('Topic title is used before da')
+    }
+
+    if (image) {
+      const imagePath = await uploadImage(image, 'stations')
+      data.image = imagePath
     }
 
     const topic = await prisma.topic.update({

@@ -3,7 +3,7 @@ import {
   StationCreateInput,
   StationUpdateInput,
 } from '@prisma/client'
-import { getUserId, sanitizer } from '../../utils'
+import { getUserId, sanitizer, IFile, uploadImage } from '@utils'
 
 export default {
   /**
@@ -56,7 +56,7 @@ export default {
    */
   updateStation: async (
     _parent: any,
-    { id, data }: { id: number; data: StationUpdateInput },
+    { id, data, image }: { id: number; data: StationUpdateInput; image: IFile },
     { prisma, request }: { prisma: PrismaClient; request: any }
   ) => {
     const userId = getUserId(request)
@@ -70,6 +70,11 @@ export default {
     })
 
     if (!isAuthorized) throw new Error('Authorization Required')
+
+    if (image) {
+      const imagePath = await uploadImage(image, 'stations')
+      data.image = imagePath
+    }
 
     const station = await prisma.station.update({
       where: { id },

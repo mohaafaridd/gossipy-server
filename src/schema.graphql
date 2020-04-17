@@ -170,24 +170,24 @@ type Query {
 }
 
 type Mutation {
-  signUp(data: UserCreateInput!, image: Upload): AuthPayload!
+  signUp(data: UserCreateInput!): AuthPayload!
   signIn(data: UserLoginInput!): AuthPayload!
-  updateUser(data: UserUpdateInput!): User!
+  updateUser(data: UserUpdateInput!, image: Upload): User!
 
   createStation(data: StationCreateInput!): Station!
-  updateStation(id: Int!, data: StationUpdateInput!): Station!
+  updateStation(id: Int!, data: StationUpdateInput!, image: Upload): Station!
   deleteStation(id: Int!): Station!
 
   createMembership(stationId: Int!): Membership!
   updateMembership(id: Int!, data: MembershipUpdateInput): Membership!
   unsubscribeMembership(id: Int!): Membership!
 
-  createTopic(data: TopicCreateInput!): Topic!
-  updateTopic(id: Int!, data: TopicUpdateInput): Topic!
+  createTopic(data: TopicCreateInput!, image: Upload): Topic!
+  updateTopic(id: Int!, data: TopicUpdateInput, image: Upload): Topic!
   deleteTopic(id: Int!): Topic!
 
-  createComment(data: CommentCreateInput!): Comment!
-  updateComment(id: Int!, data: CommentUpdateInput!): Comment!
+  createComment(data: CommentCreateInput!, image: Upload): Comment!
+  updateComment(id: Int!, data: CommentUpdateInput!, image: Upload): Comment!
   deleteComment(id: Int!): Comment!
 
   upsertVote(data: VoteUpsertInput): Vote!

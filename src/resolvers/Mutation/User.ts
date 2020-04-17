@@ -15,7 +15,7 @@ export default {
    */
   signUp: async (
     _parent: any,
-    { data, image }: { data: UserCreateInput; image: IFile },
+    { data }: { data: UserCreateInput },
     { prisma }: { prisma: PrismaClient }
   ) => {
     const { name, email } = data
@@ -26,7 +26,6 @@ export default {
 
     const identifier = sanitizer.alphanumeric(name).toLowerCase()
     const password = await hashPasswords(data.password)
-    const imagePath = await uploadImage(image, 'avatars')
 
     const user = await prisma.user.create({
       data: {
@@ -34,7 +33,7 @@ export default {
         email,
         identifier,
         password,
-        image: imagePath,
+        image: 'avatars/default.png',
       },
     })
 
@@ -69,7 +68,7 @@ export default {
    */
   updateUser: async (
     _parent: any,
-    { data }: { data: UserUpdateInput },
+    { data, image }: { data: UserUpdateInput; image: IFile },
     { prisma, request }: { prisma: PrismaClient; request: any }
   ) => {
     const userId = getUserId(request)
@@ -82,6 +81,11 @@ export default {
 
     if (typeof data.email === 'string') {
       updates.email = data.email
+    }
+
+    if (image) {
+      const imagePath = await uploadImage(image, 'avatars')
+      updates.image = imagePath
     }
 
     return prisma.user.update({
