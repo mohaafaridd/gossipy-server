@@ -1,19 +1,24 @@
 import * as bcrypt from 'bcryptjs'
 import validator from 'validator'
 import { PrismaClient, UserCreateInput, UserUpdateInput } from '@prisma/client'
-import {} from 'graphql-yoga'
-import { hashPasswords, generateToken, getUserId, sanitizer } from '../../utils'
-
+import {
+  hashPasswords,
+  generateToken,
+  getUserId,
+  sanitizer,
+  IFile,
+  uploadImage,
+} from '@utils'
 export default {
   /**
    * This mutation is dedicated to sign a user up and return his information and an available token
    */
   signUp: async (
     _parent: any,
-    { data }: { data: UserCreateInput },
+    { data, image }: { data: UserCreateInput; image: IFile },
     { prisma }: { prisma: PrismaClient }
   ) => {
-    const { name, email, image } = data
+    const { name, email } = data
     if (name.length > 16)
       throw new Error('Name has maximum length of 16 characters')
     else if (!validator.isEmail(email))
@@ -21,6 +26,7 @@ export default {
 
     const identifier = sanitizer.alphanumeric(name).toLowerCase()
     const password = await hashPasswords(data.password)
+    const imagePath = await uploadImage(image, 'avatars')
 
     const user = await prisma.user.create({
       data: {
@@ -28,6 +34,7 @@ export default {
         email,
         identifier,
         password,
+        image: imagePath,
       },
     })
 

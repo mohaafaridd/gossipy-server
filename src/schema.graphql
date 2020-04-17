@@ -119,6 +119,13 @@ type Vote {
   updatedAt: DateTime!
 }
 
+type File {
+  filename: String!
+  mimetype: String!
+  encoding: String!
+  path: String
+}
+
 type Search {
   users: [User!]!
   stations: [Station!]!
@@ -163,7 +170,7 @@ type Query {
 }
 
 type Mutation {
-  signUp(data: UserCreateInput!): AuthPayload!
+  signUp(data: UserCreateInput!, image: Upload): AuthPayload!
   signIn(data: UserLoginInput!): AuthPayload!
   updateUser(data: UserUpdateInput!): User!
 

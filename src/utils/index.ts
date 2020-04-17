@@ -5,6 +5,7 @@ import hashPasswords from './hashPasswords'
 import sanitizer from './sanitizer'
 import { getHotScore, getTopScore } from './sortMethods'
 import sortTopics from './sortTopics'
+import { IFile, uploadImage } from './uploadImage'
 
 export {
   generateToken,
@@ -15,4 +16,6 @@ export {
   getHotScore,
   getTopScore,
   sortTopics,
+  IFile,
+  uploadImage,
 }
