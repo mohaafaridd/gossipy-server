@@ -1,5 +1,4 @@
 scalar DateTime
-scalar Upload
 
 type User {
   id: Int!
@@ -118,14 +117,6 @@ type Vote {
   membership: Membership!
   createdAt: DateTime!
   updatedAt: DateTime!
-}
-
-type File {
-  id: ID!
-  path: String!
-  filename: String!
-  mimetype: String!
-  encoding: String!
 }
 
 type Search {
