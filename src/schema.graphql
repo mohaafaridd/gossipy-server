@@ -1,8 +1,10 @@
 scalar DateTime
+scalar Upload
 
 type User {
   id: Int!
   name: String!
+  image: String
   identifier: String!
   password: String
   email: String
@@ -19,6 +21,7 @@ type User {
 type Station {
   id: Int!
   name: String!
+  image: String
   identifier: String!
   description: String!
   public: Boolean!
@@ -61,6 +64,7 @@ type Topic {
   title: String!
   identifier: String!
   content: String!
+  image: String
   sealed: Boolean!
   userId: Int!
   membershipId: Int!
@@ -82,6 +86,7 @@ type Topics {
 type Comment {
   id: Int!
   content: String!
+  image: String
   membershipId: Int!
   userId: Int!
   topicId: Int!
@@ -115,6 +120,14 @@ type Vote {
   updatedAt: DateTime!
 }
 
+type File {
+  id: ID!
+  path: String!
+  filename: String!
+  mimetype: String!
+  encoding: String!
+}
+
 type Search {
   users: [User!]!
   stations: [Station!]!
@@ -140,7 +153,7 @@ type Query {
   membership(stationId: Int, stationIdentifier: String): Membership
 
   stations(query: String!, page: Int): Stations!
-  station(identifier: String!): Station!
+  station(identifier: String!): Station
 
   topics(
     sortType: SortType!
@@ -150,10 +163,10 @@ type Query {
     user: Int
     station: Int
   ): Topics!
-  topic(identifier: String!, stationIdentifier: String!): Topic!
+  topic(identifier: String!, stationIdentifier: String!): Topic
 
   users: [User!]!
-  profile(identifier: String!): User!
+  profile(identifier: String!): User
 
   search(query: String!, page: Int): Search!
 }
@@ -193,6 +206,7 @@ input UserCreateInput {
   name: String!
   email: String!
   password: String!
+  image: String
 }
 
 input UserLoginInput {

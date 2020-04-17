@@ -1,6 +1,6 @@
 datasource db {
   provider = "postgresql"
-  url      = env("SCHEMA_URL")
+  url = "***"
 }
 
 // output   = "../generated"
@@ -11,7 +11,7 @@ generator client {
 model User {
   id          Int          @default(autoincrement()) @id
   name        String
-  image       String?      @default("")
+  image       String?
   identifier  String       @unique
   email       String       @unique
   password    String
@@ -27,7 +27,7 @@ model User {
 model Station {
   id          Int          @default(autoincrement()) @id
   name        String
-  image       String?      @default("")
+  image       String?
   identifier  String       @unique
   description String
   users       User[]       @relation(references: [id])
@@ -45,7 +45,7 @@ model Topic {
   title        String
   identifier   String
   content      String
-  image        String?    @default("")
+  image        String?
   sealed       Boolean    @default(false)
   membershipId Int
   userId       Int
@@ -62,7 +62,7 @@ model Topic {
 model Comment {
   id           Int        @default(autoincrement()) @id
   content      String
-  image        String?    @default("")
+  image        String?
   membershipId Int
   userId       Int
   topicId      Int

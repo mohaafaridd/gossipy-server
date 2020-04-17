@@ -1,5 +1,7 @@
 import * as bcrypt from 'bcryptjs'
+import validator from 'validator'
 import { PrismaClient, UserCreateInput, UserUpdateInput } from '@prisma/client'
+import {} from 'graphql-yoga'
 import { hashPasswords, generateToken, getUserId, sanitizer } from '../../utils'
 
 export default {
@@ -11,16 +13,19 @@ export default {
     { data }: { data: UserCreateInput },
     { prisma }: { prisma: PrismaClient }
   ) => {
-    const { name } = data
+    const { name, email, image } = data
     if (name.length > 16)
       throw new Error('Name has maximum length of 16 characters')
+    else if (!validator.isEmail(email))
+      throw new Error('Email format is not acceptable')
+
     const identifier = sanitizer.alphanumeric(name).toLowerCase()
     const password = await hashPasswords(data.password)
 
     const user = await prisma.user.create({
       data: {
-        ...data,
         name,
+        email,
         identifier,
         password,
       },
