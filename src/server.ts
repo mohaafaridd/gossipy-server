@@ -9,6 +9,7 @@ const typeDefs = importSchema('src/schema.graphql')
 const server = new ApolloServer({
   typeDefs,
   resolvers,
+  playground: true,
   context(request) {
     return {
       prisma,
