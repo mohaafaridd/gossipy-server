@@ -1,3 +1,5 @@
+import 'module-alias/register'
+
 import server from './server'
 import chalk from 'chalk'
 
