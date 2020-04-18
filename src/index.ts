@@ -4,11 +4,11 @@ import server from './server'
 import chalk from 'chalk'
 
 server
-  .listen()
-  .then(({ port }) =>
+  .listen({ port: process.env.PORT || 4000 })
+  .then(({ url }) =>
     console.log(
       `Server is ${chalk.blueBright.bold(
         'Enabled'
-      )} on port ${chalk.blueBright.bold(port)}`
+      )} on url ${chalk.blueBright.bold(url)}`
     )
   )
