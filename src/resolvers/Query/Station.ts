@@ -16,6 +16,7 @@ export default {
     }
     const stations = await prisma.station.findMany({
       skip,
+      first: 10,
       ...conditions,
     })
 

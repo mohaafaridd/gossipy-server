@@ -78,6 +78,7 @@ export default {
             delete conditions.where?.createdAt
             const topics = await prisma.topic.findMany({
               skip,
+              first: 10,
               ...conditions,
               include: {
                 votes: true,
@@ -90,6 +91,7 @@ export default {
             delete conditions.where?.votes
             const topics = prisma.topic.findMany({
               skip,
+              first: 10,
               orderBy: {
                 createdAt: 'desc',
               },

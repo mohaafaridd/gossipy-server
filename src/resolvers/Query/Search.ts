@@ -13,6 +13,7 @@ export default {
 
     const users = prisma.user.findMany({
       skip,
+      first: 10,
       where: {
         identifier: {
           contains: normalized,
@@ -22,6 +23,7 @@ export default {
 
     const stations = prisma.station.findMany({
       skip,
+      first: 10,
       where: {
         identifier: {
           contains: normalized,
@@ -31,6 +33,7 @@ export default {
 
     const topics = prisma.topic.findMany({
       skip,
+      first: 10,
       where: {
         identifier: {
           contains: normalized,

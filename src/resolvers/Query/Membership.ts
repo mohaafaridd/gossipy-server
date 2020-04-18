@@ -67,6 +67,7 @@ export default {
 
       const memberships = await prisma.membership.findMany({
         skip,
+        first: 10,
         ...conditions,
       })
 
@@ -101,6 +102,7 @@ export default {
 
     const memberships = await prisma.membership.findMany({
       skip,
+      first: 10,
       ...conditions,
     })
 

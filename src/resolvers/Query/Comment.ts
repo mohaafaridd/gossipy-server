@@ -47,6 +47,7 @@ export default {
 
     const comments = await prisma.comment.findMany({
       skip,
+      first: 10,
       ...conditions,
     })
 
