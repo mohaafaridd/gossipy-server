@@ -5,9 +5,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "heroku-postbuild": "prisma generate && npm run tsc",
+    "heroku-postbuild": "prisma generate",
     "tsc": "tsc",
-    "start": "node -r tsconfig-paths/register -r ts-node/register --max_old_space_size=8192 ./src/index.ts",
+    "start": "node --optimize_for_size -r tsconfig-paths/register -r ts-node/register --max_old_space_size=460  ./src/index.ts",
     "dev": "env-cmd -f ./config/prod.env ts-node-dev -r tsconfig-paths/register ./src/index.ts",
     "seed": "env-cmd -f ./config/prod.env jest seedProd.test.ts",
     "test": "env-cmd -f ./config/test.env jest --watch --runInBand",
