@@ -68,7 +68,7 @@ export default {
    */
   updateUser: async (
     _parent: any,
-    { data, image }: { data: UserUpdateInput; image: IFile },
+    { data, image }: { data: UserUpdateInput; image?: IFile },
     { prisma, request }: { prisma: PrismaClient; request: any }
   ) => {
     const userId = getUserId(request)

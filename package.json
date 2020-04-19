@@ -6,10 +6,9 @@
   "main": "index.ts",
   "scripts": {
     "heroku-postbuild": "prisma generate && npm run build",
-    "build": "tsc",
+    "build": "tsc --p tsconfig.prod.json",
     "start": "node ./dist/index.js",
     "dev": "env-cmd -f ./config/prod.env ts-node-dev -r tsconfig-paths/register ./src/index.ts",
-    "seed": "env-cmd -f ./config/prod.env jest seedProd.test.ts",
     "test": "env-cmd -f ./config/test.env jest --watch --runInBand"
   },
   "license": "ISC",
@@ -52,6 +51,7 @@
     "validator": "^13.0.0"
   },
   "_moduleAliases": {
+    "@src": "./dist/*",
     "@utils": "./dist/utils/index.js",
     "@constants": "./dist/constants/index.js",
     "@mutations/*": "./dist/resolvers/Mutation/*",
