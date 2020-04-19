@@ -56,7 +56,11 @@ export default {
    */
   updateStation: async (
     _parent: any,
-    { id, data, image }: { id: number; data: StationUpdateInput; image: IFile },
+    {
+      id,
+      data,
+      image,
+    }: { id: number; data: StationUpdateInput; image?: IFile },
     { prisma, request }: { prisma: PrismaClient; request: any }
   ) => {
     const userId = getUserId(request)

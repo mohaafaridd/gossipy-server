@@ -3,6 +3,7 @@ import seed from './seed'
 import seeds, { users } from './seed/seeds'
 import { resolvers } from '@src/resolvers'
 import { IUser } from './seed/interfaces'
+import getRequest from './util/getRequest'
 
 describe('Users Happy paths', () => {
   beforeAll(() => seed({ User: true }), 60000)
@@ -51,13 +52,7 @@ describe('Users Happy paths', () => {
   test('should update user information', async () => {
     const prisma = new PrismaClient()
     const data = users[0]
-    const request = {
-      req: {
-        headers: {
-          authorization: `Bearer ${data.jwt}`,
-        },
-      },
-    }
+    const request = getRequest(data.jwt)
 
     const updates: UserUpdateInput = {
       email: 'updated@gossipy.com',
@@ -201,14 +196,7 @@ describe('Users not so happy path', () => {
       const data: UserUpdateInput = {
         email: seeds.users[0].input.email,
       }
-
-      const request = {
-        req: {
-          headers: {
-            authorization: `Bearer ${seeds.users[1].jwt}`,
-          },
-        },
-      }
+      const request = getRequest(seeds.users[1].jwt)
 
       await expect(
         resolvers.Mutation.updateUser(null, { data }, { prisma, request })
