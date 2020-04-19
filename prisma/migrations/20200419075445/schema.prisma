@@ -1,0 +1,125 @@
+datasource db {
+  provider = "postgresql"
+  url = "***"
+}
+
+// output   = "../generated"
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id          Int          @default(autoincrement()) @id
+  name        String
+  image       String?      @default("")
+  identifier  String       @unique
+  email       String       @unique
+  password    String
+  stations    Station[]    @relation(references: [id])
+  memberships Membership[]
+  topics      Topic[]
+  comments    Comment[]
+  votes       Vote[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @default(now())
+}
+
+model Station {
+  id          Int          @default(autoincrement()) @id
+  name        String
+  image       String?      @default("")
+  identifier  String       @unique
+  description String
+  users       User[]       @relation(references: [id])
+  memberships Membership[]
+  topics      Topic[]
+  comments    Comment[]
+  votes       Vote[]
+  public      Boolean      @default(false)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @default(now())
+}
+
+model Topic {
+  id           Int         @default(autoincrement()) @id
+  title        String
+  identifier   String
+  content      String
+  image        String?     @default("")
+  sealed       Boolean     @default(false)
+  membershipId Int?
+  userId       Int?
+  stationId    Int?
+  user         User?       @relation(fields: [userId], references: [id])
+  membership   Membership? @relation(fields: [membershipId], references: [id])
+  station      Station?    @relation(fields: [stationId], references: [id])
+  comments     Comment[]
+  votes        Vote[]
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @default(now())
+}
+
+model Comment {
+  id           Int         @default(autoincrement()) @id
+  content      String
+  image        String?     @default("")
+  membershipId Int?
+  userId       Int?
+  topicId      Int?
+  stationId    Int?
+  station      Station?    @relation(fields: [stationId], references: [id])
+  user         User?       @relation(fields: [userId], references: [id])
+  membership   Membership? @relation(fields: [membershipId], references: [id])
+  topic        Topic?      @relation(fields: [topicId], references: [id])
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @default(now())
+}
+
+model Vote {
+  id           Int         @default(autoincrement()) @id
+  type         VoteType
+  membershipId Int?
+  userId       Int?
+  topicId      Int?
+  stationId    Int?
+  station      Station?    @relation(fields: [stationId], references: [id])
+  user         User?       @relation(fields: [userId], references: [id])
+  membership   Membership? @relation(fields: [membershipId], references: [id])
+  topic        Topic?      @relation(fields: [topicId], references: [id])
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @default(now())
+}
+
+model Membership {
+  id        Int       @default(autoincrement()) @id
+  role      Role      @default(MEMBER)
+  state     State     @default(PENDING)
+  userId    Int?
+  stationId Int?
+  user      User?     @relation(fields: [userId], references: [id])
+  station   Station?  @relation(fields: [stationId], references: [id])
+  topics    Topic[]
+  comments  Comment[]
+  votes     Vote[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @default(now())
+}
+
+enum Role {
+  FOUNDER
+  ADMIN
+  MODERATOR
+  MEMBER
+}
+
+enum State {
+  PENDING
+  ACTIVE
+  DETACHED
+  BANNED
+}
+
+enum VoteType {
+  UPVOTE
+  DOWNVOTE
+}

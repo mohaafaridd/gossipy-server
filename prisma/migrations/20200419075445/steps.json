@@ -1,0 +1,161 @@
+{
+  "version": "0.3.14-fixed",
+  "steps": [
+    {
+      "tag": "UpdateField",
+      "model": "Topic",
+      "field": "membershipId",
+      "arity": "Optional"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "Topic",
+      "field": "userId",
+      "arity": "Optional"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "Topic",
+      "field": "stationId",
+      "arity": "Optional"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "Topic",
+      "field": "user",
+      "arity": "Optional"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "Topic",
+      "field": "membership",
+      "arity": "Optional"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "Topic",
+      "field": "station",
+      "arity": "Optional"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "Comment",
+      "field": "membershipId",
+      "arity": "Optional"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "Comment",
+      "field": "userId",
+      "arity": "Optional"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "Comment",
+      "field": "topicId",
+      "arity": "Optional"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "Comment",
+      "field": "stationId",
+      "arity": "Optional"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "Comment",
+      "field": "station",
+      "arity": "Optional"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "Comment",
+      "field": "user",
+      "arity": "Optional"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "Comment",
+      "field": "membership",
+      "arity": "Optional"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "Comment",
+      "field": "topic",
+      "arity": "Optional"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "Vote",
+      "field": "membershipId",
+      "arity": "Optional"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "Vote",
+      "field": "userId",
+      "arity": "Optional"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "Vote",
+      "field": "topicId",
+      "arity": "Optional"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "Vote",
+      "field": "stationId",
+      "arity": "Optional"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "Vote",
+      "field": "station",
+      "arity": "Optional"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "Vote",
+      "field": "user",
+      "arity": "Optional"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "Vote",
+      "field": "membership",
+      "arity": "Optional"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "Vote",
+      "field": "topic",
+      "arity": "Optional"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "Membership",
+      "field": "userId",
+      "arity": "Optional"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "Membership",
+      "field": "stationId",
+      "arity": "Optional"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "Membership",
+      "field": "user",
+      "arity": "Optional"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "Membership",
+      "field": "station",
+      "arity": "Optional"
+    }
+  ]
+}
