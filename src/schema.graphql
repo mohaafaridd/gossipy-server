@@ -176,6 +176,9 @@ type Query {
   users: [User!]!
   profile(identifier: String!): User
 
+  tags(statiodId: Int!): [Tag!]!
+  tag(id: Int!): Tag
+
   search(query: String!, page: Int): Search!
 }
 
