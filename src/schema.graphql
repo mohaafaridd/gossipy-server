@@ -119,6 +119,16 @@ type Vote {
   updatedAt: DateTime!
 }
 
+type Tag {
+  id: Int!
+  name: String!
+  stationId: Int!
+  station: Station!
+  topics: [Topic!]!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
 type File {
   filename: String!
   mimetype: String!
@@ -192,6 +202,10 @@ type Mutation {
 
   upsertVote(data: VoteUpsertInput): Vote!
   deleteVote(id: Int!): Vote!
+
+  createTag(stationId: Int!, data: TagCreateInput!): Tag!
+  updateTag(id: Int!, data: TagUpdateInput!): Tag!
+  deleteTag(id: Int!): Tag!
 }
 
 type AuthPayload {
@@ -263,6 +277,14 @@ input VoteUpsertInput {
   topic: Int!
   comment: Int
   type: VoteType
+}
+
+input TagCreateInput {
+  name: String!
+}
+
+input TagUpdateInput {
+  name: String!
 }
 
 enum Role {

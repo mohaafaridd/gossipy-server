@@ -9,6 +9,7 @@ import Membership from './Membership'
 import Topic from './Topic'
 import Comment from './Comment'
 import Vote from './Vote'
+import Tag from './Tag'
 
 const resolvers = {
   Query,
@@ -19,6 +20,7 @@ const resolvers = {
   Topic,
   Comment,
   Vote,
+  Tag,
 }
 
 export { resolvers }
