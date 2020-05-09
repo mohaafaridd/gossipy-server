@@ -29,6 +29,7 @@ type Station {
   topics: [Topic!]!
   comments: [Comment!]!
   votes: [Vote!]!
+  tags: [Tag!]!
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -73,6 +74,7 @@ type Topic {
   station: Station!
   comments: [Comment!]!
   votes: [Vote!]!
+  tags: [Tag!]!
   createdAt: DateTime!
   updatedAt: DateTime!
 }

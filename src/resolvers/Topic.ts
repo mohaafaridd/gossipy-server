@@ -47,4 +47,13 @@ export default {
     const votes = await prisma.topic.findOne({ where: { id } }).votes()
     return votes
   },
+
+  tags: async (
+    { id }: { id: number },
+    _args: any,
+    { prisma }: { prisma: PrismaClient }
+  ) => {
+    const tags = await prisma.topic.findOne({ where: { id } }).tags()
+    return tags
+  },
 }
