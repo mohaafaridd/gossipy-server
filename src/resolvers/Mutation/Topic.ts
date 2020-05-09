@@ -202,6 +202,18 @@ export default {
 
     if (!isAuthorized) throw new Error('Authorization Required')
 
+    await prisma.comment.deleteMany({
+      where: {
+        topicId: id,
+      },
+    })
+
+    await prisma.vote.deleteMany({
+      where: {
+        topicId: id,
+      },
+    })
+
     const topic = await prisma.topic.delete({ where: { id } })
     return topic
   },
