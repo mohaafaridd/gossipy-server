@@ -131,21 +131,20 @@ export default {
     if (typeof data.title === 'string') {
       const identifier = sanitizer.alphanumeric(data.title, '_').toLowerCase()
 
-      const [station] = await prisma.station.findMany({
-        where: { topics: { some: { id } } },
-      })
-
-      const [isValid] = await prisma.topic.findMany({
+      const [isTaken] = await prisma.topic.findMany({
         where: {
-          id: {
-            not: id,
+          station: {
+            topics: {
+              some: {
+                id,
+              },
+            },
           },
-          stationId: station.id,
           identifier,
         },
       })
-
-      if (!isValid) throw new Error('Topic title is used before da')
+      if (isTaken !== undefined) throw new Error('Topic title is in use')
+      else data.identifier = identifier
     }
 
     if (image) {
