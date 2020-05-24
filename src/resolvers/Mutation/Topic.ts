@@ -150,6 +150,8 @@ export default {
     if (image) {
       const imagePath = await uploadImage(image, 'stations')
       data.image = imagePath
+    } else {
+      data.image = ''
     }
 
     const topic = await prisma.topic.update({
