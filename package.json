@@ -7,7 +7,7 @@
   "scripts": {
     "heroku-postbuild": "prisma generate && npm run build",
     "build": "tsc --p tsconfig.prod.json",
-    "start": "node ./dist/index.js",
+    "start": "env-cmd -f ./config/prod.env node ./dist/index.js",
     "dev": "env-cmd -f ./config/prod.env ts-node-dev -r tsconfig-paths/register ./src/index.ts",
     "test": "env-cmd -f ./config/test.env jest --watch --runInBand",
     "seed": "env-cmd -f ./config/test.env jest seed.test.ts --watch --runInBand"
