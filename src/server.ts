@@ -11,7 +11,13 @@ const server = new ApolloServer({
   resolvers,
   playground: true,
   introspection: true,
-  cors: true,
+  cors: {
+    origin: '*',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    preflightContinue: false,
+    optionsSuccessStatus: 204,
+    credentials: true,
+  },
   context(request: any) {
     return {
       prisma,
